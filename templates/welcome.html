@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warhoop API Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1c1c1c;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 36px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 16px;
+            color: #cccccc;
+        }
+        .content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            flex: 1;
+            min-width: 300px;
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .card h2 {
+            font-size: 18px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .card p, .card ul {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            margin-bottom: 10px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #d9534f;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #b52e2b;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Warhoop API Dashboard</h1>
+        <p>Latest repository changes and contributors.</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Repository Info -->
+        <div class="card">
+            <h2>Repository Info</h2>
+            <ul>
+                <li><strong>Commit Hash:</strong> {{.ShortCommitHash}}</li>
+                <li><strong>Branch:</strong> {{.Branch}}</li>
+                <li><strong>Last Commit Date:</strong> {{.CommitDate}}</li>
+                <li><strong>Current Revision:</strong> {{.Version}}</li>
+            </ul>
+        </div>
+
+        <!-- Contributors -->
+        <div class="card">
+            <h2>Contributors</h2>
+            <p>{{.AuthorsList}}</p>
+        </div>
+    </div>
+
+    <!-- Change Log -->
+    <div class="card" style="margin-top: 20px;">
+        <h2>Change Log</h2>
+        <ul>
+            {{range .Commits}}
+            <li><strong>{{.Day}}</strong> - {{.Author}}: {{.Message}}</li>
+            {{end}}
+        </ul>
+    </div>
+
+    <!-- Button -->
+    <div class="button-container">
+        <a href="/documentation" class="button">Go to Documentation</a>
+    </div>
+</div>
+</body>
+</html>

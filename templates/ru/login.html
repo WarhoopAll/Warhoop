@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Successful Login</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #ffffff; color: #000000;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="margin: 0; padding: 0;">
+    <tr>
+        <td align="center" style="padding: 20px 0;">
+            <!-- Logo -->
+            <img src="https://warhoop.su/assets/bg/Medivh.png" alt="Warhoop Logo" width="80" style="display: block;">
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <!-- Main Content -->
+            <table width="600" border="0" cellspacing="0" cellpadding="20" bgcolor="#2c2c2c" style="border-radius: 10px; text-align: center; color: #ffffff; margin: 0 auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+                <tr>
+                    <td>
+                        <h1 style="color: #ffd700; margin-bottom: 20px;">Successful Login!</h1>
+                        <p style="font-size: 16px; line-height: 1.8; margin: 0 0 10px;">Hello, <strong>{{.Name}}</strong>!</p>
+                        <p style="font-size: 16px; line-height: 1.8; margin: 0 0 20px;">You have successfully logged into your account on <strong>Warhoop</strong>.</p>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="10" style="background-color: #333333; border-radius: 5px; margin-bottom: 20px;">
+                            <tr>
+                                <td style="text-align: left; font-size: 14px; line-height: 1.6; color: #ffffff;">
+                                    <p><strong>Your details:</strong></p>
+                                    <ul style="list-style: none; padding: 0; margin: 0;">
+                                        <li>Username: <strong>{{.Name}}</strong></li>
+                                        <li>Date & Time: <strong>{{.Date}}</strong></li>
+                                        <li>IP: <strong>{{.IP}}</strong></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding: 20px 0;">
+            <!-- Security Warning -->
+            <table width="600" border="0" cellspacing="0" cellpadding="20" bgcolor="#2c2c2c" style="border-radius: 10px; text-align: left; margin: 20px auto; border: 1px solid #444444;">
+                <tr>
+                    <td style="font-size: 14px; line-height: 1.8; color: #ffffff; text-align: center;">
+                        <p style="margin: 0 0 10px;"><strong>If this wasn’t you, reset your password immediately.</strong></p>
+                        <p style="margin: 0 0 20px;">To reset your password, click the button below:</p>
+                        <a href="https://warhoop.su/reset-password" style="display: inline-block; padding: 10px 20px; background-color: #d9534f; color: #ffffff; text-decoration: none; font-size: 16px; border-radius: 5px;">Reset Password</a>
+                        <p style="margin: 20px 0 0;">If no action is taken, your account may be at risk.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding: 20px 0;">
+            <!-- Additional Info -->
+            <table width="600" border="0" cellspacing="0" cellpadding="20" bgcolor="#2c2c2c" style="border-radius: 10px; text-align: center; margin: 0 auto; border: 1px solid #444444;">
+                <tr>
+                    <td style="font-size: 14px; line-height: 1.8; color: #cccccc;">
+                        If you have any questions, feel free to contact us on <a href="https://discord.com" style="color: #007bff; text-decoration: none;">Discord</a> or at <a href="mailto:support@warhoop.su" style="color: #007bff; text-decoration: none;">support@warhoop.su</a>.
+                        <br>Best regards, the <strong>Warhoop</strong> team ⚔️
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

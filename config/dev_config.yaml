@@ -1,0 +1,46 @@
+service:
+  log_level: "debug"
+  log_folder: "log"
+  log_prefix: "auth"
+  api_addr_port: "0.0.0.0:3011"
+  app_url: "https://warhoop.su"
+  git_info: "static/gitinfo.json"
+  template_welcome: "templates/welcome.html"
+  template_static: "static/welcome.html"
+  default_locale: "ru"
+
+db:
+  auth: "root:root@tcp(localhost:3306)/auth?parseTime=true"
+  characters: "root:root@tcp(localhost:3306)/characters?parseTime=true"
+  world: "root:root@tcp(localhost:3306)/world?parseTime=true"
+  sait: "root:root@tcp(localhost:3306)/sait?parseTime=true"
+  name: "auth"
+  verbose: true
+
+cors:
+  allow_origins: "*"
+  allow_methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+  allow_headers: "Content-Type,Authorization"
+  allow_credentials: true
+
+mail:
+  server: ""
+  port: ""
+  user: ""
+  password: ""
+  sander_name: ""
+  folder_templates: "templates"
+  template_verify: "verify.html"
+  template_password: "password.html"
+  template_login: "login.html"
+  template_password_complete: "change_password_complete.html"
+  template_change_email: "change_email.html"
+
+cookie:
+  name: 
+  domain: ""
+  httpOnly: true
+  secure: false
+  sameSite: None
+  access_duration: "12h"
+  jwt_key: "secret_key"
