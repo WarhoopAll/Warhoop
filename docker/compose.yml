@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: grimoire-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3011:3011"
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    networks:
+      - grimoire-network
+
+  mariadb:
+    container_name: grimoire-db
+    image: 'jc21/mariadb-aria:latest-innodb'
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'grimoire'
+      MYSQL_DATABASE: 'sait'
+      MYSQL_USER: 'grimoire'
+      MYSQL_PASSWORD: 'grimoire'
+      MARIADB_AUTO_UPGRADE: '1'
+    volumes:
+      - grimoire_db:/var/lib/mysql
+      - ../sql/init/sait.sql:/docker-entrypoint-initdb.d/sait.sql:ro
+    networks:
+      - grimoire-network
+
+networks:
+  grimoire-network:
+    name: grimoire-network
+    driver: bridge
+
+volumes:
+  grimoire_db:
+    name: grimoire_db
