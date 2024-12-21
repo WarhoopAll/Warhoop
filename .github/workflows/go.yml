@@ -1,0 +1,45 @@
+name: Go Build and init sql
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23.x'
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v ./...
+
+  db_init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start MariaDB with Docker
+        run: |
+          docker compose -f ./docker/compose.yml up -d mariadb
+
+      - name: Wait for MariaDB to start
+        run: |
+          sleep 15
+          until docker exec grimoire-db mysqladmin ping -h "127.0.0.1" --silent; do
+            echo "Waiting for database connection..."
+            sleep 5
+          done
+
+      - name: Load SQL Schema
+        run: |
+          docker exec -i grimoire-db mysql -u root -pgrimoire sait < sql/init/sait.sql
