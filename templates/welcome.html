@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warhoop API Dashboard</title>
+    <title>Grimoire API Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -82,7 +82,7 @@
 <div class="container">
     <!-- Header -->
     <div class="header">
-        <h1>Warhoop API Dashboard</h1>
+        <h1>Grimoire API Dashboard</h1>
         <p>Latest repository changes and contributors.</p>
     </div>
 
@@ -92,6 +92,11 @@
         <div class="card">
             <h2>Repository Info</h2>
             <ul>
+                <li><strong>Repository url:</strong>
+                    <a href="https://github.com/WarhoopAll/Grimoire" target="_blank" style="color: gray; ">
+                        Grimoire
+                    </a>
+                </li>
                 <li><strong>Commit Hash:</strong> {{.ShortCommitHash}}</li>
                 <li><strong>Branch:</strong> {{.Branch}}</li>
                 <li><strong>Last Commit Date:</strong> {{.CommitDate}}</li>
@@ -109,12 +114,25 @@
     <!-- Change Log -->
     <div class="card" style="margin-top: 20px;">
         <h2>Change Log</h2>
-        <ul>
+        <ul style="list-style-type: none; padding-left: 0;">
             {{range .Commits}}
-            <li><strong>{{.Day}}</strong> - {{.Author}}: {{.Message}}</li>
+            <li>
+                <strong>{{.Day}}</strong>
+                {{if and .Tag (ne .Tag "none")}}
+                <span style="font-weight: normal; font-size: 0.9rem; color: gray;">({{.Tag}})</span>
+                {{end}}
+                <ul style="list-style-type: none; padding-left: 20px; margin-top: 5px;">
+                    {{range .Commits}}
+                    <li style="margin-bottom: 8px;">
+                        <b>{{.Author}}:</b> {{.Message}}
+                    </li>
+                    {{end}}
+                </ul>
+            </li>
             {{end}}
         </ul>
     </div>
+
 
     <!-- Button -->
     <div class="button-container">

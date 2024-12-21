@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"grimoire/app/config"
 	"grimoire/app/ctrl"
 	"grimoire/app/ctxs"
 	"grimoire/app/log"
@@ -41,6 +42,12 @@ func SetupRoutes(app *fiber.App, h *ctrl.AccountHandler) {
 	}))
 
 	api.Use(ctxs.Shared)
+
+	app.Static("/favicon.ico", "templates/images/favicon.ico")
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendFile(config.Get().Service.TemplateStatic)
+	})
 
 	char := api.Group("/character")
 	char.Get("/:param", func(ctx *fiber.Ctx) error {

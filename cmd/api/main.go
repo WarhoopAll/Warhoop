@@ -10,6 +10,7 @@ import (
 	"grimoire/app/router"
 	"grimoire/app/store"
 	"grimoire/app/svc"
+	"grimoire/app/utils"
 )
 
 func main() {
@@ -23,6 +24,14 @@ func main() {
 
 func run(logger *log.Logger) error {
 	ctx := context.Background()
+
+	// Init welcome page
+	err := utils.LoadAndGenerateHTML(config.Get().Service.GitInfo)
+	if err != nil {
+		logger.Error("error generate welcome page",
+			log.String("err", err.Error()))
+		return nil
+	}
 
 	// Init repository store (with mysql inside)
 	store, err := store.NewBun(ctx, logger)
