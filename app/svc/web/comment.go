@@ -13,8 +13,8 @@ func (svc WebService) GetCommentByNewsID(ctx context.Context, id int) (*model.Co
 	comment := entry.ToWeb()
 	return &comment, nil
 }
-func (svc WebService) AddComment(ctx context.Context, entry *model.Comment) (*model.Comment, error) {
-	res, err := svc.store.SaitRepo.AddComment(ctx, entry.ToDB())
+func (svc WebService) CreateComment(ctx context.Context, entry *model.Comment) (*model.Comment, error) {
+	res, err := svc.store.SaitRepo.CreateComment(ctx, entry.ToDB())
 	if err != nil {
 		return nil, err
 	}

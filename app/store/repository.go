@@ -12,6 +12,10 @@ type AuthRepo interface {
 	ExistsEmail(context.Context, string) (bool, error)
 	ExistsUsername(context.Context, string) (bool, error)
 	Create(context.Context, *model.DBAccount) (*model.DBAccount, error)
+
+	// Access
+	ExistsAccess(context.Context, int) (bool, error)
+	GetAccessByID(context.Context, int) (*model.DBAccess, error)
 }
 
 type CharRepo interface {
@@ -31,13 +35,16 @@ type SaitRepo interface {
 	CreateSession(context.Context, *model.DBSession) error
 	UpdateSession(context.Context, *model.DBSession) error
 	DeleteSession(context.Context, string) error
-	ListSession(context.Context, uint) (model.DBSessionSlice, error)
+	ListSession(context.Context, uint) (*model.DBSessionSlice, error)
 	UpdateOrCreateSession(context.Context, *model.DBSession, string) (*model.DBSession, error)
 	// News
+	CreateNews(context.Context, *model.DBNews) (*model.News, error)
 	GetNewsByID(context.Context, *model.DBNews) (*model.DBNews, error)
 	GetNewsSlice(context.Context) (*model.DBNewsSlice, error)
+	UpdateNews(context.Context, *model.DBNews) error
+	DeleteNews(context.Context, int) error
 	// Comments
-	AddComment(context.Context, *model.DBComment) (*model.DBComment, error)
+	CreateComment(context.Context, *model.DBComment) (*model.DBComment, error)
 	GetCommentByID(context.Context, int) (*model.DBComment, error)
 	DeleteComment(context.Context, int) error
 	UpdateComment(context.Context, *model.DBComment) error

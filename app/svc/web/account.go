@@ -19,7 +19,7 @@ func (svc *WebService) GetByID(ctx context.Context, id int) (*model.Account, err
 func (svc WebService) SignIn(ctx context.Context, entry *model.Account) (*model.Account, error) {
 	fnd, err := svc.store.AuthRepo.GetByUsername(ctx, entry.Username)
 	if err != nil {
-		return nil, utils.ErrDataBase
+		return nil, utils.ErrIncorrectLogin
 	}
 
 	_, verifier, err := utils.ConfirmVerifier(fnd.Username, entry.Password, fnd.Salt)
@@ -28,10 +28,10 @@ func (svc WebService) SignIn(ctx context.Context, entry *model.Account) (*model.
 	}
 
 	if subtle.ConstantTimeCompare(verifier, fnd.Verifier) != 1 {
-		return nil, utils.ErrInternal
+		return nil, utils.ErrIncorrectLogin
 	}
 
-	return fnd.ToWeb(), nil
+	return fnd.ToWeb(), err
 }
 
 func (svc *WebService) Exists(ctx context.Context, entry *model.Account) error {
@@ -44,7 +44,7 @@ func (svc *WebService) Exists(ctx context.Context, entry *model.Account) error {
 			return
 		}
 		if exist {
-			errChan <- utils.ErrAccountExists
+			errChan <- utils.ErrIncorrectEmail
 			return
 		}
 		errChan <- nil
@@ -57,7 +57,7 @@ func (svc *WebService) Exists(ctx context.Context, entry *model.Account) error {
 			return
 		}
 		if exist {
-			errChan <- utils.ErrAccountExists
+			errChan <- utils.ErrIncorrectLogin
 			return
 		}
 		errChan <- nil

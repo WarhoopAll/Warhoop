@@ -11,6 +11,10 @@ type Account interface {
 	// Auth
 	SignIn(context.Context, *model.Account) (*model.Account, error)
 	SignUp(context.Context, *model.Account) (*model.Account, error)
+
+	// Access
+	ExistsAccess(context.Context, int) (bool, error)
+	AccessByID(context.Context, int) (*model.Access, error)
 }
 
 type Characters interface {
@@ -35,11 +39,14 @@ type Sait interface {
 	HandleSession(context.Context, *model.Session) (string, error)
 
 	// News
+	CreateNews(context.Context, *model.News) (*model.News, error)
 	GetNewsSlice(context.Context) (*model.NewsSlice, error)
-	GetNewsByID(context.Context, *model.News) (*model.News, error)
+	GetNewsByID(context.Context, int) (*model.News, error)
+	UpdateNews(context.Context, *model.News) error
+	DeleteNews(context.Context, int) error
 
 	// Comments
-	AddComment(context.Context, *model.Comment) (*model.Comment, error)
+	CreateComment(context.Context, *model.Comment) (*model.Comment, error)
 	DeleteComment(context.Context, int) error
 	UpdateComment(context.Context, *model.Comment) error
 	GetCommentByID(context.Context, int) (*model.Comment, error)

@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (ctr *AccountHandler) AddComment(ctx *fiber.Ctx) error {
+func (ctr *AccountHandler) CreateComment(ctx *fiber.Ctx) error {
 	id, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)
@@ -21,7 +21,7 @@ func (ctr *AccountHandler) AddComment(ctx *fiber.Ctx) error {
 	entry.Author = id
 
 	fmt.Println(entry.Author)
-	res, err := ctr.services.Sait.AddComment(ctx.Context(), entry)
+	res, err := ctr.services.Sait.CreateComment(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

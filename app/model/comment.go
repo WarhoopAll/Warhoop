@@ -6,14 +6,14 @@ import (
 )
 
 type Comment struct {
-	ID        int       `json:"id"`
-	NewsID    int       `json:"news_id"`
-	Text      string    `json:"text"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        int       `json:"id,omitempty"`
+	NewsID    int       `json:"news_id,omitempty"`
+	Text      string    `json:"text,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	Author    int       `json:"author,omitempty"`
 	Profile   *Profile  `json:"profile,omitempty"`
-	LikeCount int       `json:"like_count"`
+	LikeCount int       `json:"like_count,omitempty"`
 }
 
 type CommentSlice []Comment

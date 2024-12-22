@@ -23,7 +23,8 @@ func NewAuthRepo(db *DB, logger *log.Logger, saitr *SaitRepo) *AuthRepo {
 
 func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error) {
 	entry := &model.DBAccount{}
-	err := r.db.NewSelect().
+	err := r.db.
+		NewSelect().
 		Model(entry).
 		Relation("Access").
 		Where("id = ?", id).
@@ -52,7 +53,8 @@ func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error
 
 func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*model.DBAccount, error) {
 	entry := &model.DBAccount{}
-	err := r.db.NewSelect().
+	err := r.db.
+		NewSelect().
 		Model(entry).
 		Relation("Access").
 		Where("username = ?", username).

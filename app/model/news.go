@@ -23,11 +23,11 @@ type NewsSlice []News
 
 type DBNews struct {
 	bun.BaseModel `bun:"table:news,alias:news"`
-	ID            int            `bun:"id,pk"`
+	ID            int            `bun:"id,pk,autoincrement"`
 	Title         string         `bun:"title"`
 	Text          string         `bun:"text" `
-	CreatedAt     time.Time      `bun:"created_at" `
-	UpdatedAt     time.Time      `bun:"updated_at" `
+	CreatedAt     time.Time      `bun:"created_at,nullzero,default:current_timestamp"`
+	UpdatedAt     time.Time      `bun:"updated_at,nullzero,default:current_timestamp on update current_timestamp"`
 	Author        int            `bun:"author"`
 	Profile       *DBProfile     `bun:"rel:belongs-to,join:author=account_id"`
 	Comments      DBCommentSlice `bun:"-"`

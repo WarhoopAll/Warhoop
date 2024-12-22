@@ -11,6 +11,7 @@ service:
 
 db:
   auth: "123:123@tcp(192.168.1.33:3306)/auth?parseTime=true"
+
   characters: "123:123@tcp(192.168.1.33:3306)/characters?parseTime=true"
   world: "123:123@tcp(192.168.1.33:3306)/world?parseTime=true"
   sait: "grimoire:grimoire@tcp(grimoire-db:3306)/sait?parseTime=true"
@@ -28,7 +29,7 @@ mail:
   user: ""
   password: ""
   sander_name: ""
-  folder_templates: ""
+  folder_templates: "templates"
   template_verify: "verify.html"
   template_password: "password.html"
   template_login: "login.html"
@@ -36,10 +37,10 @@ mail:
   template_change_email: "change_email.html"
 
 cookie:
-  name: griMoire
+  name: "griMoire"
   domain: ""
   httpOnly: true
   secure: false
-  sameSite: None
+  sameSite: "None"
   access_duration: "12h"
   jwt_key: "secret_key"

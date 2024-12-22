@@ -11,7 +11,7 @@ import (
 
 type Config struct {
 	Service struct {
-		LogLevel        string `env:"log_level"`
+		LogLevel        string `yaml:"log_level"`
 		LogFolder       string `yaml:"log_folder"`
 		LogPrefix       string `yaml:"log_prefix"`
 		ApiAddrPort     string `yaml:"api_addr_port"`
@@ -35,27 +35,27 @@ type Config struct {
 		AllowCredentials bool   `yaml:"allow_credentials"`
 	} `yaml:"cors"`
 	Cookie struct {
-		Name           string        `env:"name"`
-		Domain         string        `env:"domain"`
-		HTTPOnly       bool          `env:"httpOnly"`
-		Secure         bool          `env:"secure"`
-		SameSite       string        `env:"sameSite"`
-		AccessDuration time.Duration `env:"access_duration"`
-		JwtKey         string        `env:"jwt_key"`
+		Name           string        `yaml:"name"`
+		Domain         string        `yaml:"domain"`
+		HTTPOnly       bool          `yaml:"httpOnly"`
+		Secure         bool          `yaml:"secure"`
+		SameSite       string        `yaml:"sameSite"`
+		AccessDuration time.Duration `yaml:"access_duration"`
+		JwtKey         string        `yaml:"jwt_key"`
 	} `yaml:"cookie"`
 	Mail struct {
-		Server                   string `env:"server"`
-		Port                     string `env:"port"`
-		User                     string `env:"user"`
-		Password                 string `env:"password"`
-		SanderName               string `env:"sander_name"`
-		FolderTemplates          string `env:"folder_templates"`
-		TemplateVerify           string `env:"template_verify"`
-		TemplatePassword         string `env:"template_password"`
-		TemplatePasswordComplete string `env:"template_password_complete"`
-		TemplateLogin            string `env:"template_login"`
-		TemplateChangeEmail      string `env:"template_change_email"`
-	} `env:"mail"`
+		Server                   string `yaml:"server"`
+		Port                     string `yaml:"port"`
+		User                     string `yaml:"user"`
+		Password                 string `yaml:"password"`
+		SanderName               string `yaml:"sander_name"`
+		FolderTemplates          string `yaml:"folder_templates"`
+		TemplateVerify           string `yaml:"template_verify"`
+		TemplatePassword         string `yaml:"template_password"`
+		TemplatePasswordComplete string `yaml:"template_password_complete"`
+		TemplateLogin            string `yaml:"template_login"`
+		TemplateChangeEmail      string `yaml:"template_change_email"`
+	} `yaml:"mail"`
 }
 
 var (

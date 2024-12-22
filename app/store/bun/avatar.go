@@ -23,7 +23,8 @@ func NewSaitRepo(db *DB, logger *log.Logger) *SaitRepo {
 
 func (r *SaitRepo) GetAvatar(ctx context.Context, id int) (*model.DBProfile, error) {
 	avatar := &model.DBProfile{}
-	err := r.db.NewSelect().
+	err := r.db.
+		NewSelect().
 		Model(avatar).
 		Where("account_id = ?", id).
 		Scan(ctx)
@@ -42,7 +43,8 @@ func (r *SaitRepo) GetAvatar(ctx context.Context, id int) (*model.DBProfile, err
 }
 
 func (r *SaitRepo) ExistAvatar(ctx context.Context, accountID int) (bool, error) {
-	exists, err := r.db.NewSelect().
+	exists, err := r.db.
+		NewSelect().
 		Model((*model.DBProfile)(nil)).
 		Where("account_id = ?", accountID).
 		Exists(ctx)
@@ -64,7 +66,8 @@ func (r *SaitRepo) UpdateAvatar(ctx context.Context, entry *model.DBProfile) err
 	}
 
 	if exists {
-		_, err = r.db.NewUpdate().
+		_, err = r.db.
+			NewUpdate().
 			Model(entry).
 			Set("avatar = ?", entry.Avatar).
 			Where("account_id = ?", entry.AccountID).

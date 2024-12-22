@@ -23,7 +23,7 @@ func (ctr *AccountHandler) SignIn(ctx *fiber.Ctx) error {
 
 	res, err := ctr.services.Account.SignIn(ctx.Context(), entry)
 	if err != nil {
-		return ErrResponse(ctx, MsgInternal)
+		return ErrResponse(ctx, err.Error())
 	}
 
 	finger := FingerPrint(ctx, res.ID)
@@ -69,7 +69,7 @@ func (ctr *AccountHandler) SignUp(ctx *fiber.Ctx) error {
 
 	res, err := ctr.services.Account.SignUp(ctx.Context(), entry)
 	if err != nil {
-		return ErrResponse(ctx, MsgInternal)
+		return ErrResponse(ctx, err.Error())
 	}
 
 	finger := FingerPrint(ctx, res.ID)

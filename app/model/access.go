@@ -3,8 +3,8 @@ package model
 import "github.com/uptrace/bun"
 
 type Access struct {
-	AccountID     uint   `json:"-"`
-	SecurityLevel uint8  `json:"security_level,omitempty"`
+	AccountID     int    `json:"-"`
+	SecurityLevel int8   `json:"security_level,omitempty"`
 	RealmID       int    `json:"realm_id,omitempty"`
 	Comment       string `json:"comment,omitempty"`
 }
@@ -12,8 +12,8 @@ type AccessSlice []Access
 
 type DBAccess struct {
 	bun.BaseModel `bun:"table:account_access,alias:account"`
-	AccountID     uint   `bun:"AccountID,pk" `
-	SecurityLevel uint8  `bun:"SecurityLevel" `
+	AccountID     int    `bun:"AccountID,pk" `
+	SecurityLevel int8   `bun:"SecurityLevel" `
 	RealmID       int    `bun:"RealmID,pk" `
 	Comment       string `bun:"Comment,nullzero" `
 }

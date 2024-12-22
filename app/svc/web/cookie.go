@@ -10,6 +10,15 @@ import (
 var cfg = config.Get()
 
 func CreateCookie(value string) *fiber.Cookie {
+	log.Get().Logger.Debug("Cookie config",
+		"name", cfg.Cookie.Name,
+		"domain", cfg.Cookie.Domain,
+		"httpOnly", cfg.Cookie.HTTPOnly,
+		"secure", cfg.Cookie.Secure,
+		"sameSite", cfg.Cookie.SameSite,
+		"duration", cfg.Cookie.AccessDuration,
+	)
+
 	cookie := &fiber.Cookie{
 		Name:     cfg.Cookie.Name,
 		Value:    value,
@@ -23,6 +32,8 @@ func CreateCookie(value string) *fiber.Cookie {
 		"name", cookie.Name,
 		"value", cookie.Value,
 		"expires", cookie.Expires,
+		"secure", cookie.Secure,
+		"sameSite", cookie.SameSite,
 	)
 
 	return cookie
@@ -38,7 +49,7 @@ func DeleteCookie() *fiber.Cookie {
 		SameSite: cfg.Cookie.SameSite,
 		Expires:  time.Now().Add(-1 * time.Hour),
 	}
-	log.Get().Logger.Debug("Cookie deleted",
+	log.Get().Logger.Info("Cookie deleted",
 		"name", cookie.Name,
 		"expires", cookie.Expires,
 	)

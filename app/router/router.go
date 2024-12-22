@@ -66,14 +66,17 @@ func SetupRoutes(app *fiber.App, h *ctrl.AccountHandler) {
 	auth.Get("/logout", h.Logout)
 
 	news := api.Group("/news")
-	news.Get("/", h.News)
-	news.Get("/:id", h.NewsByID)
+	news.Get("/", h.NewsSlice)
+	news.Get("/:id", h.NewsGetByID)
 
 	api.Use(mw.Auth)
 
+	news.Post("/", h.CreateNews)
+	news.Delete("/:id", h.DeleteNews)
+
 	auth.Get("/session", h.Session)
 
-	news.Post("/comment", h.AddComment)
+	news.Post("/comment", h.CreateComment)
 	news.Delete("/comment/:id", h.DeleteComment)
 	news.Patch("/comment", h.UpdateComment)
 

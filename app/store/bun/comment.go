@@ -24,7 +24,7 @@ func (r *SaitRepo) GetCommentByNewsID(ctx context.Context, id int) (*model.DBCom
 	return entry, nil
 }
 
-func (r *SaitRepo) AddComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
+func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
 	_, err := r.db.
 		NewInsert().
 		Model(entry).
@@ -55,17 +55,15 @@ func (r *SaitRepo) AddComment(ctx context.Context, entry *model.DBComment) (*mod
 }
 
 func (r *SaitRepo) DeleteComment(ctx context.Context, id int) error {
-	entry := &model.DBComment{}
 	_, err := r.db.
 		NewDelete().
-		Model(entry).
+		Model((*model.DBComment)(nil)).
 		Where("id = ?", id).
 		Exec(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.GetNewsSlice",
 			log.String("error", err.Error()),
 			log.Int("comment_id", id),
-			log.Object("entries", entry),
 		)
 		return err
 	}
