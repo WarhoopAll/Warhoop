@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"grimoire/app/config"
-	"grimoire/app/ctrl"
-	"grimoire/app/ctxs"
-	"grimoire/app/log"
-	"grimoire/app/mw"
+	"warhoop/app/config"
+	"warhoop/app/ctrl"
+	"warhoop/app/ctxs"
+	"warhoop/app/log"
+	"warhoop/app/mw"
 	"io"
 )
 

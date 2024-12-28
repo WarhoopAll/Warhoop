@@ -3,8 +3,8 @@ package ctrl
 import (
 	"context"
 	"github.com/go-playground/validator/v10"
-	"grimoire/app/config"
-	"grimoire/app/svc"
+	"warhoop/app/config"
+	"warhoop/app/svc"
 )
 
 var validate = validator.New()

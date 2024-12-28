@@ -2,9 +2,9 @@ package web
 
 import (
 	"context"
-	"grimoire/app/email"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/email"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 // GetChangeEmail ...

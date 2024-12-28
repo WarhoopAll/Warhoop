@@ -3,8 +3,8 @@ package web
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 func (svc *WebService) GetSession(ctx context.Context, entry *model.Session) (*model.Session, error) {

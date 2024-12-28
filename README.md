@@ -1,9 +1,4 @@
-# Grimoire
-
----
-## EN: Project Description
-
-**Grimoire** — FullRest API for **TrinityCore 3.3.5a**. The project provides functionality for managing accounts, avatars, comments, and news.
+**Warhoop** — FullRest API for **TrinityCore** (AzerothCore in progress). The project provides functionality for managing accounts, avatars, comments, and news.
 
 ---
 
@@ -29,9 +24,8 @@ The project is under active development. Follow updates and improvements.
 
 ---
 
-## RU: Описание проекта
 
-**Grimoire** — FullRest API для **TrinityCore 3.3.5a**. Проект предоставляет функционал для управления аккаунтами, аватарами, комментариями и новостями.
+**Grimoire** — FullRest API для **TrinityCore** (AzerothCore в процессе). Проект предоставляет функционал для управления аккаунтами, аватарами, комментариями и новостями.
 
 ---
 

@@ -2,9 +2,9 @@ package store
 
 import (
 	"context"
-	"grimoire/app/config"
-	"grimoire/app/log"
-	"grimoire/app/store/bun"
+	"warhoop/app/config"
+	"warhoop/app/log"
+	"warhoop/app/store/bun"
 
 	_ "github.com/go-sql-driver/mysql"
 )

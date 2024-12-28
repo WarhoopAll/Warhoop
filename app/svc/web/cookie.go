@@ -2,8 +2,8 @@ package web
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/config"
-	"grimoire/app/log"
+	"warhoop/app/config"
+	"warhoop/app/log"
 	"time"
 )
 

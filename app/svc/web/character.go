@@ -2,8 +2,8 @@ package web
 
 import (
 	"context"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 func (svc *WebService) GetCharByID(ctx context.Context, id int) (*model.Characters, error) {

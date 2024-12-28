@@ -3,7 +3,7 @@ package ctrl
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/model"
+	"warhoop/app/model"
 	"strconv"
 )
 

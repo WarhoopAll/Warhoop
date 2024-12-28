@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	"grimoire/app/config"
+	"warhoop/app/config"
 )
 
 type Logger struct {

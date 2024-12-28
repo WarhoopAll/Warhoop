@@ -2,7 +2,7 @@ package web
 
 import (
 	"context"
-	"grimoire/app/model"
+	"warhoop/app/model"
 )
 
 func (svc WebService) CreateNews(ctx context.Context, entry *model.News) (*model.News, error) {

@@ -3,9 +3,9 @@ package bun
 import (
 	"context"
 	"errors"
-	"grimoire/app/log"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/log"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 type SaitRepo struct {

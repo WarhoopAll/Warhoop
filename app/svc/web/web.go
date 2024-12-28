@@ -2,8 +2,8 @@ package web
 
 import (
 	"context"
-	"grimoire/app/log"
-	"grimoire/app/store"
+	"warhoop/app/log"
+	"warhoop/app/store"
 	"sync"
 )
 

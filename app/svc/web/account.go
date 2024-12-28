@@ -3,8 +3,8 @@ package web
 import (
 	"context"
 	"crypto/subtle"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 func (svc *WebService) GetByID(ctx context.Context, id int) (*model.Account, error) {

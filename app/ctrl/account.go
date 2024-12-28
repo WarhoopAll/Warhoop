@@ -2,9 +2,9 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/ctxs"
-	"grimoire/app/model"
-	"grimoire/app/svc/web"
+	"warhoop/app/ctxs"
+	"warhoop/app/model"
+	"warhoop/app/svc/web"
 	"time"
 )
 

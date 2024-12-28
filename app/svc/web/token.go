@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/golang-jwt/jwt/v4"
-	"grimoire/app/utils"
+	"warhoop/app/utils"
 	"time"
 )
 

@@ -1,4 +1,4 @@
-module grimoire
+module warhoop
 
 go 1.23.3
 

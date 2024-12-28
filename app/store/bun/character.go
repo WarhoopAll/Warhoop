@@ -2,8 +2,8 @@ package bun
 
 import (
 	"context"
-	"grimoire/app/log"
-	"grimoire/app/model"
+	"warhoop/app/log"
+	"warhoop/app/model"
 )
 
 type CharRepo struct {

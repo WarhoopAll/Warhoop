@@ -2,7 +2,7 @@ package store
 
 import (
 	"context"
-	"grimoire/app/model"
+	"warhoop/app/model"
 )
 
 type AuthRepo interface {

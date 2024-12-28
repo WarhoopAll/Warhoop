@@ -3,9 +3,9 @@ package bun
 import (
 	"context"
 	"database/sql"
-	"grimoire/app/log"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/log"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 func (repo *SaitRepo) GetSession(ctx context.Context, entry *model.DBSession) (*model.DBSession, error) {

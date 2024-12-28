@@ -2,9 +2,9 @@ package svc
 
 import (
 	"context"
-	"grimoire/app/log"
-	"grimoire/app/store"
-	"grimoire/app/svc/web"
+	"warhoop/app/log"
+	"warhoop/app/store"
+	"warhoop/app/svc/web"
 )
 
 func NewService(ctx context.Context, store *store.Store, logger *log.Logger) *web.WebService {

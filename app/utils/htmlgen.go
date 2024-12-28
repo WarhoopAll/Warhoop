@@ -2,8 +2,8 @@ package utils
 
 import (
 	"fmt"
-	"grimoire/app/config"
-	"grimoire/app/log"
+	"warhoop/app/config"
+	"warhoop/app/log"
 	"html/template"
 	"os"
 )

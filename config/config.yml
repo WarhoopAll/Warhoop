@@ -11,10 +11,9 @@ service:
 
 db:
   auth: "123:123@tcp(192.168.1.33:3306)/auth?parseTime=true"
-
   characters: "123:123@tcp(192.168.1.33:3306)/characters?parseTime=true"
   world: "123:123@tcp(192.168.1.33:3306)/world?parseTime=true"
-  sait: "grimoire:grimoire@tcp(grimoire-db:3306)/sait?parseTime=true"
+  sait: "warhoop:warhoop@tcp(warhoop-db:3306)/sait?parseTime=true"
   verbose: false
 
 cors:
@@ -37,7 +36,7 @@ mail:
   template_change_email: "change_email.html"
 
 cookie:
-  name: "griMoire"
+  name: "warhoop"
   domain: ""
   httpOnly: true
   secure: false

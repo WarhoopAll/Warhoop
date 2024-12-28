@@ -2,9 +2,8 @@ package email
 
 import (
 	"fmt"
-	"grimoire/app/log"
-	"grimoire/app/model"
-
+	"warhoop/app/log"
+	"warhoop/app/model"
 	"path/filepath"
 	"time"
 )
