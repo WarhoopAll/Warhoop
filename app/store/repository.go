@@ -12,7 +12,6 @@ type AuthRepo interface {
 	ExistsEmail(context.Context, string) (bool, error)
 	ExistsUsername(context.Context, string) (bool, error)
 	Create(context.Context, *model.DBAccount) (*model.DBAccount, error)
-
 	// Access
 	ExistsAccess(context.Context, int) (bool, error)
 	GetAccessByID(context.Context, int) (*model.DBAccess, error)
@@ -27,7 +26,7 @@ type CharRepo interface {
 
 type SaitRepo interface {
 	// Avatar
-	GetAvatar(ctx context.Context, id int) (*model.DBProfile, error)
+	GetAvatar(context.Context, int) (*model.DBProfile, error)
 	UpdateAvatar(context.Context, *model.DBProfile) error
 	ExistAvatar(context.Context, int) (bool, error)
 	// Session
@@ -38,9 +37,9 @@ type SaitRepo interface {
 	ListSession(context.Context, uint) (*model.DBSessionSlice, error)
 	UpdateOrCreateSession(context.Context, *model.DBSession, string) (*model.DBSession, error)
 	// News
-	CreateNews(context.Context, *model.DBNews) (*model.News, error)
-	GetNewsByID(context.Context, *model.DBNews) (*model.DBNews, error)
-	GetNewsSlice(context.Context) (*model.DBNewsSlice, error)
+	CreateNews(context.Context, *model.DBNews) (*model.DBNews, error)
+	GetNewsByID(context.Context, int) (*model.DBNews, error)
+	GetNewsSlice(context.Context, int, int) (*model.DBNewsSlice, int, error)
 	UpdateNews(context.Context, *model.DBNews) error
 	DeleteNews(context.Context, int) error
 	// Comments
@@ -48,4 +47,8 @@ type SaitRepo interface {
 	GetCommentByID(context.Context, int) (*model.DBComment, error)
 	DeleteComment(context.Context, int) error
 	UpdateComment(context.Context, *model.DBComment) error
+	// Like
+	ToggleReaction(context.Context, *model.DBReaction) (*model.DBReaction, error)
+	DeleteReaction(context.Context, *model.DBReaction) error
+	ExistReaction(context.Context, *model.DBReaction) (bool, error)
 }

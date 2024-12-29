@@ -16,6 +16,7 @@ type News struct {
 	Profile       *Profile     `json:"profile,omitempty"`
 	ImageUrl      string       `json:"image_url"`
 	LikeCount     int          `json:"like_count,omitempty"`
+	DisLikeCount  int          `json:"dis_like_count,omitempty"`
 	CommentsCount int          `json:"comments_count"`
 }
 
@@ -33,6 +34,7 @@ type DBNews struct {
 	Comments      DBCommentSlice `bun:"-"`
 	ImageUrl      string         `bun:"image_url"`
 	LikeCount     int            `bun:"like_count"`
+	DisLikeCount  int            `bun:"dislike_count"`
 	CommentsCount int            `bun:"comments_count"`
 }
 
@@ -44,14 +46,15 @@ func (entry *News) ToDB() *DBNews {
 		return nil
 	}
 	return &DBNews{
-		ID:        entry.ID,
-		Title:     entry.Title,
-		Text:      entry.Text,
-		CreatedAt: entry.CreatedAt,
-		UpdatedAt: entry.UpdatedAt,
-		Author:    entry.Author,
-		ImageUrl:  entry.ImageUrl,
-		LikeCount: entry.LikeCount,
+		ID:           entry.ID,
+		Title:        entry.Title,
+		Text:         entry.Text,
+		CreatedAt:    entry.CreatedAt,
+		UpdatedAt:    entry.UpdatedAt,
+		Author:       entry.Author,
+		ImageUrl:     entry.ImageUrl,
+		LikeCount:    entry.LikeCount,
+		DisLikeCount: entry.DisLikeCount,
 	}
 }
 
@@ -70,6 +73,7 @@ func (entry *DBNews) ToWeb() *News {
 		Author:        entry.Author,
 		ImageUrl:      entry.ImageUrl,
 		LikeCount:     entry.LikeCount,
+		DisLikeCount:  entry.DisLikeCount,
 		Comment:       entry.Comments.ToWeb(),
 		Profile:       entry.Profile.ToWeb(),
 		CommentsCount: entry.CommentsCount,

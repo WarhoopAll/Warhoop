@@ -71,22 +71,37 @@ func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, erro
 	return entry, nil
 }
 
-func (r *SaitRepo) GetNewsSlice(ctx context.Context) (*model.DBNewsSlice, error) {
+func (r *SaitRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*model.DBNewsSlice, int, error) {
+	var total int
 	entry := &model.DBNewsSlice{}
-	err := r.db.
-		NewSelect().
+
+	countErr := r.db.NewSelect().
+		Model((*model.DBNews)(nil)).
+		ColumnExpr("count(*)").
+		Scan(ctx, &total)
+	if countErr != nil {
+		r.logger.Error("store.SaitRepo.GetNewsSlice - count",
+			log.String("error", countErr.Error()),
+		)
+		return nil, 0, countErr
+	}
+
+	err := r.db.NewSelect().
 		Model(entry).
 		Relation("Profile").
 		OrderExpr("created_at DESC").
+		Limit(limit).
+		Offset(offset).
 		Scan(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.GetNewsSlice",
 			log.String("error", err.Error()),
 			log.Object("entry", entry),
 		)
-		return nil, err
+		return nil, 0, err
 	}
-	return entry, nil
+
+	return entry, total, nil
 }
 
 func (r *SaitRepo) UpdateNews(ctx context.Context, entry *model.DBNews) error {

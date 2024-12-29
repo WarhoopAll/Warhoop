@@ -34,6 +34,10 @@ func Float64(key string, value float64) Field {
 	return slog.Float64(key, value)
 }
 
+func Bool(key string, value bool) Field {
+	return slog.Bool(key, value)
+}
+
 func ByteString(key string, value []byte) Field {
 	return slog.String(key, string(value))
 }

@@ -21,13 +21,13 @@ func (svc WebService) GetNewsByID(ctx context.Context, id int) (*model.News, err
 	return res.ToWeb(), nil
 }
 
-func (svc WebService) GetNewsSlice(ctx context.Context) (*model.NewsSlice, error) {
-	entry, err := svc.store.SaitRepo.GetNewsSlice(ctx)
+func (svc WebService) GetNewsSlice(ctx context.Context, limit, offset int) (*model.NewsSlice, int, error) {
+	entry, total, err := svc.store.SaitRepo.GetNewsSlice(ctx, limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	news := entry.ToWeb()
-	return &news, nil
+	return &news, total, nil
 }
 
 func (svc WebService) UpdateNews(ctx context.Context, entry *model.News) error {

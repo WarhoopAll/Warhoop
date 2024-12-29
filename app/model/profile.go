@@ -7,6 +7,7 @@ type Profile struct {
 	Name      string `json:"name"`
 	Avatar    string `json:"avatar,omitempty" validate:"required,avatar"`
 	Rank      string `json:"rank"`
+	LikeCount int    `json:"like_count,omitempty"`
 }
 
 type ProfileSlice []Profile
@@ -17,6 +18,7 @@ type DBProfile struct {
 	Name          string `bun:"name"`
 	Avatar        string `bun:"avatar"`
 	Rank          string `bun:"rank"`
+	LikeCount     int    `bun:"like_count"`
 }
 
 type DBProfileSlice []DBProfile
@@ -31,6 +33,7 @@ func (entry *Profile) ToDB() *DBProfile {
 		Name:      entry.Name,
 		Avatar:    entry.Avatar,
 		Rank:      entry.Rank,
+		LikeCount: entry.LikeCount,
 	}
 }
 
@@ -44,6 +47,7 @@ func (entry *DBProfile) ToWeb() *Profile {
 		Name:      entry.Name,
 		Avatar:    entry.Avatar,
 		Rank:      entry.Rank,
+		LikeCount: entry.LikeCount,
 	}
 }
 

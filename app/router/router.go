@@ -80,6 +80,9 @@ func SetupRoutes(app *fiber.App, h *ctrl.AccountHandler) {
 	news.Delete("/comment/:id", h.DeleteComment)
 	news.Patch("/comment", h.UpdateComment)
 
+	reaction := api.Group("/reaction")
+	reaction.Post("/", h.ToggleReaction)
+
 	prof := api.Group("/profile")
 	prof.Post("/avatar", h.UpdateAvatar)
 }

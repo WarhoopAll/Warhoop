@@ -8,11 +8,20 @@ import (
 )
 
 func (ctr *AccountHandler) NewsSlice(ctx *fiber.Ctx) error {
-	entry, err := ctr.services.Sait.GetNewsSlice(ctx.Context())
+	limit := ctx.QueryInt("limit", 2)
+	offset := ctx.QueryInt("offset", 0)
+
+	entry, total, err := ctr.services.Sait.GetNewsSlice(ctx.Context(), limit, offset)
 	if err != nil {
-		return err
+		return ErrResponse(ctx, MsgInternal)
 	}
-	return Response(ctx, MsgSuccess, entry)
+
+	return ctx.JSON(fiber.Map{
+		"status":  "success",
+		"message": "News retrieved successfully",
+		"data":    entry,
+		"total":   total,
+	})
 }
 
 func (ctr *AccountHandler) NewsGetByID(ctx *fiber.Ctx) error {
