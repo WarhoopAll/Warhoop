@@ -2,8 +2,8 @@ package bun
 
 import (
 	"context"
-	"grimoire/app/log"
-	"grimoire/app/model"
+	"warhoop/app/log"
+	"warhoop/app/model"
 )
 
 func (r *SaitRepo) GetCommentByNewsID(ctx context.Context, id int) (*model.DBCommentSlice, error) {

@@ -3,7 +3,7 @@ package mw
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"grimoire/app/config"
+	"warhoop/app/config"
 )
 
 var cfg = config.Get()

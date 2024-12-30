@@ -2,7 +2,7 @@ package email
 
 import (
 	"bytes"
-	"grimoire/app/config"
+	"warhoop/app/config"
 	"html/template"
 	"net/smtp"
 )

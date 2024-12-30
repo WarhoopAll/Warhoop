@@ -2,7 +2,7 @@ package ctxs
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/config"
+	"warhoop/app/config"
 	"strings"
 )
 

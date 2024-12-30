@@ -3,7 +3,7 @@ package svc
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/model"
+	"warhoop/app/model"
 )
 
 type Account interface {

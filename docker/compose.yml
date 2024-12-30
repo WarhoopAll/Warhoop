@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   api:
-    container_name: grimoire-api
+    container_name: warhoop-api
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -12,31 +12,31 @@ services:
       - "3011:3011"
     restart: unless-stopped
     depends_on:
-      - mariadb
+      - warhoopdb
     networks:
-      - grimoire-network
+      - warhoop-network
 
-  mariadb:
-    container_name: grimoire-db
+  warhoopdb:
+    container_name: warhoop-db
     image: 'jc21/mariadb-aria:latest-innodb'
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: 'grimoire'
+      MYSQL_ROOT_PASSWORD: 'warhoop'
       MYSQL_DATABASE: 'sait'
-      MYSQL_USER: 'grimoire'
-      MYSQL_PASSWORD: 'grimoire'
+      MYSQL_USER: 'warhoop'
+      MYSQL_PASSWORD: 'warhoop'
       MARIADB_AUTO_UPGRADE: '1'
     volumes:
-      - grimoire_db:/var/lib/mysql
+      - warhoop_db:/var/lib/mysql
       - ../sql/init/sait.sql:/docker-entrypoint-initdb.d/sait.sql:ro
     networks:
-      - grimoire-network
+      - warhoop-network
 
 networks:
-  grimoire-network:
-    name: grimoire-network
+  warhoop-network:
+    name: warhoop-network
     driver: bridge
 
 volumes:
-  grimoire_db:
-    name: grimoire_db
+  warhoop_db:
+    name: warhoop_db

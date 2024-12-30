@@ -2,8 +2,8 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/log"
-	"grimoire/app/model"
+	"warhoop/app/log"
+	"warhoop/app/model"
 	"strconv"
 )
 

@@ -2,7 +2,7 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/log"
+	"warhoop/app/log"
 )
 
 func JSONResponse(ctx *fiber.Ctx, status string, message string, data interface{}) error {

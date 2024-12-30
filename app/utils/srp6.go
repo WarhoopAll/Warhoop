@@ -3,7 +3,7 @@ package utils
 import (
 	"crypto/rand"
 	"crypto/sha1"
-	"grimoire/app/log"
+	"warhoop/app/log"
 	"math/big"
 	"strings"
 )

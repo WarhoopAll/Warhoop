@@ -3,14 +3,14 @@ package main
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/config"
-	"grimoire/app/ctrl"
-	"grimoire/app/log"
-	"grimoire/app/mw"
-	"grimoire/app/router"
-	"grimoire/app/store"
-	"grimoire/app/svc"
-	"grimoire/app/utils"
+	"warhoop/app/config"
+	"warhoop/app/ctrl"
+	"warhoop/app/log"
+	"warhoop/app/mw"
+	"warhoop/app/router"
+	"warhoop/app/store"
+	"warhoop/app/svc"
+	"warhoop/app/utils"
 )
 
 func main() {

@@ -2,7 +2,7 @@ package web
 
 import (
 	"context"
-	"grimoire/app/model"
+	"warhoop/app/model"
 )
 
 func (svc WebService) GetCommentByNewsID(ctx context.Context, id int) (*model.CommentSlice, error) {

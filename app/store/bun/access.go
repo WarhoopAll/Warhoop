@@ -2,8 +2,8 @@ package bun
 
 import (
 	"context"
-	"grimoire/app/log"
-	"grimoire/app/model"
+	"warhoop/app/log"
+	"warhoop/app/model"
 )
 
 func (r *AuthRepo) ExistsAccess(ctx context.Context, id int) (bool, error) {

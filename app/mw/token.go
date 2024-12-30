@@ -2,8 +2,8 @@ package mw
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/ctrl"
-	"grimoire/app/svc/web"
+	"warhoop/app/ctrl"
+	"warhoop/app/svc/web"
 )
 
 func Auth(ctx *fiber.Ctx) error {
