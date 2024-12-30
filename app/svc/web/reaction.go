@@ -2,8 +2,8 @@ package web
 
 import (
 	"context"
-	"grimoire/app/model"
-	"grimoire/app/utils"
+	"warhoop/app/model"
+	"warhoop/app/utils"
 )
 
 func (s *WebService) ToggleReaction(ctx context.Context, entry *model.Reaction) (*model.Reaction, error) {

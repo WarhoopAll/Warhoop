@@ -2,8 +2,8 @@ package bun
 
 import (
 	"context"
-	"grimoire/app/log"
-	"grimoire/app/model"
+	"warhoop/app/log"
+	"warhoop/app/model"
 )
 
 func (r *SaitRepo) ExistReaction(ctx context.Context, entry *model.DBReaction) (bool, error) {

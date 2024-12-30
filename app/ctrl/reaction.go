@@ -2,7 +2,7 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"grimoire/app/model"
+	"warhoop/app/model"
 )
 
 func (ctr *AccountHandler) ToggleReaction(ctx *fiber.Ctx) error {
