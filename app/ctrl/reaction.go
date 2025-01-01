@@ -18,7 +18,7 @@ func (ctr *Handler) ToggleReaction(ctx *fiber.Ctx) error {
 
 	entry.UserID = id
 
-	res, err := ctr.services.Sait.ToggleReaction(ctx.Context(), entry)
+	res, err := ctr.services.Web.ToggleReaction(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

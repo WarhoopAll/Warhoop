@@ -1,4 +1,4 @@
-package web
+package auth
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"warhoop/app/utils"
 )
 
-func (s *WebService) GetUptimeByID(ctx context.Context, id int) (*model.Uptime, error) {
+func (s *AuthService) GetUptimeByID(ctx context.Context, id int) (*model.Uptime, error) {
 	entry, err := s.store.AuthRepo.GetUptimeByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase

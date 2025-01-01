@@ -21,7 +21,7 @@ func (ctr *Handler) CreateComment(ctx *fiber.Ctx) error {
 	entry.Author = id
 
 	fmt.Println(entry.Author)
-	res, err := ctr.services.Sait.CreateComment(ctx.Context(), entry)
+	res, err := ctr.services.Web.CreateComment(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -35,7 +35,7 @@ func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	res, err := ctr.services.Account.GetByID(ctx.Context(), idacc)
+	res, err := ctr.services.Auth.GetByID(ctx.Context(), idacc)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -50,7 +50,7 @@ func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	comment, err := ctr.services.Sait.GetCommentByID(ctx.Context(), id)
+	comment, err := ctr.services.Web.GetCommentByID(ctx.Context(), id)
 	if err != nil {
 		return ErrResponse(ctx, MsgNotFound)
 	}
@@ -58,7 +58,7 @@ func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
-	err = ctr.services.Sait.DeleteComment(ctx.Context(), id)
+	err = ctr.services.Web.DeleteComment(ctx.Context(), id)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -77,7 +77,7 @@ func (ctr *Handler) UpdateComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	comment, err := ctr.services.Sait.GetCommentByID(ctx.Context(), entry.ID)
+	comment, err := ctr.services.Web.GetCommentByID(ctx.Context(), entry.ID)
 	if err != nil {
 		return ErrResponse(ctx, MsgNotFound)
 	}
@@ -86,7 +86,7 @@ func (ctr *Handler) UpdateComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
-	err = ctr.services.Sait.UpdateComment(ctx.Context(), entry)
+	err = ctr.services.Web.UpdateComment(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

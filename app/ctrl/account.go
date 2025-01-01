@@ -21,7 +21,7 @@ func (ctr *Handler) SignIn(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	res, err := ctr.services.Account.SignIn(ctx.Context(), entry)
+	res, err := ctr.services.Auth.SignIn(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, err.Error())
 	}
@@ -36,19 +36,19 @@ func (ctr *Handler) SignIn(ctx *fiber.Ctx) error {
 		ExpiredAt: time.Now().Add(cfg.Cookie.AccessDuration),
 	}
 
-	token, err := ctr.services.Sait.GenerateAccessToken(res.ID)
+	token, err := ctr.services.Web.GenerateAccessToken(res.ID)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
 	session.Token = token
 
-	_, err = ctr.services.Sait.HandleSession(ctx.Context(), session)
+	_, err = ctr.services.Web.HandleSession(ctx.Context(), session)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	cookie := ctr.services.Sait.CreateCookie(token)
+	cookie := ctr.services.Web.CreateCookie(token)
 	ctx.Cookie(cookie)
 
 	return Response(ctx, MsgSignIn, res)
@@ -67,7 +67,7 @@ func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, err.Error())
 	}
 
-	res, err := ctr.services.Account.SignUp(ctx.Context(), entry)
+	res, err := ctr.services.Auth.SignUp(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, err.Error())
 	}
@@ -88,12 +88,12 @@ func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 		ExpiredAt: time.Now().Add(cfg.Cookie.AccessDuration),
 	}
 
-	err = ctr.services.Sait.CreateSession(ctx.Context(), session)
+	err = ctr.services.Web.CreateSession(ctx.Context(), session)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	cookie := ctr.services.Sait.CreateCookie(token)
+	cookie := ctr.services.Web.CreateCookie(token)
 	ctx.Cookie(cookie)
 	return Response(ctx, MsgSignUp, res)
 }
@@ -101,7 +101,7 @@ func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 func (ctr *Handler) Logout(ctx *fiber.Ctx) error {
 	token := ctx.Cookies(cfg.Cookie.Name)
 
-	cookie, err := ctr.services.Sait.DeleteSession(ctx.Context(), token)
+	cookie, err := ctr.services.Web.DeleteSession(ctx.Context(), token)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

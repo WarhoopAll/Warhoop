@@ -17,7 +17,7 @@ func (ctr *Handler) UpdateAvatar(ctx *fiber.Ctx) error {
 	}
 
 	entry.AccountID = id
-	res, err := ctr.services.Sait.UpdateAvatar(ctx.Context(), entry)
+	res, err := ctr.services.Web.UpdateAvatar(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

@@ -1,4 +1,4 @@
-package web
+package auth
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"warhoop/app/utils"
 )
 
-func (svc *WebService) ExistsAccess(ctx context.Context, id int) (bool, error) {
+func (svc *AuthService) ExistsAccess(ctx context.Context, id int) (bool, error) {
 	result, err := svc.store.AuthRepo.ExistsAccess(ctx, id)
 	if err != nil {
 		return false, utils.ErrDataBase
@@ -14,7 +14,7 @@ func (svc *WebService) ExistsAccess(ctx context.Context, id int) (bool, error) {
 	return result, nil
 }
 
-func (svc *WebService) AccessByID(ctx context.Context, id int) (*model.Access, error) {
+func (svc *AuthService) AccessByID(ctx context.Context, id int) (*model.Access, error) {
 	result, err := svc.store.AuthRepo.GetAccessByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase

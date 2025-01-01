@@ -7,12 +7,12 @@ import (
 func (h *Handler) GetUptime(ctx *fiber.Ctx) error {
 	id, err := ctx.ParamsInt("id")
 
-	status, err := h.services.Account.GetUptimeByID(ctx.Context(), id)
+	status, err := h.services.Auth.GetUptimeByID(ctx.Context(), id)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	online, err := h.services.Char.GetCharOnline(ctx.Context())
+	online, err := h.services.Char.GetOnlineCount(ctx.Context())
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

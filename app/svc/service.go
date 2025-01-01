@@ -6,7 +6,7 @@ import (
 	"warhoop/app/model"
 )
 
-type Account interface {
+type Auth interface {
 	// Account
 	GetByID(context.Context, int) (*model.Account, error)
 	// Auth
@@ -20,13 +20,13 @@ type Account interface {
 }
 
 type Characters interface {
-	GetCharByID(context.Context, int) (*model.Characters, error)
-	GetCharByName(context.Context, string) (*model.Characters, error)
-	GetCharTop10Kill(context.Context) ([]map[string]interface{}, error)
-	GetCharOnline(ctx context.Context) (int, error)
+	GetByID(context.Context, int) (*model.Characters, error)
+	GetByName(context.Context, string) (*model.Characters, error)
+	GetTop10Kill(context.Context) ([]map[string]interface{}, error)
+	GetOnlineCount(context.Context) (int, error)
 }
 
-type Sait interface {
+type Web interface {
 	// Profile
 	UpdateAvatar(context.Context, *model.Profile) (*model.Profile, error)
 	// Session

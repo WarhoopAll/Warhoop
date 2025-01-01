@@ -12,7 +12,7 @@ func (ctr *Handler) GetCharByID(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	entry, err := ctr.services.Char.GetCharByID(ctx.Context(), id)
+	entry, err := ctr.services.Char.GetByID(ctx.Context(), id)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -22,7 +22,7 @@ func (ctr *Handler) GetCharByID(ctx *fiber.Ctx) error {
 
 func (ctr *Handler) GetCharByName(ctx *fiber.Ctx) error {
 	name := ctx.Params("param")
-	entry, err := ctr.services.Char.GetCharByName(ctx.Context(), name)
+	entry, err := ctr.services.Char.GetByName(ctx.Context(), name)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -31,7 +31,7 @@ func (ctr *Handler) GetCharByName(ctx *fiber.Ctx) error {
 }
 
 func (ctr *Handler) GetCharTop10Kill(ctx *fiber.Ctx) error {
-	entry, err := ctr.services.Char.GetCharTop10Kill(ctx.Context())
+	entry, err := ctr.services.Char.GetTop10Kill(ctx.Context())
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

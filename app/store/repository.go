@@ -16,15 +16,15 @@ type AuthRepo interface {
 	ExistsAccess(context.Context, int) (bool, error)
 	GetAccessByID(context.Context, int) (*model.DBAccess, error)
 	// Uptime
-	GetUptimeByID(ctx context.Context, id int) (*model.DBUptime, error)
+	GetUptimeByID(context.Context, int) (*model.DBUptime, error)
 }
 
 type CharRepo interface {
 	// Characters
 	GetByID(context.Context, int) (*model.DBCharacters, error)
 	GetByName(context.Context, string) (*model.DBCharacters, error)
-	GetCharTop10Kill(context.Context) (*model.DBCharactersSlice, error)
-	GetCharOnline(ctx context.Context) (int, error)
+	GetTop10Kill(context.Context) (*model.DBCharactersSlice, error)
+	GetOnlineCount(context.Context) (int, error)
 }
 
 type SaitRepo interface {

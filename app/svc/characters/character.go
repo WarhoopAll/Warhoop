@@ -1,4 +1,4 @@
-package web
+package characters
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"warhoop/app/utils"
 )
 
-func (svc *WebService) GetCharByID(ctx context.Context, id int) (*model.Characters, error) {
+func (svc *CharService) GetByID(ctx context.Context, id int) (*model.Characters, error) {
 	result, err := svc.store.CharRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -15,7 +15,7 @@ func (svc *WebService) GetCharByID(ctx context.Context, id int) (*model.Characte
 	return result.ToWeb(), nil
 }
 
-func (svc *WebService) GetCharByName(ctx context.Context, name string) (*model.Characters, error) {
+func (svc *CharService) GetByName(ctx context.Context, name string) (*model.Characters, error) {
 	result, err := svc.store.CharRepo.GetByName(ctx, name)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -24,8 +24,8 @@ func (svc *WebService) GetCharByName(ctx context.Context, name string) (*model.C
 	return result.ToWeb(), nil
 }
 
-func (svc *WebService) GetCharTop10Kill(ctx context.Context) ([]map[string]interface{}, error) {
-	result, err := svc.store.CharRepo.GetCharTop10Kill(ctx)
+func (svc *CharService) GetTop10Kill(ctx context.Context) ([]map[string]interface{}, error) {
+	result, err := svc.store.CharRepo.GetTop10Kill(ctx)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
@@ -44,8 +44,8 @@ func (svc *WebService) GetCharTop10Kill(ctx context.Context) ([]map[string]inter
 	return transformed, nil
 }
 
-func (svc *WebService) GetCharOnline(ctx context.Context) (int, error) {
-	count, err := svc.store.CharRepo.GetCharOnline(ctx)
+func (svc *CharService) GetOnlineCount(ctx context.Context) (int, error) {
+	count, err := svc.store.CharRepo.GetOnlineCount(ctx)
 	if err != nil {
 		return 0, utils.ErrDataBase
 	}

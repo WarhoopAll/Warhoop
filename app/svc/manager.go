@@ -4,15 +4,17 @@ import (
 	"context"
 	"warhoop/app/log"
 	"warhoop/app/store"
+	"warhoop/app/svc/auth"
+	"warhoop/app/svc/characters"
 	"warhoop/app/svc/web"
 	"warhoop/app/utils"
 )
 
 type Manager struct {
-	Account Account
-	Sait    Sait
-	Char    Characters
-	Logger  *log.Logger
+	Auth   Auth
+	Web    Web
+	Char   Characters
+	Logger *log.Logger
 }
 
 // NewManager creates new service manager
@@ -21,9 +23,9 @@ func NewManager(ctx context.Context, store *store.Store, logger *log.Logger) (*M
 		return nil, utils.ErrNoData
 	}
 	return &Manager{
-		Logger:  logger,
-		Account: web.New(ctx, store, logger),
-		Char:    web.New(ctx, store, logger),
-		Sait:    web.New(ctx, store, logger),
+		Logger: logger,
+		Auth:   auth.New(ctx, store, logger),
+		Char:   characters.New(ctx, store, logger),
+		Web:    web.New(ctx, store, logger),
 	}, nil
 }

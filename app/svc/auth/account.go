@@ -1,4 +1,4 @@
-package web
+package auth
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"warhoop/app/utils"
 )
 
-func (svc *WebService) GetByID(ctx context.Context, id int) (*model.Account, error) {
+func (svc *AuthService) GetByID(ctx context.Context, id int) (*model.Account, error) {
 	result, err := svc.store.AuthRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -16,7 +16,7 @@ func (svc *WebService) GetByID(ctx context.Context, id int) (*model.Account, err
 	return result.ToWeb(), nil
 }
 
-func (svc WebService) SignIn(ctx context.Context, entry *model.Account) (*model.Account, error) {
+func (svc *AuthService) SignIn(ctx context.Context, entry *model.Account) (*model.Account, error) {
 	fnd, err := svc.store.AuthRepo.GetByUsername(ctx, entry.Username)
 	if err != nil {
 		return nil, utils.ErrIncorrectLogin
@@ -34,7 +34,7 @@ func (svc WebService) SignIn(ctx context.Context, entry *model.Account) (*model.
 	return fnd.ToWeb(), err
 }
 
-func (svc *WebService) Exists(ctx context.Context, entry *model.Account) error {
+func (svc *AuthService) Exists(ctx context.Context, entry *model.Account) error {
 	errChan := make(chan error, 2)
 
 	go func() {
@@ -72,7 +72,7 @@ func (svc *WebService) Exists(ctx context.Context, entry *model.Account) error {
 	return nil
 }
 
-func (svc WebService) Create(ctx context.Context, entry *model.Account) (*model.Account, error) {
+func (svc *AuthService) Create(ctx context.Context, entry *model.Account) (*model.Account, error) {
 	salt, verifier, err := utils.CreateVerifier(entry.Username, entry.Password)
 	if err != nil {
 		return nil, utils.ErrInternal
@@ -89,7 +89,7 @@ func (svc WebService) Create(ctx context.Context, entry *model.Account) (*model.
 	return result.ToWeb(), nil
 }
 
-func (svc WebService) SignUp(ctx context.Context, entry *model.Account) (*model.Account, error) {
+func (svc *AuthService) SignUp(ctx context.Context, entry *model.Account) (*model.Account, error) {
 	err := svc.Exists(ctx, entry)
 	if err != nil {
 		return nil, err

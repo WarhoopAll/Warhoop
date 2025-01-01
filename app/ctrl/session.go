@@ -35,7 +35,7 @@ func (ctr *Handler) Session(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	fnd, err := ctr.services.Account.GetByID(ctx.Context(), id)
+	fnd, err := ctr.services.Auth.GetByID(ctx.Context(), id)
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (ctr *Handler) Session(ctx *fiber.Ctx) error {
 	finger := FingerPrint(ctx, fnd.ID)
 
 	session.Finger = finger
-	err = ctr.services.Sait.UpdateOrCreateSession(ctx.Context(), session, newToken)
+	err = ctr.services.Web.UpdateOrCreateSession(ctx.Context(), session, newToken)
 	if err != nil {
 		if err == utils.ErrDataBase {
 			return ErrResponse(ctx, MsgUnauthorized)

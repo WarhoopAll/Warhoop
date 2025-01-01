@@ -11,7 +11,7 @@ func (ctr *Handler) NewsSlice(ctx *fiber.Ctx) error {
 	limit := ctx.QueryInt("limit", 2)
 	offset := ctx.QueryInt("offset", 0)
 
-	entry, total, err := ctr.services.Sait.GetNewsSlice(ctx.Context(), limit, offset)
+	entry, total, err := ctr.services.Web.GetNewsSlice(ctx.Context(), limit, offset)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -32,7 +32,7 @@ func (ctr *Handler) NewsGetByID(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	entry, err := ctr.services.Sait.GetNewsByID(ctx.Context(), idInt)
+	entry, err := ctr.services.Web.GetNewsByID(ctx.Context(), idInt)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -46,7 +46,7 @@ func (ctr *Handler) CreateNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	access, err := ctr.services.Account.AccessByID(ctx.Context(), id)
+	access, err := ctr.services.Auth.AccessByID(ctx.Context(), id)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -64,7 +64,7 @@ func (ctr *Handler) CreateNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	res, err := ctr.services.Sait.CreateNews(ctx.Context(), entry)
+	res, err := ctr.services.Web.CreateNews(ctx.Context(), entry)
 	if err != nil {
 		return err
 	}
@@ -84,7 +84,7 @@ func (ctr *Handler) DeleteNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	access, err := ctr.services.Account.AccessByID(ctx.Context(), idAcc)
+	access, err := ctr.services.Auth.AccessByID(ctx.Context(), idAcc)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -95,7 +95,7 @@ func (ctr *Handler) DeleteNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
-	err = ctr.services.Sait.DeleteNews(ctx.Context(), idInt)
+	err = ctr.services.Web.DeleteNews(ctx.Context(), idInt)
 	if err != nil {
 		return err
 	}
