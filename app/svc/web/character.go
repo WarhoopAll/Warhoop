@@ -43,3 +43,11 @@ func (svc *WebService) GetCharTop10Kill(ctx context.Context) ([]map[string]inter
 
 	return transformed, nil
 }
+
+func (svc *WebService) GetCharOnline(ctx context.Context) (int, error) {
+	count, err := svc.store.CharRepo.GetCharOnline(ctx)
+	if err != nil {
+		return 0, utils.ErrDataBase
+	}
+	return count, err
+}

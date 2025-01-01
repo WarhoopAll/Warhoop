@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func (ctr *AccountHandler) GetCharByID(ctx *fiber.Ctx) error {
+func (ctr *Handler) GetCharByID(ctx *fiber.Ctx) error {
 	idParam := ctx.Params("param")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
@@ -20,7 +20,7 @@ func (ctr *AccountHandler) GetCharByID(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSuccess, entry)
 }
 
-func (ctr *AccountHandler) GetCharByName(ctx *fiber.Ctx) error {
+func (ctr *Handler) GetCharByName(ctx *fiber.Ctx) error {
 	name := ctx.Params("param")
 	entry, err := ctr.services.Char.GetCharByName(ctx.Context(), name)
 	if err != nil {
@@ -30,7 +30,7 @@ func (ctr *AccountHandler) GetCharByName(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSuccess, entry)
 }
 
-func (ctr *AccountHandler) GetCharTop10Kill(ctx *fiber.Ctx) error {
+func (ctr *Handler) GetCharTop10Kill(ctx *fiber.Ctx) error {
 	entry, err := ctr.services.Char.GetCharTop10Kill(ctx.Context())
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)

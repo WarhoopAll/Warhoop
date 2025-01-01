@@ -5,7 +5,7 @@ import (
 	"warhoop/app/model"
 )
 
-func (ctr *AccountHandler) UpdateAvatar(ctx *fiber.Ctx) error {
+func (ctr *Handler) UpdateAvatar(ctx *fiber.Ctx) error {
 	id, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)

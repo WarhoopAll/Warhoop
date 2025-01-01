@@ -3,11 +3,11 @@ package ctrl
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"warhoop/app/model"
 	"strconv"
+	"warhoop/app/model"
 )
 
-func (ctr *AccountHandler) CreateComment(ctx *fiber.Ctx) error {
+func (ctr *Handler) CreateComment(ctx *fiber.Ctx) error {
 	id, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)
@@ -29,7 +29,7 @@ func (ctr *AccountHandler) CreateComment(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSuccess, res)
 }
 
-func (ctr *AccountHandler) DeleteComment(ctx *fiber.Ctx) error {
+func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 	idacc, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)
@@ -66,7 +66,7 @@ func (ctr *AccountHandler) DeleteComment(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSuccess, nil)
 }
 
-func (ctr *AccountHandler) UpdateComment(ctx *fiber.Ctx) error {
+func (ctr *Handler) UpdateComment(ctx *fiber.Ctx) error {
 	idacc, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)

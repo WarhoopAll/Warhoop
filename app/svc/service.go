@@ -15,12 +15,15 @@ type Account interface {
 	// Access
 	ExistsAccess(context.Context, int) (bool, error)
 	AccessByID(context.Context, int) (*model.Access, error)
+	// Uptime
+	GetUptimeByID(context.Context, int) (*model.Uptime, error)
 }
 
 type Characters interface {
 	GetCharByID(context.Context, int) (*model.Characters, error)
 	GetCharByName(context.Context, string) (*model.Characters, error)
 	GetCharTop10Kill(context.Context) ([]map[string]interface{}, error)
+	GetCharOnline(ctx context.Context) (int, error)
 }
 
 type Sait interface {

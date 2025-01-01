@@ -2,13 +2,13 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"time"
 	"warhoop/app/ctxs"
 	"warhoop/app/model"
 	"warhoop/app/svc/web"
-	"time"
 )
 
-func (ctr *AccountHandler) SignIn(ctx *fiber.Ctx) error {
+func (ctr *Handler) SignIn(ctx *fiber.Ctx) error {
 	c, ok := ctx.Locals("s").(*ctxs.Ctx)
 	if !ok {
 		return ErrResponse(ctx, MsgInternal)
@@ -54,7 +54,7 @@ func (ctr *AccountHandler) SignIn(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSignIn, res)
 }
 
-func (ctr *AccountHandler) SignUp(ctx *fiber.Ctx) error {
+func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 	c, ok := ctx.Locals("s").(*ctxs.Ctx)
 	if !ok {
 		return ErrResponse(ctx, MsgInternal)
@@ -98,7 +98,7 @@ func (ctr *AccountHandler) SignUp(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSignUp, res)
 }
 
-func (ctr *AccountHandler) Logout(ctx *fiber.Ctx) error {
+func (ctr *Handler) Logout(ctx *fiber.Ctx) error {
 	token := ctx.Cookies(cfg.Cookie.Name)
 
 	cookie, err := ctr.services.Sait.DeleteSession(ctx.Context(), token)

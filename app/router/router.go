@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"io"
 	"warhoop/app/config"
 	"warhoop/app/ctrl"
 	"warhoop/app/ctxs"
 	"warhoop/app/log"
 	"warhoop/app/mw"
-	"io"
 )
 
-func SetupRoutes(app *fiber.App, h *ctrl.AccountHandler) {
+func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 	api := app.Group("/", logger.New(logger.Config{
 		TimeFormat:    "2006-01-02 15:04:05",
 		Format:        "${latency}",
@@ -44,10 +44,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.AccountHandler) {
 	api.Use(ctxs.Shared)
 
 	app.Static("/favicon.ico", "templates/images/favicon.ico")
-
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendFile(config.Get().Service.TemplateStatic)
-	})
+	app.Static("/", config.Get().Service.TemplateStatic)
 
 	char := api.Group("/character")
 	char.Get("/:param", func(ctx *fiber.Ctx) error {
@@ -59,6 +56,8 @@ func SetupRoutes(app *fiber.App, h *ctrl.AccountHandler) {
 	})
 
 	char.Get("/pvp", h.GetCharTop10Kill)
+
+	api.Get("/status/:id", h.GetUptime)
 
 	auth := api.Group("/auth")
 	auth.Post("/signup", h.SignUp)

@@ -2,14 +2,14 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"time"
 	"warhoop/app/ctxs"
 	"warhoop/app/model"
 	"warhoop/app/svc/web"
 	"warhoop/app/utils"
-	"time"
 )
 
-func (ctr *AccountHandler) Session(ctx *fiber.Ctx) error {
+func (ctr *Handler) Session(ctx *fiber.Ctx) error {
 	id, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)

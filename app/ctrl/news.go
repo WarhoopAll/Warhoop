@@ -2,12 +2,12 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"strconv"
 	"warhoop/app/log"
 	"warhoop/app/model"
-	"strconv"
 )
 
-func (ctr *AccountHandler) NewsSlice(ctx *fiber.Ctx) error {
+func (ctr *Handler) NewsSlice(ctx *fiber.Ctx) error {
 	limit := ctx.QueryInt("limit", 2)
 	offset := ctx.QueryInt("offset", 0)
 
@@ -24,7 +24,7 @@ func (ctr *AccountHandler) NewsSlice(ctx *fiber.Ctx) error {
 	})
 }
 
-func (ctr *AccountHandler) NewsGetByID(ctx *fiber.Ctx) error {
+func (ctr *Handler) NewsGetByID(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 
 	idInt, err := strconv.Atoi(id)
@@ -40,7 +40,7 @@ func (ctr *AccountHandler) NewsGetByID(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSuccess, entry)
 }
 
-func (ctr *AccountHandler) CreateNews(ctx *fiber.Ctx) error {
+func (ctr *Handler) CreateNews(ctx *fiber.Ctx) error {
 	id, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)
@@ -71,7 +71,7 @@ func (ctr *AccountHandler) CreateNews(ctx *fiber.Ctx) error {
 	return Response(ctx, MsgSuccess, res)
 }
 
-func (ctr *AccountHandler) DeleteNews(ctx *fiber.Ctx) error {
+func (ctr *Handler) DeleteNews(ctx *fiber.Ctx) error {
 	idAcc, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)

@@ -52,6 +52,21 @@ func (r *CharRepo) GetByName(ctx context.Context, name string) (*model.DBCharact
 	return entry, nil
 }
 
+func (r *CharRepo) GetCharOnline(ctx context.Context) (int, error) {
+	entry := &model.DBCharacters{}
+	count, err := r.db.NewSelect().
+		Model(entry).
+		Where("online = ?", 1).
+		Count(ctx)
+	if err != nil {
+		r.logger.Error("store.CharRepo.GetCharOnline",
+			log.String("err", err.Error()),
+		)
+		return 0, err
+	}
+	return count, nil
+}
+
 func (r *CharRepo) GetCharTop10Kill(ctx context.Context) (*model.DBCharactersSlice, error) {
 	entry := &model.DBCharactersSlice{}
 	err := r.db.

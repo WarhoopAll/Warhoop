@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/healthcheck"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"warhoop/app/config"
 	"warhoop/app/ctrl"
 	"warhoop/app/log"
@@ -52,10 +54,12 @@ func run(logger *log.Logger) error {
 	}
 
 	// Init handlers
-	hAccount := ctrl.NewAccount(ctx, serviceManager)
+	hAccount := ctrl.NewHandler(ctx, serviceManager)
 
 	app := fiber.New()
+	app.Get("/metrics", monitor.New())
 	app.Use(mw.SetupCors())
+	app.Use(healthcheck.New())
 
 	// Routers
 	router.SetupRoutes(app, hAccount)

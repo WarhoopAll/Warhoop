@@ -10,14 +10,14 @@ import (
 var validate = validator.New()
 var cfg = config.Get()
 
-type AccountHandler struct {
+type Handler struct {
 	ctx      context.Context
 	services *svc.Manager
 }
 
-func NewAccount(ctx context.Context, svcs *svc.Manager) *AccountHandler {
+func NewHandler(ctx context.Context, svcs *svc.Manager) *Handler {
 	validate = validator.New()
-	return &AccountHandler{
+	return &Handler{
 		ctx:      ctx,
 		services: svcs,
 	}
