@@ -3,18 +3,18 @@ package model
 import "github.com/uptrace/bun"
 
 type Realmlist struct {
-	Id                   int     `json:"id,omitempty"`
+	Id                   int     `json:"-"`
 	Name                 string  `json:"name,omitempty"`
 	Address              string  `json:"address,omitempty"`
-	LocalAddress         string  `json:"localaddress,omitempty"`
-	LocalSubnetMask      string  `json:"localsubnetmask,omitempty"`
-	Port                 int16   `json:"port,omitempty"`
-	Icon                 int8    `json:"icon,omitempty"`
-	Flag                 int8    `json:"flag,omitempty"`
-	Timezone             int8    `json:"timezone,omitempty"`
-	AllowedSecurityLevel int8    `json:"allowedsecuritylevel,omitempty"`
-	Population           float64 `json:"population,omitempty"`
-	Gamebuild            int     `json:"gamebuild,omitempty"`
+	LocalAddress         string  `json:"-"`
+	LocalSubnetMask      string  `json:"-"`
+	Port                 int16   `json:"-"`
+	Icon                 int8    `json:"-"`
+	Flag                 int8    `json:"-"`
+	Timezone             int8    `json:"-"`
+	AllowedSecurityLevel int8    `json:"-"`
+	Population           float64 `json:"-"`
+	Gamebuild            int     `json:"-"`
 }
 
 type RealmlistSlice []Realmlist

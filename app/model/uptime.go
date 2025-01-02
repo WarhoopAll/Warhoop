@@ -4,7 +4,7 @@ import "github.com/uptrace/bun"
 
 type Uptime struct {
 	Realmid    int        `json:"-"`
-	Starttime  int        `json:"starttime,omitempty"`
+	Starttime  int        `json:"-"`
 	Uptime     int        `json:"uptime,omitempty"`
 	Maxplayers int16      `json:"maxplayers,omitempty"`
 	Realm      *Realmlist `json:"realm,omitempty"`

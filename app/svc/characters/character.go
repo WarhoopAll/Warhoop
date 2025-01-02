@@ -51,3 +51,23 @@ func (svc *CharService) GetOnlineCount(ctx context.Context) (int, error) {
 	}
 	return count, err
 }
+
+func (svc *CharService) GetOnlineSlice(ctx context.Context) ([]map[string]interface{}, error) {
+	result, err := svc.store.CharRepo.GetOnlineSlice(ctx)
+	if err != nil {
+		return nil, utils.ErrDataBase
+	}
+	transformed := make([]map[string]interface{}, 0, len(*result))
+	for _, char := range *result {
+		transformed = append(transformed, map[string]interface{}{
+			"name":   char.Name,
+			"level":  char.Level,
+			"race":   char.Race,
+			"class":  char.Class,
+			"gender": char.Gender,
+			"map":    char.Maps.ToWeb(),
+			"zone":   char.Zones.ToWeb(),
+		})
+	}
+	return transformed, err
+}

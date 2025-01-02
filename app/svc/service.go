@@ -24,6 +24,7 @@ type Characters interface {
 	GetByName(context.Context, string) (*model.Characters, error)
 	GetTop10Kill(context.Context) ([]map[string]interface{}, error)
 	GetOnlineCount(context.Context) (int, error)
+	GetOnlineSlice(context.Context) ([]map[string]interface{}, error)
 }
 
 type Web interface {

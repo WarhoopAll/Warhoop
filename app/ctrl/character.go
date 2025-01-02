@@ -38,3 +38,12 @@ func (ctr *Handler) GetCharTop10Kill(ctx *fiber.Ctx) error {
 
 	return Response(ctx, MsgSuccess, entry)
 }
+
+func (ctr *Handler) GetOnlineSlice(ctx *fiber.Ctx) error {
+	entry, err := ctr.services.Char.GetOnlineSlice(ctx.Context())
+	if err != nil {
+		return ErrResponse(ctx, MsgInternal)
+	}
+
+	return Response(ctx, MsgSuccess, entry)
+}

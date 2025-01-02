@@ -2,6 +2,7 @@ package bun
 
 import (
 	"context"
+	"warhoop/app/config"
 	"warhoop/app/log"
 	"warhoop/app/model"
 )
@@ -18,6 +19,8 @@ func NewCharRepo(db *DB, logger *log.Logger) *CharRepo {
 		logger: logger,
 	}
 }
+
+var cfg = config.Get()
 
 func (r *CharRepo) GetByID(ctx context.Context, id int) (*model.DBCharacters, error) {
 	entry := &model.DBCharacters{}
@@ -80,6 +83,26 @@ func (r *CharRepo) GetTop10Kill(ctx context.Context) (*model.DBCharactersSlice, 
 		r.logger.Error("store.CharRepo.GetCharactersSlice",
 			log.String("error", err.Error()),
 			log.Object("entry", entry),
+		)
+		return nil, err
+	}
+	return entry, nil
+}
+
+func (r *CharRepo) GetOnlineSlice(ctx context.Context) (*model.DBCharactersSlice, error) {
+	entry := &model.DBCharactersSlice{}
+	err := r.db.NewSelect().
+		Model(entry).
+		//Relation("Maps", func(q *bun.SelectQuery) *bun.SelectQuery {
+		//	return q.Table(fmt.Sprintf("%s.map", cfg.DB.Sait))
+		//}).
+		Relation("Maps").
+		Relation("Zones").
+		Where("online = ?", 1).
+		Scan(ctx)
+	if err != nil {
+		r.logger.Error("store.CharRepo.GetCharOnline",
+			log.String("err", err.Error()),
 		)
 		return nil, err
 	}

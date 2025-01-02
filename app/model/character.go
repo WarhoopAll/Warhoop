@@ -7,7 +7,7 @@ type Characters struct {
 	Name                 string `json:"name,omitempty"`
 	Race                 int    `json:"race,omitempty"`
 	Class                int    `json:"class,omitempty"`
-	Gender               int    `json:"gender,omitempty"`
+	Gender               int    `json:"gender"`
 	Level                int    `json:"level,omitempty"`
 	Xp                   int    `json:"xp,omitempty"`
 	Money                int    `json:"money,omitempty"`
@@ -16,12 +16,12 @@ type Characters struct {
 	HairStyle            int    `json:"hairstyle,omitempty"`
 	HairColor            int    `json:"haircolor,omitempty"`
 	FacialStyle          int    `json:"facialstyle,omitempty"`
-	Map                  int    `json:"map,omitempty"`
+	Map                  *Map   `json:"map,omitempty"`
 	Online               int    `json:"online,omitempty"`
 	Totaltime            int    `json:"totaltime,omitempty"`
 	Leveltime            int    `json:"leveltime,omitempty"`
 	LogoutTime           int    `json:"logouttime,omitempty"`
-	Zone                 int    `json:"zone,omitempty"`
+	Zone                 *Zone  `json:"zone,omitempty"`
 	ArenaPoints          int    `json:"arenapoints,omitempty"`
 	TotalHonorPoints     int    `json:"totalhonorpoints,omitempty"`
 	TodayHonorPoints     int    `json:"todayhonorpoints,omitempty"`
@@ -48,45 +48,47 @@ type CharactersSlice []Characters
 
 type DBCharacters struct {
 	bun.BaseModel        `bun:"table:characters,alias:characters"`
-	Guid                 int    `bun:"guid"`
-	Name                 string `bun:"name"`
-	Race                 int    `bun:"race"`
-	Class                int    `bun:"class"`
-	Gender               int    `bun:"gender"`
-	Level                int    `bun:"level"`
-	Xp                   int    `bun:"xp"`
-	Money                int    `bun:"money"`
-	Skin                 int    `bun:"skin"`
-	Face                 int    `bun:"face"`
-	HairStyle            int    `bun:"hairStyle"`
-	HairColor            int    `bun:"hairColor"`
-	FacialStyle          int    `bun:"facialStyle"`
-	Map                  int    `bun:"map"`
-	Online               int    `bun:"online"`
-	Totaltime            int    `bun:"totaltime"`
-	Leveltime            int    `bun:"leveltime"`
-	LogoutTime           int    `bun:"logout_time"`
-	Zone                 int    `bun:"zone"`
-	ArenaPoints          int    `bun:"arenaPoints"`
-	TotalHonorPoints     int    `bun:"totalHonorPoints"`
-	TodayHonorPoints     int    `bun:"todayHonorPoints"`
-	YesterdayHonorPoints int    `bun:"yesterdayHonorPoints"`
-	TotalKills           int    `bun:"totalKills"`
-	TodayKills           int    `bun:"todayKills"`
-	YesterdayKills       int    `bun:"yesterdayKills"`
-	ChosenTitle          int    `bun:"chosenTitle"`
-	Health               int    `bun:"health"`
-	Power1               int    `bun:"power1"`
-	Power2               int    `bun:"power2"`
-	Power3               int    `bun:"power3"`
-	Power4               int    `bun:"power4"`
-	Power5               int    `bun:"power5"`
-	Power6               int    `bun:"power6"`
-	Power7               int    `bun:"power7"`
-	TalentGroupsCount    int    `bun:"talentGroupsCount"`
-	ActiveTalentGroup    int    `bun:"activeTalentGroup"`
-	EquipmentCache       string `bun:"equipmentCache"`
-	KnownTitles          string `bun:"knownTitles"`
+	Guid                 int     `bun:"guid,pk"`
+	Name                 string  `bun:"name"`
+	Race                 int     `bun:"race"`
+	Class                int     `bun:"class"`
+	Gender               int     `bun:"gender"`
+	Level                int     `bun:"level"`
+	Xp                   int     `bun:"xp"`
+	Money                int     `bun:"money"`
+	Skin                 int     `bun:"skin"`
+	Face                 int     `bun:"face"`
+	HairStyle            int     `bun:"hairStyle"`
+	HairColor            int     `bun:"hairColor"`
+	FacialStyle          int     `bun:"facialStyle"`
+	Map                  int     `bun:"map,pk"`
+	Maps                 *DBMap  `bun:"rel:belongs-to,join:map=ID"`
+	Online               int     `bun:"online"`
+	Totaltime            int     `bun:"totaltime"`
+	Leveltime            int     `bun:"leveltime"`
+	LogoutTime           int     `bun:"logout_time"`
+	Zone                 int     `bun:"zone"`
+	Zones                *DBZone `bun:"rel:belongs-to,join:zone=ID"`
+	ArenaPoints          int     `bun:"arenaPoints"`
+	TotalHonorPoints     int     `bun:"totalHonorPoints"`
+	TodayHonorPoints     int     `bun:"todayHonorPoints"`
+	YesterdayHonorPoints int     `bun:"yesterdayHonorPoints"`
+	TotalKills           int     `bun:"totalKills"`
+	TodayKills           int     `bun:"todayKills"`
+	YesterdayKills       int     `bun:"yesterdayKills"`
+	ChosenTitle          int     `bun:"chosenTitle"`
+	Health               int     `bun:"health"`
+	Power1               int     `bun:"power1"`
+	Power2               int     `bun:"power2"`
+	Power3               int     `bun:"power3"`
+	Power4               int     `bun:"power4"`
+	Power5               int     `bun:"power5"`
+	Power6               int     `bun:"power6"`
+	Power7               int     `bun:"power7"`
+	TalentGroupsCount    int     `bun:"talentGroupsCount"`
+	ActiveTalentGroup    int     `bun:"activeTalentGroup"`
+	EquipmentCache       string  `bun:"equipmentCache"`
+	KnownTitles          string  `bun:"knownTitles"`
 }
 
 type DBCharactersSlice []DBCharacters
@@ -109,12 +111,10 @@ func (entry *Characters) ToDB() *DBCharacters {
 		HairStyle:            entry.HairStyle,
 		HairColor:            entry.HairColor,
 		FacialStyle:          entry.FacialStyle,
-		Map:                  entry.Map,
 		Online:               entry.Online,
 		Totaltime:            entry.Totaltime,
 		Leveltime:            entry.Leveltime,
 		LogoutTime:           entry.LogoutTime,
-		Zone:                 entry.Zone,
 		ArenaPoints:          entry.ArenaPoints,
 		TotalHonorPoints:     entry.TotalHonorPoints,
 		TodayHonorPoints:     entry.TodayHonorPoints,
@@ -156,12 +156,10 @@ func (entry *DBCharacters) ToWeb() *Characters {
 		HairStyle:            entry.HairStyle,
 		HairColor:            entry.HairColor,
 		FacialStyle:          entry.FacialStyle,
-		Map:                  entry.Map,
 		Online:               entry.Online,
 		Totaltime:            entry.Totaltime,
 		Leveltime:            entry.Leveltime,
 		LogoutTime:           entry.LogoutTime,
-		Zone:                 entry.Zone,
 		ArenaPoints:          entry.ArenaPoints,
 		TotalHonorPoints:     entry.TotalHonorPoints,
 		TodayHonorPoints:     entry.TodayHonorPoints,
@@ -182,6 +180,8 @@ func (entry *DBCharacters) ToWeb() *Characters {
 		ActiveTalentGroup:    entry.ActiveTalentGroup,
 		EquipmentCache:       entry.EquipmentCache,
 		KnownTitles:          entry.KnownTitles,
+		Map:                  entry.Maps.ToWeb(),
+		Zone:                 entry.Zones.ToWeb(),
 	}
 }
 

@@ -25,6 +25,7 @@ type CharRepo interface {
 	GetByName(context.Context, string) (*model.DBCharacters, error)
 	GetTop10Kill(context.Context) (*model.DBCharactersSlice, error)
 	GetOnlineCount(context.Context) (int, error)
+	GetOnlineSlice(context.Context) (*model.DBCharactersSlice, error)
 }
 
 type SaitRepo interface {
