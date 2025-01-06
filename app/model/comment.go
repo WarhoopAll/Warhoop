@@ -6,14 +6,15 @@ import (
 )
 
 type Comment struct {
-	ID        int       `json:"id,omitempty"`
-	NewsID    int       `json:"news_id,omitempty"`
-	Text      string    `json:"text,omitempty"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	Author    int       `json:"author,omitempty"`
-	Profile   *Profile  `json:"profile,omitempty"`
-	LikeCount int       `json:"like_count,omitempty"`
+	ID           int       `json:"id,omitempty"`
+	NewsID       int       `json:"news_id,omitempty"`
+	Text         string    `json:"text,omitempty"`
+	CreatedAt    time.Time `json:"created_at,omitempty"`
+	UpdatedAt    time.Time `json:"updated_at,omitempty"`
+	Author       int       `json:"author,omitempty"`
+	Profile      *Profile  `json:"profile,omitempty"`
+	LikeCount    int       `json:"like_count,omitempty"`
+	DislikeCount int       `json:"dislike_count,omitempty"`
 }
 
 type CommentSlice []Comment
@@ -28,6 +29,7 @@ type DBComment struct {
 	Author        int        `bun:"author,notnull"`
 	Profile       *DBProfile `bun:"rel:belongs-to,join:author=account_id"`
 	LikeCount     int        `bun:"like_count"`
+	DislikeCount  int        `bun:"dislike_count"`
 }
 
 type DBCommentSlice []DBComment
@@ -38,13 +40,14 @@ func (entry *Comment) ToDB() *DBComment {
 		return nil
 	}
 	return &DBComment{
-		ID:        entry.ID,
-		NewsID:    entry.NewsID,
-		Text:      entry.Text,
-		CreatedAt: entry.CreatedAt,
-		Author:    entry.Author,
-		UpdatedAt: entry.UpdatedAt,
-		LikeCount: entry.LikeCount,
+		ID:           entry.ID,
+		NewsID:       entry.NewsID,
+		Text:         entry.Text,
+		CreatedAt:    entry.CreatedAt,
+		Author:       entry.Author,
+		UpdatedAt:    entry.UpdatedAt,
+		LikeCount:    entry.LikeCount,
+		DislikeCount: entry.DislikeCount,
 	}
 }
 
@@ -54,13 +57,14 @@ func (entry *DBComment) ToWeb() *Comment {
 		return nil
 	}
 	return &Comment{
-		ID:        entry.ID,
-		NewsID:    entry.NewsID,
-		Text:      entry.Text,
-		CreatedAt: entry.CreatedAt,
-		UpdatedAt: entry.UpdatedAt,
-		Profile:   entry.Profile.ToWeb(),
-		LikeCount: entry.LikeCount,
+		ID:           entry.ID,
+		NewsID:       entry.NewsID,
+		Text:         entry.Text,
+		CreatedAt:    entry.CreatedAt,
+		UpdatedAt:    entry.UpdatedAt,
+		Profile:      entry.Profile.ToWeb(),
+		LikeCount:    entry.LikeCount,
+		DislikeCount: entry.DislikeCount,
 	}
 }
 

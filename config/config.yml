@@ -17,7 +17,7 @@ db:
   verbose: false
 
 cors:
-  allow_origins: "http://localhost:5173,http://192.168.1.33:5173"
+  allow_origins: "https://example.com/" # -- you ip || dns for front
   allow_methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS"
   allow_headers: "Content-Type,Authorization"
   allow_credentials: true
@@ -40,6 +40,6 @@ cookie:
   domain: ""
   httpOnly: true
   secure: false
-  sameSite: "None"
+  sameSite: None
   access_duration: "12h"
   jwt_key: "secret_key"

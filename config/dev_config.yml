@@ -36,7 +36,7 @@ mail:
   template_change_email: "change_email.html"
 
 cookie:
-  name: 
+  name: "warhoop"
   domain: ""
   httpOnly: true
   secure: false

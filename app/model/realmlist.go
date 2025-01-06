@@ -32,8 +32,7 @@ type DBRealmlist struct {
 	Timezone             int8    `bun:"timezone"`
 	AllowedSecurityLevel int8    `bun:"allowedSecurityLevel"`
 	Population           float64 `bun:"population"`
-
-	Gamebuild int `bun:"gamebuild"`
+	Gamebuild            int     `bun:"gamebuild"`
 }
 
 type DBRealmlistSlice []DBRealmlist

@@ -2,9 +2,9 @@ package web
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"time"
 	"warhoop/app/config"
 	"warhoop/app/log"
-	"time"
 )
 
 var cfg = config.Get()
@@ -44,8 +44,8 @@ func DeleteCookie() *fiber.Cookie {
 		Name:     cfg.Cookie.Name,
 		Value:    "",
 		Domain:   cfg.Cookie.Domain,
-		HTTPOnly: true,
-		Secure:   true,
+		HTTPOnly: cfg.Cookie.HTTPOnly,
+		Secure:   cfg.Cookie.Secure,
 		SameSite: cfg.Cookie.SameSite,
 		Expires:  time.Now().Add(-1 * time.Hour),
 	}
