@@ -50,7 +50,7 @@ type SaitRepo interface {
 	CreateComment(context.Context, *model.DBComment) (*model.DBComment, error)
 	GetCommentByID(context.Context, int) (*model.DBComment, error)
 	DeleteComment(context.Context, int) error
-	UpdateComment(context.Context, *model.DBComment) error
+	UpdateComment(context.Context, *model.DBComment) (*model.DBComment, error)
 	// Like
 	ToggleReaction(context.Context, *model.DBReaction) (*model.DBReaction, error)
 	DeleteReaction(context.Context, *model.DBReaction) error

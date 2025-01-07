@@ -49,7 +49,7 @@ type Web interface {
 	// Comments
 	CreateComment(context.Context, *model.Comment) (*model.Comment, error)
 	DeleteComment(context.Context, int) error
-	UpdateComment(context.Context, *model.Comment) error
+	UpdateComment(context.Context, *model.Comment) (*model.Comment, error)
 	GetCommentByID(context.Context, int) (*model.Comment, error)
 	GetCommentByNewsID(context.Context, int) (*model.CommentSlice, error)
 	// Like

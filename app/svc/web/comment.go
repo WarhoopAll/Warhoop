@@ -29,12 +29,12 @@ func (svc WebService) DeleteComment(ctx context.Context, id int) error {
 	return nil
 }
 
-func (svc WebService) UpdateComment(ctx context.Context, entry *model.Comment) error {
-	err := svc.store.SaitRepo.UpdateComment(ctx, entry.ToDB())
+func (svc WebService) UpdateComment(ctx context.Context, entry *model.Comment) (*model.Comment, error) {
+	res, err := svc.store.SaitRepo.UpdateComment(ctx, entry.ToDB())
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res.ToWeb(), nil
 }
 
 func (svc WebService) GetCommentByID(ctx context.Context, id int) (*model.Comment, error) {

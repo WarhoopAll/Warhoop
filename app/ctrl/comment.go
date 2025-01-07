@@ -1,7 +1,6 @@
 package ctrl
 
 import (
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"strconv"
 	"warhoop/app/model"
@@ -14,13 +13,13 @@ func (ctr *Handler) CreateComment(ctx *fiber.Ctx) error {
 	}
 
 	entry := &model.Comment{}
-	if err := ctx.BodyParser(&entry); err != nil {
+	err := ParseAndValidate(ctx, entry)
+	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
 	entry.Author = id
 
-	fmt.Println(entry.Author)
 	res, err := ctr.services.Web.CreateComment(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
@@ -54,7 +53,8 @@ func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ErrResponse(ctx, MsgNotFound)
 	}
-	if comment.Profile.AccountID != idacc && res.Access.SecurityLevel <= 0 {
+
+	if comment.Profile == nil || comment.Profile.AccountID != idacc && res.Access.SecurityLevel <= 0 {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
@@ -82,13 +82,13 @@ func (ctr *Handler) UpdateComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgNotFound)
 	}
 
-	if comment.Profile.AccountID != idacc {
+	if comment.Profile == nil || comment.Profile.AccountID != idacc {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
-	err = ctr.services.Web.UpdateComment(ctx.Context(), entry)
+	res, err := ctr.services.Web.UpdateComment(ctx.Context(), entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
-	return Response(ctx, MsgSuccess, nil)
+	return Response(ctx, MsgSuccess, res)
 }

@@ -6,6 +6,27 @@ import (
 	"warhoop/app/model"
 )
 
+func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
+	_, err := r.db.
+		NewInsert().
+		Model(entry).
+		Exec(ctx)
+	if err != nil {
+		r.logger.Error("store.SaitRepo.AddComment",
+			log.String("error", err.Error()),
+			log.Int("comment_id", entry.NewsID),
+			log.Object("entry", entry),
+		)
+		return nil, err
+	}
+
+	entry, err = r.GetCommentByID(ctx, entry.ID)
+	if err != nil {
+		return nil, err
+	}
+	return entry, nil
+}
+
 func (r *SaitRepo) GetCommentByNewsID(ctx context.Context, id int) (*model.DBCommentSlice, error) {
 	entry := &model.DBCommentSlice{}
 	err := r.db.
@@ -24,30 +45,19 @@ func (r *SaitRepo) GetCommentByNewsID(ctx context.Context, id int) (*model.DBCom
 	return entry, nil
 }
 
-func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
-	_, err := r.db.
-		NewInsert().
-		Model(entry).
-		Exec(ctx)
-	if err != nil {
-		r.logger.Error("store.SaitRepo.AddComment",
-			log.String("error", err.Error()),
-			log.Int("comment_id", entry.NewsID),
-			log.Object("entry", entry),
-		)
-		return nil, err
-	}
-
-	err = r.db.
+func (r *SaitRepo) GetCommentByID(ctx context.Context, id int) (*model.DBComment, error) {
+	entry := &model.DBComment{}
+	err := r.db.
 		NewSelect().
 		Model(entry).
 		Relation("Profile").
-		Where("id = ?", entry.ID).
+		Where("id = ?", id).
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.AddComment (SELECT)",
+		r.logger.Error("store.SaitRepo.GetNewsSlice",
 			log.String("error", err.Error()),
-			log.Object("entry", entry),
+			log.Int("comment_id", id),
+			log.Object("entries", entry),
 		)
 		return nil, err
 	}
@@ -70,37 +80,23 @@ func (r *SaitRepo) DeleteComment(ctx context.Context, id int) error {
 	return nil
 }
 
-func (r *SaitRepo) UpdateComment(ctx context.Context, entry *model.DBComment) error {
+func (r *SaitRepo) UpdateComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
 	_, err := r.db.
 		NewUpdate().
 		Model(entry).
-		Column("text").
+		Set("text = ?", entry.Text).
 		Where("id = ?", entry.ID).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetNewsSlice",
+		r.logger.Error("store.SaitRepo.UpdateComment",
 			log.String("error", err.Error()),
 			log.Int("comment_id", entry.ID),
 		)
-		return err
+		return nil, err
 	}
-	return nil
-}
 
-func (r *SaitRepo) GetCommentByID(ctx context.Context, id int) (*model.DBComment, error) {
-	entry := &model.DBComment{}
-	err := r.db.
-		NewSelect().
-		Model(entry).
-		Relation("Profile").
-		Where("id = ?", id).
-		Scan(ctx)
+	entry, err = r.GetCommentByID(ctx, entry.ID)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetNewsSlice",
-			log.String("error", err.Error()),
-			log.Int("comment_id", id),
-			log.Object("entries", entry),
-		)
 		return nil, err
 	}
 	return entry, nil
