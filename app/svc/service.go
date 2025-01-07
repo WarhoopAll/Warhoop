@@ -29,6 +29,7 @@ type Characters interface {
 
 type Web interface {
 	// Profile
+	CreateProfile(context.Context, *model.Profile) (*model.Profile, error)
 	UpdateAvatar(context.Context, *model.Profile) (*model.Profile, error)
 	// Session
 	CreateCookie(string) *fiber.Cookie

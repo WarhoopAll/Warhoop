@@ -29,6 +29,8 @@ type CharRepo interface {
 }
 
 type SaitRepo interface {
+	// Profile
+	CreateProfile(context.Context, *model.DBProfile) (*model.DBProfile, error)
 	// Avatar
 	GetAvatar(context.Context, int) (*model.DBProfile, error)
 	UpdateAvatar(context.Context, *model.DBProfile) error

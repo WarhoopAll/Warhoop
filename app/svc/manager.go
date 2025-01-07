@@ -22,10 +22,12 @@ func NewManager(ctx context.Context, store *store.Store, logger *log.Logger) (*M
 	if store == nil {
 		return nil, utils.ErrNoData
 	}
+	webSvc := web.New(ctx, store, logger)
+
 	return &Manager{
 		Logger: logger,
-		Auth:   auth.New(ctx, store, logger),
+		Auth:   auth.New(ctx, store, logger, webSvc),
 		Char:   characters.New(ctx, store, logger),
-		Web:    web.New(ctx, store, logger),
+		Web:    webSvc,
 	}, nil
 }

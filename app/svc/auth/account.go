@@ -100,5 +100,14 @@ func (svc *AuthService) SignUp(ctx context.Context, entry *model.Account) (*mode
 		return nil, err
 	}
 
+	profileEntry := &model.Profile{
+		AccountID: result.ID,
+		Name:      result.Username,
+	}
+	_, err = svc.web.CreateProfile(ctx, profileEntry)
+	if err != nil {
+		return nil, err
+	}
+
 	return result, nil
 }

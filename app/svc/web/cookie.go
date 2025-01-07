@@ -31,6 +31,7 @@ func CreateCookie(value string) *fiber.Cookie {
 	log.Get().Logger.Debug("Cookie created",
 		"name", cookie.Name,
 		"value", cookie.Value,
+		"domain", cookie.Domain,
 		"expires", cookie.Expires,
 		"secure", cookie.Secure,
 		"sameSite", cookie.SameSite,
