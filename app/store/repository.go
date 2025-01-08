@@ -46,7 +46,7 @@ type SaitRepo interface {
 	CreateNews(context.Context, *model.DBNews) (*model.DBNews, error)
 	GetNewsByID(context.Context, int) (*model.DBNews, error)
 	GetNewsSlice(context.Context, int, int) (*model.DBNewsSlice, int, error)
-	UpdateNews(context.Context, *model.DBNews) error
+	UpdateNews(context.Context, *model.DBNews) (*model.DBNews, error)
 	DeleteNews(context.Context, int) error
 	// Comments
 	CreateComment(context.Context, *model.DBComment) (*model.DBComment, error)

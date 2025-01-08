@@ -72,6 +72,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 	api.Use(mw.Auth)
 
 	news.Post("/", h.CreateNews)
+	news.Patch("/", h.UpdateNews)
 	news.Delete("/:id", h.DeleteNews)
 
 	auth.Get("/session", h.Session)

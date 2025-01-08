@@ -104,19 +104,36 @@ func (r *SaitRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*model.
 	return entry, total, nil
 }
 
-func (r *SaitRepo) UpdateNews(ctx context.Context, entry *model.DBNews) error {
-	err := r.db.
-		NewInsert().
-		Model(entry).
-		Scan(ctx)
+func (r *SaitRepo) UpdateNews(ctx context.Context, entry *model.DBNews) (*model.DBNews, error) {
+	q := r.db.NewUpdate().Model(entry).Where("id = ?", entry.ID)
+
+	if entry.Title != "" {
+		q.Set("title = ?", entry.Title)
+	}
+	if entry.Text != "" {
+		q.Set("text = ?", entry.Text)
+	}
+	if entry.ImageUrl != "" {
+		q.Set("image_url = ?", entry.ImageUrl)
+	}
+	if entry.LikeCount != 0 {
+		q.Set("like_count = ?", entry.LikeCount)
+	}
+
+	_, err := q.Exec(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.UpdateNews",
 			log.String("error", err.Error()),
 			log.Object("entry", entry),
 		)
-		return err
+		return nil, err
 	}
-	return nil
+
+	entry, err = r.GetNewsByID(ctx, entry.ID)
+	if err != nil {
+		return nil, err
+	}
+	return entry, nil
 }
 
 func (r *SaitRepo) DeleteNews(ctx context.Context, id int) error {

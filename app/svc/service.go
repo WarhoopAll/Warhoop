@@ -45,7 +45,7 @@ type Web interface {
 	CreateNews(context.Context, *model.News) (*model.News, error)
 	GetNewsSlice(context.Context, int, int) (*model.NewsSlice, int, error)
 	GetNewsByID(context.Context, int) (*model.News, error)
-	UpdateNews(context.Context, *model.News) error
+	UpdateNews(context.Context, *model.News) (*model.News, error)
 	DeleteNews(context.Context, int) error
 	// Comments
 	CreateComment(context.Context, *model.Comment) (*model.Comment, error)

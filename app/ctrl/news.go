@@ -60,11 +60,43 @@ func (ctr *Handler) CreateNews(ctx *fiber.Ctx) error {
 	entry := &model.News{
 		Author: id,
 	}
-	if err := ctx.BodyParser(&entry); err != nil {
+
+	err = ctx.BodyParser(&entry)
+	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
 	res, err := ctr.services.Web.CreateNews(ctx.Context(), entry)
+	if err != nil {
+		return err
+	}
+	return Response(ctx, MsgSuccess, res)
+}
+
+func (ctr *Handler) UpdateNews(ctx *fiber.Ctx) error {
+	id, ok := ctx.Locals("id").(int)
+	if !ok {
+		return ErrResponse(ctx, MsgUnauthorized)
+	}
+
+	entry := &model.News{}
+	err := ParseAndValidate(ctx, entry)
+	if err != nil {
+		return ErrResponse(ctx, MsgInternal)
+	}
+
+	access, err := ctr.services.Auth.AccessByID(ctx.Context(), id)
+	if err != nil {
+		return ErrResponse(ctx, MsgInternal)
+	}
+
+	if access.SecurityLevel < 3 {
+		log.Get().Warn("Forbidden access attempt",
+			log.Int("account_id", id))
+		return ErrResponse(ctx, MsgForbidden)
+	}
+
+	res, err := ctr.services.Web.UpdateNews(ctx.Context(), entry)
 	if err != nil {
 		return err
 	}

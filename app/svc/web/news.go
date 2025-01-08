@@ -30,12 +30,12 @@ func (svc WebService) GetNewsSlice(ctx context.Context, limit, offset int) (*mod
 	return &news, total, nil
 }
 
-func (svc WebService) UpdateNews(ctx context.Context, entry *model.News) error {
-	err := svc.store.SaitRepo.UpdateNews(ctx, entry.ToDB())
+func (svc WebService) UpdateNews(ctx context.Context, entry *model.News) (*model.News, error) {
+	res, err := svc.store.SaitRepo.UpdateNews(ctx, entry.ToDB())
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res.ToWeb(), nil
 }
 
 func (svc WebService) DeleteNews(ctx context.Context, id int) error {
