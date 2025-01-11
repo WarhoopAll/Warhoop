@@ -4,8 +4,8 @@ import "github.com/uptrace/bun"
 
 type Uptime struct {
 	Realmid    int        `json:"-"`
-	Starttime  int        `json:"-"`
-	Uptime     int        `json:"uptime,omitempty"`
+	Starttime  int        `json:"starttime,omitempty"`
+	Uptime     int        `json:"-"`
 	Maxplayers int16      `json:"maxplayers,omitempty"`
 	Realm      *Realmlist `json:"realm,omitempty"`
 	Revision   string     `json:"revision,omitempty"`
@@ -19,7 +19,7 @@ type DBUptime struct {
 	Realmid       int          `bun:"realmid,pk"`
 	Realm         *DBRealmlist `bun:"rel:belongs-to,join:realmid=id"`
 	Starttime     int          `bun:"starttime"`
-	Uptime        int          `bun:"uptime"`
+	Uptime        int          `bun:"-"`
 	Maxplayers    int16        `bun:"maxplayers"`
 	Revision      string       `bun:"revision"`
 }

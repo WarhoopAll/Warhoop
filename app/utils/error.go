@@ -16,4 +16,5 @@ var (
 	ErrBadToken       = errors.New("bad token")
 	ErrBadSession     = errors.New("bad session")
 	ErrSendEmail      = errors.New("error send email")
+	ErrDisable        = errors.New("disabled in the configuration")
 )

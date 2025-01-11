@@ -57,7 +57,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 
 	char.Get("/pvp", h.GetCharTop10Kill)
 
-	api.Get("/status/:id", h.GetUptime)
+	api.Get("/status", h.GetUptime)
 	api.Get("/online", h.GetOnlineSlice)
 
 	auth := api.Group("/auth")

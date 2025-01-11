@@ -16,7 +16,8 @@ type Auth interface {
 	ExistsAccess(context.Context, int) (bool, error)
 	AccessByID(context.Context, int) (*model.Access, error)
 	// Uptime
-	GetUptimeByID(context.Context, int) (*model.Uptime, error)
+	GetUptime(context.Context) (*model.Uptime, error)
+	CheckOnlineStatus(string, int16) bool
 }
 
 type Characters interface {
@@ -55,4 +56,8 @@ type Web interface {
 	GetCommentByNewsID(context.Context, int) (*model.CommentSlice, error)
 	// Like
 	ToggleReaction(context.Context, *model.Reaction) (*model.Reaction, error)
+}
+
+type Soap interface {
+	ExecuteCommand(command string) (string, error)
 }

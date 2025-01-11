@@ -12,8 +12,6 @@ import (
 type Config struct {
 	Service struct {
 		LogLevel        string `yaml:"log_level"`
-		LogFolder       string `yaml:"log_folder"`
-		LogPrefix       string `yaml:"log_prefix"`
 		ApiAddrPort     string `yaml:"api_addr_port"`
 		AppUrl          string `yaml:"app_url"`
 		GitInfo         string `yaml:"git_info"`
@@ -21,6 +19,11 @@ type Config struct {
 		TemplateStatic  string `yaml:"template_static"`
 		DefaultLocale   string `yaml:"default_locale"`
 	} `yaml:"service"`
+	Realm struct {
+		ID   int    `yaml:"id"`
+		Host string `yaml:"host"`
+		Port string `yaml:"port"`
+	} `yaml:"realm"`
 	DB struct {
 		Auth       string `yaml:"auth"`
 		Characters string `yaml:"characters"`
@@ -28,6 +31,12 @@ type Config struct {
 		Sait       string `yaml:"sait"`
 		Verbose    bool   `yaml:"verbose"`
 	} `yaml:"db"`
+	Soap struct {
+		Enable   bool   `yaml:"enable"`
+		Host     string `yaml:"host"`
+		Login    string `yaml:"login"`
+		Password string `yaml:"password"`
+	} `yaml:"soap"`
 	Cors struct {
 		AllowOrigins     string `yaml:"allow_origins"`
 		AllowMethods     string `yaml:"allow_methods"`
