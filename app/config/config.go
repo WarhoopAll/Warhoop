@@ -20,9 +20,7 @@ type Config struct {
 		DefaultLocale   string `yaml:"default_locale"`
 	} `yaml:"service"`
 	Realm struct {
-		ID   int    `yaml:"id"`
-		Host string `yaml:"host"`
-		Port string `yaml:"port"`
+		ID int `yaml:"id"`
 	} `yaml:"realm"`
 	DB struct {
 		Auth       string `yaml:"auth"`
