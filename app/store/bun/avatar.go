@@ -2,10 +2,8 @@ package bun
 
 import (
 	"context"
-	"errors"
 	"warhoop/app/log"
 	"warhoop/app/model"
-	"warhoop/app/utils"
 )
 
 type SaitRepo struct {
@@ -19,27 +17,6 @@ func NewSaitRepo(db *DB, logger *log.Logger) *SaitRepo {
 		db:     db,
 		logger: logger,
 	}
-}
-
-func (r *SaitRepo) GetAvatar(ctx context.Context, id int) (*model.DBProfile, error) {
-	avatar := &model.DBProfile{}
-	err := r.db.
-		NewSelect().
-		Model(avatar).
-		Where("account_id = ?", id).
-		Scan(ctx)
-
-	if err != nil {
-		if errors.Is(err, utils.ErrNoRows) {
-			return nil, nil
-		}
-		r.logger.Error("store.Account.GetAvatarIfExists",
-			log.String("error", err.Error()),
-			log.Int("account_id", id),
-		)
-		return nil, err
-	}
-	return avatar, nil
 }
 
 func (r *SaitRepo) ExistAvatar(ctx context.Context, accountID int) (bool, error) {

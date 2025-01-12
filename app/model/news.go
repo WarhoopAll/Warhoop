@@ -6,36 +6,36 @@ import (
 )
 
 type News struct {
-	ID            int          `json:"id,omitempty"`
-	Title         string       `json:"title,omitempty"`
-	Text          string       `json:"text,omitempty"`
-	CreatedAt     time.Time    `json:"created_at,omitempty"`
-	UpdatedAt     time.Time    `json:"updated_at,omitempty"`
-	Author        int          `json:"-"`
-	Comment       CommentSlice `json:"comments,omitempty"`
-	Profile       *Profile     `json:"profile,omitempty"`
-	ImageUrl      string       `json:"image_url"`
-	LikeCount     int          `json:"like_count,omitempty"`
-	DisLikeCount  int          `json:"dis_like_count,omitempty"`
-	CommentsCount int          `json:"comments_count"`
+	ID            int           `json:"id,omitempty"`
+	Title         string        `json:"title,omitempty"`
+	Text          string        `json:"text,omitempty"`
+	CreatedAt     time.Time     `json:"created_at,omitempty"`
+	UpdatedAt     time.Time     `json:"updated_at,omitempty"`
+	Comment       *CommentSlice `json:"comments,omitempty"`
+	ProfileID     int           `json:"-"`
+	Profile       *Profile      `json:"profile,omitempty"`
+	ImageUrl      string        `json:"image_url"`
+	LikeCount     int           `json:"like_count,omitempty"`
+	DisLikeCount  int           `json:"dislike_count,omitempty"`
+	CommentsCount int           `json:"comments_count"`
 }
 
 type NewsSlice []News
 
 type DBNews struct {
 	bun.BaseModel `bun:"table:news,alias:news"`
-	ID            int            `bun:"id,pk,autoincrement"`
-	Title         string         `bun:"title"`
-	Text          string         `bun:"text" `
-	CreatedAt     time.Time      `bun:"created_at,nullzero,default:current_timestamp"`
-	UpdatedAt     time.Time      `bun:"updated_at,nullzero,default:current_timestamp on update current_timestamp"`
-	Author        int            `bun:"author"`
-	Profile       *DBProfile     `bun:"rel:belongs-to,join:author=account_id"`
-	Comments      DBCommentSlice `bun:"-"`
-	ImageUrl      string         `bun:"image_url"`
-	LikeCount     int            `bun:"like_count"`
-	DisLikeCount  int            `bun:"dislike_count"`
-	CommentsCount int            `bun:"comments_count"`
+	ID            int             `bun:"id,pk,autoincrement"`
+	Title         string          `bun:"title"`
+	Text          string          `bun:"text" `
+	CreatedAt     time.Time       `bun:"created_at,nullzero,default:current_timestamp"`
+	UpdatedAt     time.Time       `bun:"updated_at,nullzero,default:current_timestamp on update current_timestamp"`
+	ProfileID     int             `bun:"profile_id"`
+	Profile       *DBProfile      `bun:"rel:belongs-to,join:profile_id=account_id"`
+	Comments      *DBCommentSlice `bun:"-"`
+	ImageUrl      string          `bun:"image_url"`
+	LikeCount     int             `bun:"like_count"`
+	DisLikeCount  int             `bun:"dislike_count"`
+	CommentsCount int             `bun:"comments_count"`
 }
 
 type DBNewsSlice []DBNews
@@ -45,16 +45,18 @@ func (entry *News) ToDB() *DBNews {
 	if entry == nil {
 		return nil
 	}
+
 	return &DBNews{
-		ID:           entry.ID,
-		Title:        entry.Title,
-		Text:         entry.Text,
-		CreatedAt:    entry.CreatedAt,
-		UpdatedAt:    entry.UpdatedAt,
-		Author:       entry.Author,
-		ImageUrl:     entry.ImageUrl,
-		LikeCount:    entry.LikeCount,
-		DisLikeCount: entry.DisLikeCount,
+		ID:            entry.ID,
+		Title:         entry.Title,
+		Text:          entry.Text,
+		CreatedAt:     entry.CreatedAt,
+		UpdatedAt:     entry.UpdatedAt,
+		ProfileID:     entry.ProfileID,
+		ImageUrl:      entry.ImageUrl,
+		LikeCount:     entry.LikeCount,
+		DisLikeCount:  entry.DisLikeCount,
+		CommentsCount: entry.CommentsCount,
 	}
 }
 
@@ -64,18 +66,23 @@ func (entry *DBNews) ToWeb() *News {
 		return nil
 	}
 
+	var comments *CommentSlice
+	if entry.Comments != nil {
+		temp := entry.Comments.ToWeb()
+		comments = &temp
+	}
+
 	return &News{
 		ID:            entry.ID,
 		Title:         entry.Title,
 		Text:          entry.Text,
 		CreatedAt:     entry.CreatedAt,
 		UpdatedAt:     entry.UpdatedAt,
-		Author:        entry.Author,
+		Profile:       entry.Profile.ToWeb(),
+		Comment:       comments,
 		ImageUrl:      entry.ImageUrl,
 		LikeCount:     entry.LikeCount,
 		DisLikeCount:  entry.DisLikeCount,
-		Comment:       entry.Comments.ToWeb(),
-		Profile:       entry.Profile.ToWeb(),
 		CommentsCount: entry.CommentsCount,
 	}
 }

@@ -57,16 +57,14 @@ func (ctr *Handler) CreateNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
-	entry := &model.News{
-		Author: id,
-	}
+	entry := &model.News{}
 
 	err = ctx.BodyParser(&entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	res, err := ctr.services.Web.CreateNews(ctx.Context(), entry)
+	res, err := ctr.services.Web.CreateNews(ctx.Context(), id, entry)
 	if err != nil {
 		return err
 	}

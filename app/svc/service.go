@@ -43,21 +43,26 @@ type Web interface {
 	UpdateOrCreateSession(context.Context, *model.Session, string) error
 	HandleSession(context.Context, *model.Session) (string, error)
 	// News
-	CreateNews(context.Context, *model.News) (*model.News, error)
+	CreateNews(context.Context, int, *model.News) (*model.News, error)
 	GetNewsSlice(context.Context, int, int) (*model.NewsSlice, int, error)
 	GetNewsByID(context.Context, int) (*model.News, error)
 	UpdateNews(context.Context, *model.News) (*model.News, error)
 	DeleteNews(context.Context, int) error
 	// Comments
-	CreateComment(context.Context, *model.Comment) (*model.Comment, error)
+	CreateComment(context.Context, int, *model.Comment) (*model.Comment, error)
 	DeleteComment(context.Context, int) error
-	UpdateComment(context.Context, *model.Comment) (*model.Comment, error)
+	UpdateComment(context.Context, int, *model.Comment) (*model.Comment, error)
 	GetCommentByID(context.Context, int) (*model.Comment, error)
 	GetCommentByNewsID(context.Context, int) (*model.CommentSlice, error)
 	// Like
 	ToggleReaction(context.Context, *model.Reaction) (*model.Reaction, error)
+	// Report
+	CreateReport(context.Context, int, *model.Report) (*model.Report, error)
+	GetReportByID(context.Context, int) (*model.Report, error)
+	GetReports(context.Context, int, int) (*model.ReportSlice, error)
+	DeleteReportByID(context.Context, int) error
 }
 
 type Soap interface {
-	ExecuteCommand(command string) (string, error)
+	ExecuteCommand(string) (string, error)
 }

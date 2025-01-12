@@ -31,8 +31,8 @@ type CharRepo interface {
 type SaitRepo interface {
 	// Profile
 	CreateProfile(context.Context, *model.DBProfile) (*model.DBProfile, error)
+	GetProfile(context.Context, int) (*model.DBProfile, error)
 	// Avatar
-	GetAvatar(context.Context, int) (*model.DBProfile, error)
 	UpdateAvatar(context.Context, *model.DBProfile) error
 	ExistAvatar(context.Context, int) (bool, error)
 	// Session
@@ -57,4 +57,10 @@ type SaitRepo interface {
 	ToggleReaction(context.Context, *model.DBReaction) (*model.DBReaction, error)
 	DeleteReaction(context.Context, *model.DBReaction) error
 	ExistReaction(context.Context, *model.DBReaction) (bool, error)
+	// Report Methods
+	CreateReport(context.Context, *model.DBReport) (*model.DBReport, error)
+	GetReportByID(context.Context, int) (*model.DBReport, error)
+	UpdateReport(context.Context, *model.DBReport) (*model.DBReport, error)
+	GetReports(context.Context, int, int) (*model.DBReportSlice, error)
+	DeleteReportByID(context.Context, int) error
 }

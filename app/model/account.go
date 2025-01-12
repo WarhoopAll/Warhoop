@@ -3,7 +3,7 @@ package model
 import "github.com/uptrace/bun"
 
 type Account struct {
-	ID       int      `json:"id,omitempty" validate:"omitempty,eq=0"`
+	ID       int      `json:"-"`
 	Username string   `json:"username,omitempty" validate:"required,min=4,max=20"`
 	Password string   `json:"password,omitempty" validate:"required,min=6,max=30"`
 	Salt     []byte   `json:"-"`

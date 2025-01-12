@@ -4,10 +4,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/gofiber/fiber/v2"
-	"net"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func FingerPrint(ctx *fiber.Ctx, id int) string {
@@ -33,18 +31,4 @@ func ParseAndValidate(ctx *fiber.Ctx, entry interface{}) error {
 		return err
 	}
 	return nil
-}
-
-func CheckOnline(host, port string) bool {
-	address := net.JoinHostPort(host, port)
-
-	timeout := 1 * time.Second
-
-	conn, err := net.DialTimeout("tcp", address, timeout)
-	if err != nil {
-		return false
-	}
-	conn.Close()
-
-	return true
 }

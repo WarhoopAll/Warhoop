@@ -11,7 +11,7 @@ type Comment struct {
 	Text         string    `json:"text,omitempty"`
 	CreatedAt    time.Time `json:"created_at,omitempty"`
 	UpdatedAt    time.Time `json:"updated_at,omitempty"`
-	Author       int       `json:"author,omitempty"`
+	ProfileID    int       `json:"-"`
 	Profile      *Profile  `json:"profile,omitempty"`
 	LikeCount    int       `json:"like_count,omitempty"`
 	DislikeCount int       `json:"dislike_count,omitempty"`
@@ -26,8 +26,8 @@ type DBComment struct {
 	Text          string     `bun:"text"`
 	CreatedAt     time.Time  `bun:"created_at,nullzero,default:current_timestamp"`
 	UpdatedAt     time.Time  `bun:"updated_at,nullzero,default:current_timestamp on update current_timestamp"`
-	Author        int        `bun:"author,notnull"`
-	Profile       *DBProfile `bun:"rel:belongs-to,join:author=account_id"`
+	ProfileID     int        `bun:"profile_id,notnull"`
+	Profile       *DBProfile `bun:"rel:belongs-to,join:profile_id=account_id"`
 	LikeCount     int        `bun:"like_count"`
 	DislikeCount  int        `bun:"dislike_count"`
 }
@@ -39,12 +39,13 @@ func (entry *Comment) ToDB() *DBComment {
 	if entry == nil {
 		return nil
 	}
+
 	return &DBComment{
 		ID:           entry.ID,
 		NewsID:       entry.NewsID,
 		Text:         entry.Text,
 		CreatedAt:    entry.CreatedAt,
-		Author:       entry.Author,
+		ProfileID:    entry.ProfileID,
 		UpdatedAt:    entry.UpdatedAt,
 		LikeCount:    entry.LikeCount,
 		DislikeCount: entry.DislikeCount,
@@ -56,6 +57,7 @@ func (entry *DBComment) ToWeb() *Comment {
 	if entry == nil {
 		return nil
 	}
+
 	return &Comment{
 		ID:           entry.ID,
 		NewsID:       entry.NewsID,
@@ -85,3 +87,9 @@ func (data DBCommentSlice) ToWeb() CommentSlice {
 	}
 	return result
 }
+
+//func (entry *Comment) EnsureProfile() {
+//	if entry.Profile == nil {
+//		entry.Profile = &Profile{}
+//	}
+//}

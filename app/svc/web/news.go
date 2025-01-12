@@ -5,7 +5,8 @@ import (
 	"warhoop/app/model"
 )
 
-func (svc WebService) CreateNews(ctx context.Context, entry *model.News) (*model.News, error) {
+func (svc WebService) CreateNews(ctx context.Context, id int, entry *model.News) (*model.News, error) {
+	entry.ProfileID = id
 	res, err := svc.store.SaitRepo.CreateNews(ctx, entry.ToDB())
 	if err != nil {
 		return nil, err

@@ -51,19 +51,9 @@ func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, erro
 		return nil, err
 	}
 
-	var comments model.DBCommentSlice
-	err = r.db.
-		NewSelect().
-		Model(&comments).
-		Where("news_id = ?", entry.ID).
-		Relation("Profile").
-		OrderExpr("like_count DESC, created_at DESC").
-		Scan(ctx)
+	comments, err := r.GetCommentsByNewsID(ctx, id)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetComments",
-			log.String("error", err.Error()),
-			log.Int("news_id", entry.ID),
-		)
+		return nil, err
 	}
 
 	entry.Comments = comments

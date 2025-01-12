@@ -18,9 +18,7 @@ func (ctr *Handler) CreateComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	entry.Author = id
-
-	res, err := ctr.services.Web.CreateComment(ctx.Context(), entry)
+	res, err := ctr.services.Web.CreateComment(ctx.Context(), id, entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
@@ -67,26 +65,18 @@ func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 }
 
 func (ctr *Handler) UpdateComment(ctx *fiber.Ctx) error {
-	idacc, ok := ctx.Locals("id").(int)
+	id, ok := ctx.Locals("id").(int)
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
+
 	entry := &model.Comment{}
 	err := ctx.BodyParser(&entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	comment, err := ctr.services.Web.GetCommentByID(ctx.Context(), entry.ID)
-	if err != nil {
-		return ErrResponse(ctx, MsgNotFound)
-	}
-
-	if comment.Profile == nil || comment.Profile.AccountID != idacc {
-		return ErrResponse(ctx, MsgForbidden)
-	}
-
-	res, err := ctr.services.Web.UpdateComment(ctx.Context(), entry)
+	res, err := ctr.services.Web.UpdateComment(ctx.Context(), id, entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

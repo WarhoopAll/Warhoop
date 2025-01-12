@@ -38,7 +38,7 @@ func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error
 		return nil, err
 	}
 
-	avatar, err := r.saitr.GetAvatar(ctx, entry.ID)
+	avatar, err := r.saitr.GetProfile(ctx, entry.ID)
 	if err != nil {
 		r.logger.Error("store.Account.GetByUsername.LoadAvatar",
 			log.String("err", err.Error()),
@@ -67,7 +67,7 @@ func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*model.D
 		return nil, err
 	}
 
-	avatar, err := r.saitr.GetAvatar(ctx, entry.ID)
+	avatar, err := r.saitr.GetProfile(ctx, entry.ID)
 	if err != nil {
 		r.logger.Error("store.Account.GetByUsername.LoadAvatar",
 			log.String("err", err.Error()),

@@ -86,4 +86,10 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 
 	prof := api.Group("/profile")
 	prof.Post("/avatar", h.UpdateAvatar)
+
+	report := api.Group("/report")
+	report.Post("/", h.CreateReport)
+	report.Get("/:id", h.GetReportByID)
+	report.Get("/", h.GetReports)
+	report.Delete("/:id", h.DeleteReport)
 }

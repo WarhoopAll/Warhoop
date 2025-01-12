@@ -9,8 +9,8 @@ type Reaction struct {
 	ID           int       `json:"id,omitempty"`
 	UserID       int       `json:"user_id,omitempty"`
 	ObjectType   int       `json:"object_type,omitempty"`
-	ReactionType int       `json:"reaction_type,omitempty"`
 	ObjectID     int       `json:"object_id,omitempty"`
+	ReactionType int       `json:"reaction_type,omitempty"`
 	CreatedAt    time.Time `json:"-"`
 }
 

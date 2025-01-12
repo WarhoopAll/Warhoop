@@ -27,12 +27,14 @@ func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*
 	return entry, nil
 }
 
-func (r *SaitRepo) GetCommentByNewsID(ctx context.Context, id int) (*model.DBCommentSlice, error) {
+func (r *SaitRepo) GetCommentsByNewsID(ctx context.Context, id int) (*model.DBCommentSlice, error) {
 	entry := &model.DBCommentSlice{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
+		Relation("Profile").
 		Where("news_id = ?", id).
+		OrderExpr("like_count DESC, created_at DESC").
 		Scan(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.GetNewsSlice",
