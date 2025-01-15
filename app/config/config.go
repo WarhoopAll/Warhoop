@@ -19,6 +19,13 @@ type Config struct {
 		TemplateStatic  string `yaml:"template_static"`
 		DefaultLocale   string `yaml:"default_locale"`
 	} `yaml:"service"`
+	Uptrace struct {
+		Enable     bool   `yaml:"enable"`
+		DSN        string `yaml:"dsn"`
+		Name       string `yaml:"name"`
+		Deployment string `yaml:"deployment"`
+		Version    string `yaml:"version"`
+	} `yaml:"uptrace"`
 	Realm struct {
 		ID int `yaml:"id"`
 	} `yaml:"realm"`

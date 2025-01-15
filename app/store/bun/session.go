@@ -8,23 +8,23 @@ import (
 	"warhoop/app/utils"
 )
 
-func (repo *SaitRepo) GetSession(ctx context.Context, entry *model.DBSession) (*model.DBSession, error) {
-	err := repo.db.
+func (r *SaitRepo) GetSession(ctx context.Context, entry *model.DBSession) (*model.DBSession, error) {
+	err := r.db.
 		NewSelect().
 		Model(entry).
 		Where("token = ?", entry.Token).
 		Scan(ctx)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			repo.logger.Warn("store.Serve.GetSession",
+			r.logger.Warn("store.SaitRepo.GetSession",
 				log.String("err", err.Error()),
-				log.String("token", entry.Token),
+				log.Object("entry", entry),
 			)
 			return nil, err
 		}
-		repo.logger.Error("store.Serve.GetSession",
+		r.logger.Error("store.SaitRepo.GetSession",
 			log.String("err", err.Error()),
-			log.String("token", entry.Token),
+			log.Object("entry", entry),
 		)
 		return nil, err
 	}
@@ -32,15 +32,14 @@ func (repo *SaitRepo) GetSession(ctx context.Context, entry *model.DBSession) (*
 	return entry, nil
 }
 
-func (repo *SaitRepo) CreateSession(ctx context.Context, entry *model.DBSession) error {
-	_, err := repo.db.
+func (r *SaitRepo) CreateSession(ctx context.Context, entry *model.DBSession) error {
+	_, err := r.db.
 		NewInsert().
 		Model(entry).
 		Returning("*").
 		Exec(ctx)
-
 	if err != nil {
-		repo.logger.Error("store.Serve.CreateSession",
+		r.logger.Error("store.SaitRepo.CreateSession",
 			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)
@@ -50,8 +49,8 @@ func (repo *SaitRepo) CreateSession(ctx context.Context, entry *model.DBSession)
 	return nil
 }
 
-func (repo *SaitRepo) UpdateSession(ctx context.Context, entry *model.DBSession) error {
-	_, err := repo.db.
+func (r *SaitRepo) UpdateSession(ctx context.Context, entry *model.DBSession) error {
+	_, err := r.db.
 		NewUpdate().
 		Model(entry).
 		Where("account_id = ? AND fingerprint = ?", entry.AccountID, entry.Finger).
@@ -60,7 +59,7 @@ func (repo *SaitRepo) UpdateSession(ctx context.Context, entry *model.DBSession)
 		OmitZero().
 		Exec(ctx)
 	if err != nil {
-		repo.logger.Error("store.Serve.UpdateSession",
+		r.logger.Error("store.SaitRepo.UpdateSession",
 			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)
@@ -70,16 +69,16 @@ func (repo *SaitRepo) UpdateSession(ctx context.Context, entry *model.DBSession)
 	return nil
 }
 
-func (repo *SaitRepo) DeleteSession(ctx context.Context, id string) error {
-	_, err := repo.db.
+func (r *SaitRepo) DeleteSession(ctx context.Context, id string) error {
+	_, err := r.db.
 		NewDelete().
 		Model((*model.DBSession)(nil)).
 		Where("token = ?", id).
 		Exec(ctx)
 	if err != nil {
-		repo.logger.Error("store.Serve.DeleteSession",
+		r.logger.Error("store.SaitRepo.DeleteSession",
 			log.String("err", err.Error()),
-			log.String("id", id),
+			log.String("token", id),
 		)
 		return err
 	}
@@ -87,44 +86,45 @@ func (repo *SaitRepo) DeleteSession(ctx context.Context, id string) error {
 	return nil
 }
 
-func (repo *SaitRepo) ListSession(ctx context.Context, id uint) (*model.DBSessionSlice, error) {
+func (r *SaitRepo) ListSession(ctx context.Context, id uint) (*model.DBSessionSlice, error) {
 	entry := &model.DBSessionSlice{}
-	err := repo.db.
+	err := r.db.
 		NewSelect().
 		Model(entry).
 		Relation("Account").
 		Where("account_id = ?", id).
 		Scan(ctx)
 	if err != nil {
-		repo.logger.Error("store.Serve.ListSession",
+		r.logger.Error("store.SaitRepo.ListSession",
 			log.String("err", err.Error()),
-			log.Uint("id", id),
+			log.Uint("account_id", id),
 		)
 		return nil, err
 	}
 	return entry, nil
 }
 
-func (repo *SaitRepo) ExistSession(ctx context.Context, entry *model.DBSession) (bool, error) {
-	exists, err := repo.db.
+func (r *SaitRepo) ExistSession(ctx context.Context, entry *model.DBSession) (bool, error) {
+	exists, err := r.db.
 		NewSelect().
 		Model(entry).
 		Where("account_id = ? AND fingerprint =? AND expired_at > NOW()", entry.AccountID, entry.Finger).
 		Exists(ctx)
 	if err != nil {
-		repo.logger.Error("store.Serve.HasSession",
+		r.logger.Error("store.SaitRepo.HasSession",
 			log.String("err", err.Error()),
+			log.Object("entry", entry),
 		)
 		return false, err
 	}
 	return exists, nil
 }
 
-func (repo *SaitRepo) UpdateOrCreateSession(ctx context.Context, entry *model.DBSession, newToken string) (*model.DBSession, error) {
-	tx, err := repo.db.BeginTx(ctx, nil)
+func (r *SaitRepo) UpdateOrCreateSession(ctx context.Context, entry *model.DBSession, newToken string) (*model.DBSession, error) {
+	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {
-		repo.logger.Error("store.Serve.UpdateOrCreateSession",
-			log.String("failed transaction", err.Error()),
+		r.logger.Error("store.SaitRepo.UpdateOrCreateSession",
+			log.String("err", err.Error()),
 		)
 		return nil, err
 	}
@@ -146,14 +146,15 @@ func (repo *SaitRepo) UpdateOrCreateSession(ctx context.Context, entry *model.DB
 		For("UPDATE").
 		Exists(ctx)
 	if err != nil {
-		repo.logger.Error("store.Serve.UpdateOrCreateSession",
-			log.String("failed check session existence", err.Error()),
+		r.logger.Error("store.SaitRepo.UpdateOrCreateSession - select",
+			log.String("err", err.Error()),
+			log.Object("entry", entry),
 		)
 		return nil, err
 	}
 
 	if !exists {
-		return nil, utils.ErrDataBase
+		return nil, utils.ErrNoRows
 	}
 
 	_, err = tx.NewUpdate().
@@ -165,8 +166,9 @@ func (repo *SaitRepo) UpdateOrCreateSession(ctx context.Context, entry *model.DB
 		Returning("*").
 		Exec(ctx)
 	if err != nil {
-		repo.logger.Error("store.Serve.UpdateOrCreateSession",
-			log.String("failed to update session", err.Error()),
+		r.logger.Error("store.SaitRepo.UpdateOrCreateSession - update",
+			log.String("err", err.Error()),
+			log.Object("entry", entry),
 		)
 		return nil, err
 	}

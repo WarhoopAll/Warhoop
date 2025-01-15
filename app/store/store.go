@@ -1,12 +1,12 @@
 package store
 
 import (
-	"context"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/uptrace/bun/extra/bundebug"
+	"github.com/uptrace/bun/extra/bunotel"
 	"warhoop/app/config"
 	"warhoop/app/log"
 	"warhoop/app/store/bun"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // Store ...
@@ -16,31 +16,32 @@ type Store struct {
 	CharRepo *bun.CharRepo
 }
 
-func NewBun(ctx context.Context, logger *log.Logger) (*Store, error) {
-	cfg := config.Get()
+var cfg = config.Get()
+
+func NewBun(logger *log.Logger) (*Store, error) {
 	if cfg == nil {
 		panic("configuration is nil")
 	}
 
-	auth, err := connect(ctx, cfg.DB.Auth, cfg.DB.Verbose, logger, "auth")
+	auth, err := connect(cfg.DB.Auth, "auth")
 	if err != nil {
-		logger.Error("Failed to initialize auth",
-			log.String("error", err.Error()),
+		logger.Error("store.NewBun.auth",
+			log.String("err", err.Error()),
 		)
 		return nil, err
 	}
 
-	char, err := connect(ctx, cfg.DB.Characters, cfg.DB.Verbose, logger, "characters")
+	char, err := connect(cfg.DB.Characters, "characters")
 	if err != nil {
-		logger.Error("Failed to initialize characters",
-			log.String("error", err.Error()),
+		logger.Error("store.NewBun.characters",
+			log.String("err", err.Error()),
 		)
 		return nil, err
 	}
 
-	sait, err := connect(ctx, cfg.DB.Sait, cfg.DB.Verbose, logger, "sait")
+	sait, err := connect(cfg.DB.Sait, "sait")
 	if err != nil {
-		logger.Error("Failed to initialize sait",
+		logger.Error("store.NewBun.sait",
 			log.String("error", err.Error()),
 		)
 		return nil, err
@@ -48,8 +49,8 @@ func NewBun(ctx context.Context, logger *log.Logger) (*Store, error) {
 
 	saitRepo := bun.NewSaitRepo(sait, logger)
 	if saitRepo == nil {
-		logger.Error("Failed to initialize SaitRepo",
-			log.String("error", err.Error()),
+		logger.Error("store.NewBun.SaitRepo",
+			log.String("err", err.Error()),
 		)
 		return nil, err
 	}
@@ -57,8 +58,8 @@ func NewBun(ctx context.Context, logger *log.Logger) (*Store, error) {
 	authRepo := bun.NewAuthRepo(auth, logger, saitRepo)
 	if authRepo == nil {
 		if err != nil {
-			logger.Error("Failed to initialize AuthRepo",
-				log.String("error", err.Error()),
+			logger.Error("tore.NewBun.AuthRepo",
+				log.String("err", err.Error()),
 			)
 			return nil, err
 		}
@@ -67,8 +68,8 @@ func NewBun(ctx context.Context, logger *log.Logger) (*Store, error) {
 	charRepo := bun.NewCharRepo(char, logger)
 	if charRepo == nil {
 		if err != nil {
-			logger.Error("Failed to initialize AuthRepo",
-				log.String("error", err.Error()),
+			logger.Error("tore.NewBun.charRepo",
+				log.String("err", err.Error()),
 			)
 			return nil, err
 		}
@@ -80,14 +81,17 @@ func NewBun(ctx context.Context, logger *log.Logger) (*Store, error) {
 	}, nil
 }
 
-func connect(ctx context.Context, dsn string, verbose bool, logger *log.Logger, name string) (*bun.DB, error) {
-	db, err := bun.Dial(dsn, verbose)
+func connect(dsn, name string) (*bun.DB, error) {
+	db, err := bun.Dial(dsn)
 	if err != nil {
-		logger.Error("Dial failed",
-			log.String("db_name", name),
-			log.String("err", err.Error()),
-		)
 		return nil, err
 	}
+
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(cfg.DB.Verbose)))
+	db.AddQueryHook(bunotel.NewQueryHook(
+		bunotel.WithDBName(name),
+		bunotel.WithFormattedQueries(true),
+	))
+
 	return db, nil
 }

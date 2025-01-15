@@ -16,8 +16,9 @@ func (r *AuthRepo) GetUptimeByID(ctx context.Context, id int) (*model.DBUptime, 
 		Limit(1).
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("Failed to fetch uptime",
-			log.String("error", err.Error()),
+		r.logger.Error("store.AuthRepo.GetUptimeByID",
+			log.String("err", err.Error()),
+			log.Int("realmid", id),
 		)
 	}
 	return entry, err

@@ -2,10 +2,10 @@ package email
 
 import (
 	"fmt"
-	"warhoop/app/log"
-	"warhoop/app/model"
 	"path/filepath"
 	"time"
+	"warhoop/app/log"
+	"warhoop/app/model"
 )
 
 func SendFunction(acc *model.Account, token, subject, templateName, urlPath string, extraData map[string]string) error {
@@ -45,7 +45,7 @@ func SendFunction(acc *model.Account, token, subject, templateName, urlPath stri
 		log.Get().Error("email.request.ParseTemplate",
 			log.String("err", err.Error()),
 			log.String("template", template),
-			log.Any("data", data),
+			log.Object("data", data),
 		)
 		return err
 
@@ -53,7 +53,7 @@ func SendFunction(acc *model.Account, token, subject, templateName, urlPath stri
 
 	log.Get().Debug("email.sent",
 		log.String("recipient", template),
-		log.Any("subject", data),
+		log.Object("subject", data),
 	)
 
 	err = request.Send()

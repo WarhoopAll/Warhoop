@@ -36,7 +36,7 @@ func run(logger *log.Logger) error {
 	}
 
 	// Init repository store (with mysql inside)
-	store, err := store.NewBun(ctx, logger)
+	store, err := store.NewBun(logger)
 	if err != nil {
 		logger.Error("store.NewBun failed",
 			log.String("err", err.Error()),

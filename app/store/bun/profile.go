@@ -2,10 +2,8 @@ package bun
 
 import (
 	"context"
-	"errors"
 	"warhoop/app/log"
 	"warhoop/app/model"
-	"warhoop/app/utils"
 )
 
 func (r *SaitRepo) CreateProfile(ctx context.Context, entry *model.DBProfile) (*model.DBProfile, error) {
@@ -16,7 +14,7 @@ func (r *SaitRepo) CreateProfile(ctx context.Context, entry *model.DBProfile) (*
 		Column("name").
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("store.Profile.Create",
+		r.logger.Error("store.SaitRepo.CreateProfile",
 			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)
@@ -34,11 +32,8 @@ func (r *SaitRepo) GetProfile(ctx context.Context, id int) (*model.DBProfile, er
 		Scan(ctx)
 
 	if err != nil {
-		if errors.Is(err, utils.ErrNoRows) {
-			return nil, nil
-		}
-		r.logger.Error("store.Account.GetAvatarIfExists",
-			log.String("error", err.Error()),
+		r.logger.Error("store.SaitRepo.GetProfile",
+			log.String("err", err.Error()),
 			log.Int("account_id", id),
 		)
 		return nil, err

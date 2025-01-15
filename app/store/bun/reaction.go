@@ -12,11 +12,10 @@ func (r *SaitRepo) ExistReaction(ctx context.Context, entry *model.DBReaction) (
 		Where("user_id = ? AND object_type = ? AND object_id = ? AND reaction_type = ?", entry.UserID, entry.ObjectType, entry.ObjectID, entry.ReactionType).
 		Exists(ctx)
 	if err != nil {
-		r.logger.Error("Failed to check like existence",
-			log.Int("user_id", entry.UserID),
-			log.Int("object_type", entry.ObjectType),
-			log.Int("object_id", entry.ObjectID),
-			log.String("error", err.Error()))
+		r.logger.Error("store.SaitRepo.ExistReaction",
+			log.String("err", err.Error()),
+			log.Object("entry", entry),
+		)
 		return false, err
 	}
 	return exists, nil
@@ -27,11 +26,10 @@ func (r *SaitRepo) CreateReaction(ctx context.Context, entry *model.DBReaction) 
 		Model(entry).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("Failed to add like",
-			log.Int("user_id", entry.UserID),
-			log.Int("object_type", entry.ObjectType),
-			log.Int("object_id", entry.ObjectID),
-			log.String("error", err.Error()))
+		r.logger.Error("store.SaitRepo.CreateReaction",
+			log.String("err", err.Error()),
+			log.Object("entry", entry),
+		)
 		return err
 	}
 
@@ -44,11 +42,10 @@ func (r *SaitRepo) DeleteReaction(ctx context.Context, entry *model.DBReaction) 
 		Where("user_id = ? AND object_type = ? AND object_id = ? AND reaction_type = ?", entry.UserID, entry.ObjectType, entry.ObjectID, entry.ReactionType).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("Failed to remove like",
-			log.Int("user_id", entry.UserID),
-			log.Int("object_type", entry.ObjectType),
-			log.Int("object_id", entry.ObjectID),
-			log.String("error", err.Error()))
+		r.logger.Error("store.SaitRepo.DeleteReaction",
+			log.String("err", err.Error()),
+			log.Object("entry", entry),
+		)
 		return err
 	}
 	return nil

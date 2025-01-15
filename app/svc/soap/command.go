@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/xml"
-	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -32,7 +31,9 @@ var cfg = config.Get()
 
 func (svc *SoapService) ExecuteCommand(command string) (string, error) {
 	if !cfg.Soap.Enable {
-		svc.logger.Warn("SOAP is disabled in the configuration")
+		svc.logger.Warn("service.SoapService.ExecuteCommand",
+			log.Bool("cfg.Soap.enable", cfg.Soap.Enable),
+		)
 		return "", utils.ErrDisable
 	}
 
@@ -49,16 +50,16 @@ func (svc *SoapService) ExecuteCommand(command string) (string, error) {
 	var soapRequestBuffer bytes.Buffer
 	encoder := xml.NewEncoder(&soapRequestBuffer)
 	if err := encoder.Encode(soapEnvelope); err != nil {
-		svc.logger.Error("Failed to encode SOAP request",
+		svc.logger.Error("service.SoapService.ExecuteCommand",
 			log.String("command", command),
-			log.String("error", err.Error()),
+			log.String("err", err.Error()),
 		)
 		return "", err
 	}
 
 	soapRequest := soapRequestBuffer.String()
 
-	svc.logger.Debug("SOAP request generated",
+	svc.logger.Debug("service.SoapService.ExecuteCommand",
 		log.String("command", command),
 		log.String("soapRequest", soapRequest),
 	)
@@ -67,9 +68,9 @@ func (svc *SoapService) ExecuteCommand(command string) (string, error) {
 
 	req, err := http.NewRequest("POST", cfg.Soap.Host, bytes.NewBufferString(soapRequest))
 	if err != nil {
-		svc.logger.Error("Failed to create HTTP request",
+		svc.logger.Error("service.SoapService.ExecuteCommand",
+			log.String("err", err.Error()),
 			log.String("command", command),
-			log.String("error", err.Error()),
 		)
 		return "", err
 	}
@@ -83,34 +84,31 @@ func (svc *SoapService) ExecuteCommand(command string) (string, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		svc.logger.Error("SOAP request failed",
+		svc.logger.Error("service.SoapService.ExecuteCommand",
+			log.String("err", err.Error()),
 			log.String("command", command),
-			log.String("error", err.Error()),
 		)
 		return "", err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		svc.logger.Error("SOAP request returned non-OK status",
-			log.String("command", command),
-			log.Int("status", resp.StatusCode),
-			log.String("response", string(body)),
-		)
-		return "", fmt.Errorf("non-OK status: %d", resp.StatusCode)
+		_, readErr := io.ReadAll(resp.Body)
+		if readErr != nil {
+			return "", readErr
+		}
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		svc.logger.Error("Failed to read SOAP response",
+		svc.logger.Error("service.SoapService.ExecuteCommand",
+			log.String("err", err.Error()),
 			log.String("command", command),
-			log.String("error", err.Error()),
 		)
 		return "", err
 	}
 
-	svc.logger.Debug("SOAP command executed successfully",
+	svc.logger.Debug("service.SoapService.ExecuteCommand",
 		log.String("command", command),
 	)
 

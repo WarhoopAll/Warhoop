@@ -12,24 +12,15 @@ func (r *SaitRepo) CreateNews(ctx context.Context, entry *model.DBNews) (*model.
 		Model(entry).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetNewsSlice",
-			log.String("error", err.Error()),
+		r.logger.Error("store.SaitRepo.CreateNews",
+			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)
 		return nil, err
 	}
 
-	err = r.db.
-		NewSelect().
-		Model(entry).
-		Relation("Profile").
-		Where("id = ?", entry.ID).
-		Scan(ctx)
+	entry, err = r.GetNewsByID(ctx, entry.ID)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.AddComment (SELECT)",
-			log.String("error", err.Error()),
-			log.Object("entry", entry),
-		)
 		return nil, err
 	}
 	return entry, nil
@@ -45,8 +36,8 @@ func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, erro
 		Scan(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.GetNewsByID",
-			log.String("error", err.Error()),
-			log.Object("entry", entry),
+			log.String("err", err.Error()),
+			log.Int("id", id),
 		)
 		return nil, err
 	}
@@ -71,7 +62,7 @@ func (r *SaitRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*model.
 		Scan(ctx, &total)
 	if countErr != nil {
 		r.logger.Error("store.SaitRepo.GetNewsSlice - count",
-			log.String("error", countErr.Error()),
+			log.String("err", countErr.Error()),
 		)
 		return nil, 0, countErr
 	}
@@ -85,8 +76,7 @@ func (r *SaitRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*model.
 		Scan(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.GetNewsSlice",
-			log.String("error", err.Error()),
-			log.Object("entry", entry),
+			log.String("err", err.Error()),
 		)
 		return nil, 0, err
 	}
@@ -113,7 +103,7 @@ func (r *SaitRepo) UpdateNews(ctx context.Context, entry *model.DBNews) (*model.
 	_, err := q.Exec(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.UpdateNews",
-			log.String("error", err.Error()),
+			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)
 		return nil, err
@@ -134,8 +124,8 @@ func (r *SaitRepo) DeleteNews(ctx context.Context, id int) error {
 		Exec(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.DeleteNews",
-			log.String("error", err.Error()),
-			log.Int("news_id", id),
+			log.String("err", err.Error()),
+			log.Int("id", id),
 		)
 		return err
 	}

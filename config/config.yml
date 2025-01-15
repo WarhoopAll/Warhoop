@@ -7,6 +7,13 @@ service:
   template_static: static/welcome.html
   default_locale: en
 
+uptrace:
+  enable: false
+  dsn:
+  name: Warhoop-API
+  deployment: prod
+  version: 1.0.0
+
 db:
   auth: root:root@tcp(localhost:3306)/auth?parseTime=true
   characters: root:root@tcp(localhost:3306)/characters?parseTime=true

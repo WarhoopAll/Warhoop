@@ -31,7 +31,7 @@ func (r *CharRepo) GetByID(ctx context.Context, id int) (*model.DBCharacters, er
 	if err != nil {
 		r.logger.Error("store.CharRepo.GetByID",
 			log.String("err", err.Error()),
-			log.Int("id", id),
+			log.Int("guid", id),
 		)
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (r *CharRepo) GetByName(ctx context.Context, name string) (*model.DBCharact
 	if err != nil {
 		r.logger.Error("store.CharRepo.GetByName",
 			log.String("err", err.Error()),
-			log.String("id", name),
+			log.String("name", name),
 		)
 		return nil, err
 	}
@@ -80,9 +80,8 @@ func (r *CharRepo) GetTop10Kill(ctx context.Context) (*model.DBCharactersSlice, 
 		Limit(10).
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("store.CharRepo.GetCharactersSlice",
-			log.String("error", err.Error()),
-			log.Object("entry", entry),
+		r.logger.Error("store.CharRepo.GetTop10Kill",
+			log.String("err", err.Error()),
 		)
 		return nil, err
 	}
@@ -101,7 +100,7 @@ func (r *CharRepo) GetOnlineSlice(ctx context.Context) (*model.DBCharactersSlice
 		Where("online = ?", 1).
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("store.CharRepo.GetCharOnline",
+		r.logger.Error("store.CharRepo.GetOnlineSlice",
 			log.String("err", err.Error()),
 		)
 		return nil, err
