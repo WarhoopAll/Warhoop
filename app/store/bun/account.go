@@ -31,7 +31,7 @@ func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error
 		Scan(ctx)
 
 	if err != nil {
-		r.logger.Error("store.Account.GetByUID",
+		r.logger.Error("store.AuthRepo.GetByUID",
 			log.String("err", err.Error()),
 			log.Int("id", id),
 		)
@@ -40,10 +40,6 @@ func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error
 
 	avatar, err := r.saitr.GetProfile(ctx, entry.ID)
 	if err != nil {
-		r.logger.Error("store.Account.GetByUsername.LoadAvatar",
-			log.String("err", err.Error()),
-			log.Int("accountID", entry.ID),
-		)
 		return nil, err
 	}
 	entry.Profile = avatar
@@ -60,19 +56,15 @@ func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*model.D
 		Where("username = ?", username).
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("store.Account.GetByUsername",
+		r.logger.Error("store.AuthRepo.GetByUsername",
 			log.String("err", err.Error()),
-			log.String("id", username),
+			log.String("username", username),
 		)
 		return nil, err
 	}
 
 	avatar, err := r.saitr.GetProfile(ctx, entry.ID)
 	if err != nil {
-		r.logger.Error("store.Account.GetByUsername.LoadAvatar",
-			log.String("err", err.Error()),
-			log.Int("accountID", entry.ID),
-		)
 		return nil, err
 	}
 	entry.Profile = avatar
@@ -88,7 +80,7 @@ func (r *AuthRepo) ExistsEmail(ctx context.Context, email string) (bool, error) 
 		Exists(ctx)
 
 	if err != nil {
-		r.logger.Error("store.Account.Exists",
+		r.logger.Error("store.AuthRepo.ExistsEmail",
 			log.String("err", err.Error()),
 			log.String("email", email),
 		)
@@ -105,7 +97,7 @@ func (r *AuthRepo) ExistsUsername(ctx context.Context, username string) (bool, e
 		Exists(ctx)
 
 	if err != nil {
-		r.logger.Error("store.Account.Exists",
+		r.logger.Error("store.AuthRepo.ExistsUsername",
 			log.String("err", err.Error()),
 			log.String("username", username),
 		)
@@ -120,7 +112,7 @@ func (r *AuthRepo) Create(ctx context.Context, entry *model.DBAccount) (*model.D
 		Model(entry).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("store.Account.Create",
+		r.logger.Error("store.AuthRepo.Create",
 			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)

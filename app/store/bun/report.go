@@ -77,9 +77,9 @@ func (r *SaitRepo) DeleteReportByID(ctx context.Context, id int) error {
 		Where("id = ?", id).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("Dstore.SaitRepo.DeleteReportByID",
+		r.logger.Error("store.SaitRepo.DeleteReportByID",
+			log.String("err", err.Error()),
 			log.Int("id", id),
-			log.String("error", err.Error()),
 		)
 		return err
 	}

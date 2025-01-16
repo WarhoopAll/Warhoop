@@ -25,7 +25,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 					log.Int("status", c.Response().StatusCode()),
 					log.String("path", string(c.Request().RequestURI())),
 					log.String("duration", string(logString)),
-					log.Any("ips", c.IPs()),
+					log.Object("ips", c.IPs()),
 				)
 			}
 			if (c.Response().StatusCode() >= 300) && (c.Response().StatusCode() < 600) {
@@ -35,7 +35,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 					log.Int("status", c.Response().StatusCode()),
 					log.String("path", string(c.Request().RequestURI())),
 					log.String("duration", string(logString)),
-					log.Any("ips", c.IPs()),
+					log.Object("ips", c.IPs()),
 				)
 			}
 		},

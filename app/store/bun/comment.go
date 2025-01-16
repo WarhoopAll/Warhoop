@@ -12,9 +12,8 @@ func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*
 		Model(entry).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.AddComment",
-			log.String("error", err.Error()),
-			log.Int("comment_id", entry.NewsID),
+		r.logger.Error("store.SaitRepo.CreateComment",
+			log.String("err", err.Error()),
 			log.Object("entry", entry),
 		)
 		return nil, err
@@ -37,10 +36,9 @@ func (r *SaitRepo) GetCommentsByNewsID(ctx context.Context, id int) (*model.DBCo
 		OrderExpr("like_count DESC, created_at DESC").
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetNewsSlice",
-			log.String("error", err.Error()),
-			log.Int("id_news", id),
-			log.Object("entries", entry),
+		r.logger.Error("store.SaitRepo.GetCommentsByNewsID",
+			log.String("err", err.Error()),
+			log.Int("news_id", id),
 		)
 		return nil, err
 	}
@@ -56,10 +54,9 @@ func (r *SaitRepo) GetCommentByID(ctx context.Context, id int) (*model.DBComment
 		Where("id = ?", id).
 		Scan(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetNewsSlice",
-			log.String("error", err.Error()),
-			log.Int("comment_id", id),
-			log.Object("entries", entry),
+		r.logger.Error("store.SaitRepo.GetCommentByID",
+			log.String("err", err.Error()),
+			log.Int("id", id),
 		)
 		return nil, err
 	}
@@ -73,9 +70,9 @@ func (r *SaitRepo) DeleteComment(ctx context.Context, id int) error {
 		Where("id = ?", id).
 		Exec(ctx)
 	if err != nil {
-		r.logger.Error("store.SaitRepo.GetNewsSlice",
-			log.String("error", err.Error()),
-			log.Int("comment_id", id),
+		r.logger.Error("store.SaitRepo.DeleteComment",
+			log.String("err", err.Error()),
+			log.Int("id", id),
 		)
 		return err
 	}
@@ -91,8 +88,8 @@ func (r *SaitRepo) UpdateComment(ctx context.Context, entry *model.DBComment) (*
 		Exec(ctx)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.UpdateComment",
-			log.String("error", err.Error()),
-			log.Int("comment_id", entry.ID),
+			log.String("err", err.Error()),
+			log.Object("entry", entry),
 		)
 		return nil, err
 	}

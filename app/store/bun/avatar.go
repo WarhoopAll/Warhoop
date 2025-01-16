@@ -25,10 +25,9 @@ func (r *SaitRepo) ExistAvatar(ctx context.Context, accountID int) (bool, error)
 		Model((*model.DBProfile)(nil)).
 		Where("account_id = ?", accountID).
 		Exists(ctx)
-
 	if err != nil {
-		r.logger.Error("store.Account.IfExists",
-			log.String("error", err.Error()),
+		r.logger.Error("store.SaitRepo.ExistAvatar",
+			log.String("err", err.Error()),
 			log.Int("account_id", accountID),
 		)
 		return false, err
@@ -50,10 +49,9 @@ func (r *SaitRepo) UpdateAvatar(ctx context.Context, entry *model.DBProfile) err
 			Where("account_id = ?", entry.AccountID).
 			Exec(ctx)
 		if err != nil {
-			r.logger.Error("store.Account.UpdateAvatar",
-				log.String("error", err.Error()),
-				log.Int("account_id", entry.AccountID),
-				log.String("Avatar", entry.Avatar),
+			r.logger.Error("store.SaitRepo.UpdateAvatar",
+				log.String("err", err.Error()),
+				log.Object("entry", entry),
 			)
 			return err
 		}
@@ -62,10 +60,9 @@ func (r *SaitRepo) UpdateAvatar(ctx context.Context, entry *model.DBProfile) err
 			Model(entry).
 			Exec(ctx)
 		if err != nil {
-			r.logger.Error("store.Account.InsertAvatar",
-				log.String("error", err.Error()),
-				log.Int("account_id", entry.AccountID),
-				log.String("Avatar", entry.Avatar),
+			r.logger.Error("store.SaitRepo.UpdateAvatar",
+				log.String("err", err.Error()),
+				log.Object("entry", entry),
 			)
 			return err
 		}

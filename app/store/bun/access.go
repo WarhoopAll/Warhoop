@@ -16,7 +16,7 @@ func (r *AuthRepo) ExistsAccess(ctx context.Context, id int) (bool, error) {
 	if err != nil {
 		r.logger.Error("store.AuthRepo.ExistsAccess",
 			log.String("err", err.Error()),
-			log.Int("accID", id),
+			log.Int("AccountID", id),
 		)
 		return false, err
 	}
@@ -34,7 +34,7 @@ func (r *AuthRepo) GetAccessByID(ctx context.Context, id int) (*model.DBAccess, 
 	if err != nil {
 		r.logger.Error("store.SaitRepo.GetAccessByID",
 			log.String("err", err.Error()),
-			log.Int("accID", id),
+			log.Int("AccountID", id),
 		)
 		return nil, err
 	}

@@ -26,7 +26,7 @@ func (svc WebService) CreateComment(ctx context.Context, id int, entry *model.Co
 func (svc WebService) DeleteComment(ctx context.Context, id int) error {
 	err := svc.store.SaitRepo.DeleteComment(ctx, id)
 	if err != nil {
-		return err
+		return utils.ErrDataBase
 	}
 	return nil
 }

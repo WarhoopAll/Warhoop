@@ -1,5 +1,5 @@
 service:
-  log_level: debug
+  log_level: info
   api_addr_port: 0.0.0.0:3011
   app_url: https://warhoop.su
   git_info: static/gitinfo.json
@@ -7,12 +7,19 @@ service:
   template_static: static/welcome.html
   default_locale: ru
 
+uptrace:
+  enable: false
+  dsn:
+  name: Warhoop-API
+  deployment: dev
+  version: 1.0.1
+
 db:
   auth: root:root@tcp(localhost:3306)/auth?parseTime=true
   characters: root:root@tcp(localhost:3306)/characters?parseTime=true
   world: root:root@tcp(localhost:3306)/world?parseTime=true
   sait: root:root@tcp(localhost:3306)/sait?parseTime=true
-  verbose: true
+  verbose: false
 
 realm:
   id: 1

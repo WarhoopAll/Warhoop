@@ -2,6 +2,7 @@ package log
 
 import (
 	"log/slog"
+	"time"
 )
 
 type Field = slog.Attr
@@ -20,10 +21,6 @@ func Int64(key string, value int64) Field {
 
 func Uint(key string, value uint) Field {
 	return slog.Uint64(key, uint64(value))
-}
-
-func Uint64(key string, value uint64) Field {
-	return slog.Uint64(key, value)
 }
 
 func Float32(key string, value float32) Field {
@@ -46,14 +43,14 @@ func String(key string, value string) Field {
 	return slog.String(key, value)
 }
 
-func Any(key string, value interface{}) Field {
-	return slog.Any(key, value)
-}
-
 func Object(key string, value interface{}) Field {
 	return slog.Any(key, value)
 }
 
-func Array(key string, value interface{}) Field {
-	return slog.Any(key, value)
+func Duration(key string, value time.Duration) Field {
+	return slog.Duration(key, value)
+}
+
+func Time(key string, value time.Time) Field {
+	return slog.Time(key, value)
 }

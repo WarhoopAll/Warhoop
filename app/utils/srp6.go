@@ -3,9 +3,9 @@ package utils
 import (
 	"crypto/rand"
 	"crypto/sha1"
-	"warhoop/app/log"
 	"math/big"
 	"strings"
+	"warhoop/app/log"
 )
 
 const byteSize = 32
@@ -87,9 +87,9 @@ func (srp *SRP) GenerateSalt() error {
 	salt := make([]byte, byteSize)
 	_, err := rand.Read(salt)
 	if err != nil {
-		log.Get().Error("utils.GenerateSalt",
+		logger.Error("utils.GenerateSalt",
 			log.String("err", err.Error()),
-			log.ByteString("salt", salt))
+		)
 		return err
 	}
 	srp.saltByte = salt
@@ -115,10 +115,8 @@ func CreateVerifier(username, password string) (salt []byte, verifier []byte, er
 	// Generate salt
 	err = srp.GenerateSalt()
 	if err != nil {
-		log.Get().Error("utils.CreateVerifier",
+		logger.Error("utils.CreateVerifier",
 			log.String("err", err.Error()),
-			log.ByteString("salt", salt),
-			log.ByteString("verifier", verifier),
 		)
 		return nil, nil, err
 	}

@@ -37,7 +37,7 @@ type Commit struct {
 func LoadGitInfo(path string) (*GitInfo, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		logger.Error("Failed to open gitinfo.json",
+		logger.Error("utils.LoadGitInfo",
 			log.String("err", err.Error()),
 		)
 		return nil, err
@@ -48,7 +48,7 @@ func LoadGitInfo(path string) (*GitInfo, error) {
 	decoder := json.NewDecoder(file)
 	decodeErr := decoder.Decode(&gitInfo)
 	if decodeErr != nil {
-		logger.Error("Failed to decode gitinfo.json",
+		logger.Error("utils.LoadGitInfo",
 			log.String("err", err.Error()),
 		)
 		return nil, err

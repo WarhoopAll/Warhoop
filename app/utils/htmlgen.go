@@ -2,10 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"warhoop/app/config"
-	"warhoop/app/log"
 	"html/template"
 	"os"
+	"warhoop/app/config"
+	"warhoop/app/log"
 )
 
 var cfg = config.Get()
@@ -13,10 +13,6 @@ var cfg = config.Get()
 func LoadAndGenerateHTML(gitInfoPath string) error {
 	gitInfo, err := LoadGitInfo(gitInfoPath)
 	if err != nil {
-		logger.Error("failed to load git info",
-			log.String("error", err.Error()),
-			log.String("path", gitInfoPath),
-		)
 		return err
 	}
 
@@ -31,9 +27,6 @@ func LoadAndGenerateHTML(gitInfoPath string) error {
 
 	err = GenerateHTML(data)
 	if err != nil {
-		logger.Error("failed to generate HTML",
-			log.String("error", err.Error()),
-		)
 		return err
 	}
 
@@ -43,7 +36,7 @@ func LoadAndGenerateHTML(gitInfoPath string) error {
 func GenerateHTML(data GitInfo) error {
 	tmplContent, err := os.ReadFile(cfg.Service.TemplateWelcome)
 	if err != nil {
-		logger.Error("error reading HTML template",
+		logger.Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -51,7 +44,7 @@ func GenerateHTML(data GitInfo) error {
 
 	tmplParsed, err := template.New("welcome").Parse(string(tmplContent))
 	if err != nil {
-		logger.Error("error parsing template",
+		logger.Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -87,7 +80,7 @@ func GenerateHTML(data GitInfo) error {
 
 	err = os.MkdirAll("./static", os.ModePerm)
 	if err != nil {
-		logger.Error("error creating static directory",
+		logger.Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -96,7 +89,7 @@ func GenerateHTML(data GitInfo) error {
 	outputFile := cfg.Service.TemplateStatic
 	file, err := os.Create(outputFile)
 	if err != nil {
-		logger.Error("error creating HTML file",
+		logger.Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -105,12 +98,12 @@ func GenerateHTML(data GitInfo) error {
 
 	err = tmplParsed.Execute(file, templateData)
 	if err != nil {
-		logger.Error("error executing template",
+		logger.Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
 	}
-	logger.Debug("Static HTML file generated successfully in",
+	logger.Debug("utils.GenerateHTML",
 		log.String("directory", outputFile),
 	)
 	return nil
