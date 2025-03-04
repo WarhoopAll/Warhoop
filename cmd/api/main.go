@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
+	"warhoop/app/cache"
 	"warhoop/app/config"
 	"warhoop/app/ctrl"
 	"warhoop/app/log"
@@ -43,9 +44,10 @@ func run(logger *log.Logger) error {
 		)
 		return err
 	}
+	redisCache := cache.NewRedisCache()
 
 	// Init service manager
-	serviceManager, err := svc.NewManager(ctx, store, logger)
+	serviceManager, err := svc.NewManager(ctx, store, logger, redisCache)
 	if err != nil {
 		logger.Error("manager.New failed",
 			log.String("err", err.Error()),

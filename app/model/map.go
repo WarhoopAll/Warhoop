@@ -4,8 +4,8 @@ import "github.com/uptrace/bun"
 
 type Map struct {
 	ID     int32  `json:"-"`
-	LangEn string `json:"map_lang_en"`
-	LangRU string `json:"map_lang_ru"`
+	LangEn string `json:"map_lang_en,omitempty"`
+	LangRU string `json:"map_lang_ru,omitempty"`
 }
 
 type DBMap struct {

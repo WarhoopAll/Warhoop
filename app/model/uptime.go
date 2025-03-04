@@ -8,6 +8,9 @@ type Uptime struct {
 	Uptime     int        `json:"-"`
 	Maxplayers int16      `json:"maxplayers,omitempty"`
 	Realm      *Realmlist `json:"realm,omitempty"`
+	Flag       string     `json:"flag"`
+	Rate       string     `json:"rate"`
+	Realmlis   string     `json:"realmlis"`
 	Revision   string     `json:"revision,omitempty"`
 	CharOnline int        `json:"charOnline"`
 }

@@ -92,9 +92,6 @@ func (r *CharRepo) GetOnlineSlice(ctx context.Context) (*model.DBCharactersSlice
 	entry := &model.DBCharactersSlice{}
 	err := r.db.NewSelect().
 		Model(entry).
-		//Relation("Maps", func(q *bun.SelectQuery) *bun.SelectQuery {
-		//	return q.Table(fmt.Sprintf("%s.map", cfg.DB.Sait))
-		//}).
 		Relation("Maps").
 		Relation("Zones").
 		Where("online = ?", 1).

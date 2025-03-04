@@ -4,8 +4,8 @@ import "github.com/uptrace/bun"
 
 type Zone struct {
 	ID     int32  `json:"-"`
-	LangEn string `json:"zone_lang_en"`
-	LangRu string `json:"zone_lang_ru"`
+	LangEn string `json:"zone_lang_en,omitempty"`
+	LangRu string `json:"zone_lang_ru,omitempty"`
 }
 
 type DBZone struct {

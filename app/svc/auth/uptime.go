@@ -16,7 +16,7 @@ func (s *AuthService) GetUptime(ctx context.Context) (*model.Uptime, error) {
 		return nil, utils.ErrDataBase
 	}
 
-	if !s.CheckOnlineStatus(entry.Realm.Address, entry.Realm.Port) {
+	if !s.CheckOnlineStatus(config.Get().Realm.Realmlist, entry.Realm.Port) {
 		return nil, utils.ErrInternal
 	}
 

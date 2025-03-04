@@ -2,6 +2,8 @@ package characters
 
 import (
 	"context"
+	"log"
+	"time"
 	"warhoop/app/model"
 	"warhoop/app/utils"
 )
@@ -16,15 +18,38 @@ func (svc *CharService) GetByID(ctx context.Context, id int) (*model.Characters,
 }
 
 func (svc *CharService) GetByName(ctx context.Context, name string) (*model.Characters, error) {
+	var cachedData model.Characters
+	cacheKey := "GetByName:" + name
+
+	err := svc.redisCache.Get(ctx, cacheKey, &cachedData)
+	if err == nil {
+		return &cachedData, nil
+	}
+
 	result, err := svc.store.CharRepo.GetByName(ctx, name)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 
+	go func() {
+		cacheErr := svc.redisCache.Set(ctx, cacheKey, result, time.Minute)
+		if cacheErr != nil {
+			log.Printf("err: %v", cacheErr)
+		}
+	}()
+
 	return result.ToWeb(), nil
 }
 
 func (svc *CharService) GetTop10Kill(ctx context.Context) ([]map[string]interface{}, error) {
+	cacheKey := "GetTop10Kill"
+
+	var cachedData []map[string]interface{}
+	err := svc.redisCache.Get(ctx, cacheKey, &cachedData)
+	if err == nil {
+		return cachedData, nil
+	}
+
 	result, err := svc.store.CharRepo.GetTop10Kill(ctx)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -41,6 +66,13 @@ func (svc *CharService) GetTop10Kill(ctx context.Context) ([]map[string]interfac
 		})
 	}
 
+	go func() {
+		cacheErr := svc.redisCache.Set(ctx, cacheKey, transformed, 10*time.Minute)
+		if cacheErr != nil {
+			log.Printf("err: %v", cacheErr)
+		}
+	}()
+
 	return transformed, nil
 }
 
@@ -53,6 +85,14 @@ func (svc *CharService) GetOnlineCount(ctx context.Context) (int, error) {
 }
 
 func (svc *CharService) GetOnlineSlice(ctx context.Context) ([]map[string]interface{}, error) {
+	cacheKey := "GetOnlineSlice"
+
+	var cachedData []map[string]interface{}
+	err := svc.redisCache.Get(ctx, cacheKey, &cachedData)
+	if err == nil {
+		return cachedData, nil
+	}
+
 	result, err := svc.store.CharRepo.GetOnlineSlice(ctx)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -69,5 +109,13 @@ func (svc *CharService) GetOnlineSlice(ctx context.Context) ([]map[string]interf
 			"zone":   char.Zones.ToWeb(),
 		})
 	}
+
+	go func() {
+		cacheErr := svc.redisCache.Set(ctx, cacheKey, transformed, 10*time.Minute)
+		if cacheErr != nil {
+			log.Printf("err: %v", cacheErr)
+		}
+	}()
+
 	return transformed, err
 }

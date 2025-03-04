@@ -55,7 +55,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 		return h.GetCharByName(ctx)
 	})
 
-	char.Get("/pvp", h.GetCharTop10Kill)
+	api.Get("/pvp", h.GetCharTop10Kill)
 
 	api.Get("/status", h.GetUptime)
 	api.Get("/online", h.GetOnlineSlice)

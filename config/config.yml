@@ -7,13 +7,6 @@ service:
   template_static: static/welcome.html
   default_locale: en
 
-uptrace:
-  enable: false
-  dsn:
-  name: Warhoop-API
-  deployment: prod
-  version: 1.0.0
-
 db:
   auth: root:root@tcp(localhost:3306)/auth?parseTime=true
   characters: root:root@tcp(localhost:3306)/characters?parseTime=true
@@ -21,8 +14,22 @@ db:
   sait: warhoop:warhoop@tcp(warhoop-db:3306)/sait?parseTime=true
   verbose: false
 
+redis:
+  dsn: 127.0.0.1:6379
+  password:
+
+uptrace:
+  enable: false
+  dsn:
+  name: Warhoop-API
+  deployment: prod
+  version: 1.0.0
+
 realm:
   id: 1
+  rate: x5
+  flag: PvP
+  realmlist: logon.warhoop.su
 
 soap:
   enable: true

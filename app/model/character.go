@@ -7,7 +7,7 @@ type Characters struct {
 	Name                 string `json:"name,omitempty"`
 	Race                 int    `json:"race,omitempty"`
 	Class                int    `json:"class,omitempty"`
-	Gender               int    `json:"gender"`
+	Gender               int    `json:"gender,omitempty"`
 	Level                int    `json:"level,omitempty"`
 	Xp                   int    `json:"xp,omitempty"`
 	Money                int    `json:"money,omitempty"`
@@ -16,12 +16,12 @@ type Characters struct {
 	HairStyle            int    `json:"hairstyle,omitempty"`
 	HairColor            int    `json:"haircolor,omitempty"`
 	FacialStyle          int    `json:"facialstyle,omitempty"`
-	Map                  *Map   `json:"map,omitempty"`
+	Maps                 *Map   `json:"maps,omitempty"`
 	Online               int    `json:"online,omitempty"`
 	Totaltime            int    `json:"totaltime,omitempty"`
 	Leveltime            int    `json:"leveltime,omitempty"`
 	LogoutTime           int    `json:"logouttime,omitempty"`
-	Zone                 *Zone  `json:"zone,omitempty"`
+	Zones                *Zone  `json:"zones,omitempty"`
 	ArenaPoints          int    `json:"arenapoints,omitempty"`
 	TotalHonorPoints     int    `json:"totalhonorpoints,omitempty"`
 	TodayHonorPoints     int    `json:"todayhonorpoints,omitempty"`
@@ -180,8 +180,8 @@ func (entry *DBCharacters) ToWeb() *Characters {
 		ActiveTalentGroup:    entry.ActiveTalentGroup,
 		EquipmentCache:       entry.EquipmentCache,
 		KnownTitles:          entry.KnownTitles,
-		Map:                  entry.Maps.ToWeb(),
-		Zone:                 entry.Zones.ToWeb(),
+		Maps:                 entry.Maps.ToWeb(),
+		Zones:                entry.Zones.ToWeb(),
 	}
 }
 

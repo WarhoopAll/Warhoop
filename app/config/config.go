@@ -27,7 +27,10 @@ type Config struct {
 		Version    string `yaml:"version"`
 	} `yaml:"uptrace"`
 	Realm struct {
-		ID int `yaml:"id"`
+		ID        int    `yaml:"id"`
+		Rate      string `yaml:"rate"`
+		Flag      string `yaml:"flag"`
+		Realmlist string `yaml:"realmlist"`
 	} `yaml:"realm"`
 	DB struct {
 		Auth       string `yaml:"auth"`
@@ -36,6 +39,11 @@ type Config struct {
 		Sait       string `yaml:"sait"`
 		Verbose    bool   `yaml:"verbose"`
 	} `yaml:"db"`
+	Redis struct {
+		Enable   bool   `yaml:"enable"`
+		DSN      string `yaml:"dsn"`
+		Password string `yaml:"password"`
+	} `yaml:"redis"`
 	Soap struct {
 		Enable   bool   `yaml:"enable"`
 		Host     string `yaml:"host"`
