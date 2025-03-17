@@ -43,7 +43,9 @@ func (r *CharRepo) GetByName(ctx context.Context, name string) (*model.DBCharact
 	entry := &model.DBCharacters{}
 	err := r.db.NewSelect().
 		Model(entry).
-		Where("name = ?", name).
+		Relation("Stats").
+		Relation("Inventory.ItemInstance.ItemDBC").
+		Where("LOWER(name) = LOWER(?)", name).
 		Scan(ctx)
 	if err != nil {
 		r.logger.Error("store.CharRepo.GetByName",

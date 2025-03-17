@@ -31,6 +31,7 @@ func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, erro
 	err := r.db.
 		NewSelect().
 		Model(entry).
+		Relation("Comments.Profile").
 		Relation("Profile").
 		Where("id = ?", id).
 		Scan(ctx)
@@ -41,14 +42,6 @@ func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, erro
 		)
 		return nil, err
 	}
-
-	comments, err := r.GetCommentsByNewsID(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-
-	entry.Comments = comments
-
 	return entry, nil
 }
 

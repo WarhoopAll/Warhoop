@@ -87,9 +87,3 @@ func (data DBCommentSlice) ToWeb() CommentSlice {
 	}
 	return result
 }
-
-//func (entry *Comment) EnsureProfile() {
-//	if entry.Profile == nil {
-//		entry.Profile = &Profile{}
-//	}
-//}

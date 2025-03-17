@@ -60,6 +60,9 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 	api.Get("/status", h.GetUptime)
 	api.Get("/online", h.GetOnlineSlice)
 
+	armory := api.Group("/armory")
+	armory.Get("/characters", h.GetArmoryCharactersSlice)
+
 	auth := api.Group("/auth")
 	auth.Post("/signup", h.SignUp)
 	auth.Post("/signin", h.SignIn)

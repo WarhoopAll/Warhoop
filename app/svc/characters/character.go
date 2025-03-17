@@ -2,8 +2,8 @@ package characters
 
 import (
 	"context"
-	"log"
-	"time"
+	"strconv"
+	"strings"
 	"warhoop/app/model"
 	"warhoop/app/utils"
 )
@@ -18,38 +18,97 @@ func (svc *CharService) GetByID(ctx context.Context, id int) (*model.Characters,
 }
 
 func (svc *CharService) GetByName(ctx context.Context, name string) (*model.Characters, error) {
-	var cachedData model.Characters
-	cacheKey := "GetByName:" + name
-
-	err := svc.redisCache.Get(ctx, cacheKey, &cachedData)
-	if err == nil {
-		return &cachedData, nil
-	}
-
 	result, err := svc.store.CharRepo.GetByName(ctx, name)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 
-	go func() {
-		cacheErr := svc.redisCache.Set(ctx, cacheKey, result, time.Minute)
-		if cacheErr != nil {
-			log.Printf("err: %v", cacheErr)
+	inv := result.Inventory[:0]
+	for _, equip := range result.Inventory {
+		if equip.Slot >= 0 && equip.Slot <= 18 && equip.Bag == 0 {
+			equip.Slot += 1
+			inv = append(inv, equip)
 		}
-	}()
+	}
+	result.Inventory = inv
+
+	for i := range result.Inventory {
+		equip := &result.Inventory[i]
+		if equip.ItemInstance != nil && equip.ItemInstance.ItemDBC != nil &&
+			equip.ItemInstance.ItemDBC.ItemDisplayInfoID != 0 {
+
+			switch equip.Slot {
+			case 16:
+				equip.Slot = 21
+			case 17:
+				equip.Slot = 22
+			case 15:
+				equip.Slot = 16
+			case 5:
+				if equip.ItemInstance.ItemDBC.InventoryType == 20 {
+					equip.Slot = 20
+				}
+			}
+		}
+	}
+
+	enchMap := make(map[int32][]int)
+
+	for i := range result.Inventory {
+		equip := &result.Inventory[i]
+
+		if equip.ItemInstance != nil {
+			enchValues := strings.Fields(equip.ItemInstance.Enchantments)
+			if len(enchValues) > 0 {
+				for _, field := range enchValues {
+					id, err := strconv.ParseInt(field, 10, 32)
+					if err == nil && id != 0 {
+						enchMap[int32(id)] = append(enchMap[int32(id)], i)
+					}
+				}
+
+				equip.ItemInstance.Enchantments = enchValues[0]
+			} else {
+				equip.ItemInstance.Enchantments = " "
+			}
+		}
+	}
+
+	var enchFullList []int32
+	for enchID := range enchMap {
+		if enchID != 3729 && enchID != 3717 {
+			enchFullList = append(enchFullList, enchID)
+		}
+	}
+
+	gemMap, err := svc.store.SaitRepo.GetEnchantDBCByIDs(ctx, enchFullList)
+	if err != nil {
+		return nil, utils.ErrDataBase
+	}
+
+	for enchID, itemIndexes := range enchMap {
+		for _, itemIndex := range itemIndexes {
+			equip := &result.Inventory[itemIndex]
+
+			if enchID == 3729 || enchID == 3717 {
+				equip.ItemInstance.Socket = strconv.Itoa(int(enchID))
+				continue
+			}
+
+			if srcItemID, found := gemMap[enchID]; found {
+				if equip.ItemInstance.Gems == "" {
+					equip.ItemInstance.Gems = strconv.Itoa(int(srcItemID))
+				} else {
+					equip.ItemInstance.Gems += ":" + strconv.Itoa(int(srcItemID))
+				}
+			}
+		}
+	}
 
 	return result.ToWeb(), nil
 }
 
 func (svc *CharService) GetTop10Kill(ctx context.Context) ([]map[string]interface{}, error) {
-	cacheKey := "GetTop10Kill"
-
-	var cachedData []map[string]interface{}
-	err := svc.redisCache.Get(ctx, cacheKey, &cachedData)
-	if err == nil {
-		return cachedData, nil
-	}
-
 	result, err := svc.store.CharRepo.GetTop10Kill(ctx)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -65,14 +124,6 @@ func (svc *CharService) GetTop10Kill(ctx context.Context) ([]map[string]interfac
 			"totalkills": char.TotalKills,
 		})
 	}
-
-	go func() {
-		cacheErr := svc.redisCache.Set(ctx, cacheKey, transformed, 10*time.Minute)
-		if cacheErr != nil {
-			log.Printf("err: %v", cacheErr)
-		}
-	}()
-
 	return transformed, nil
 }
 
@@ -85,13 +136,6 @@ func (svc *CharService) GetOnlineCount(ctx context.Context) (int, error) {
 }
 
 func (svc *CharService) GetOnlineSlice(ctx context.Context) ([]map[string]interface{}, error) {
-	cacheKey := "GetOnlineSlice"
-
-	var cachedData []map[string]interface{}
-	err := svc.redisCache.Get(ctx, cacheKey, &cachedData)
-	if err == nil {
-		return cachedData, nil
-	}
 
 	result, err := svc.store.CharRepo.GetOnlineSlice(ctx)
 	if err != nil {
@@ -109,13 +153,5 @@ func (svc *CharService) GetOnlineSlice(ctx context.Context) ([]map[string]interf
 			"zone":   char.Zones.ToWeb(),
 		})
 	}
-
-	go func() {
-		cacheErr := svc.redisCache.Set(ctx, cacheKey, transformed, 10*time.Minute)
-		if cacheErr != nil {
-			log.Printf("err: %v", cacheErr)
-		}
-	}()
-
 	return transformed, err
 }

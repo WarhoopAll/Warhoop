@@ -15,7 +15,7 @@ db:
   verbose: true
 
 redis:
-  dsn: 127.0.0.1:6379
+  dsn: 192.168.1.70:6379
   password:
 
 uptrace:
@@ -29,7 +29,7 @@ realm:
   id: 1
   rate: x5
   flag: PvP
-  realmlist: logon.warhoop.su
+  realmlist: 127.0.0.1
 
 soap:
   enable: true
@@ -38,7 +38,7 @@ soap:
   password: 1
 
 cors:
-  allow_origins: http://localhost:5173,https://test.warhoop.su
+  allow_origins: http://localhost:5173,https://test.warhoop.su,http://192.168.1.70:8282
   allow_methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
   allow_headers: Content-Type,Authorization
   allow_credentials: true

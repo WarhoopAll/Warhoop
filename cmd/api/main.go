@@ -47,7 +47,7 @@ func run(logger *log.Logger) error {
 	redisCache := cache.NewRedisCache()
 
 	// Init service manager
-	serviceManager, err := svc.NewManager(ctx, store, logger, redisCache)
+	serviceManager, err := svc.NewManager(ctx, store, logger)
 	if err != nil {
 		logger.Error("manager.New failed",
 			log.String("err", err.Error()),
@@ -55,8 +55,7 @@ func run(logger *log.Logger) error {
 		return err
 	}
 
-	// Init handlers
-	hAccount := ctrl.NewHandler(ctx, serviceManager)
+	hAccount := ctrl.NewHandler(ctx, serviceManager, redisCache)
 
 	app := fiber.New()
 	app.Get("/metrics", monitor.New())

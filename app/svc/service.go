@@ -21,11 +21,14 @@ type Auth interface {
 }
 
 type Characters interface {
+	// Characters
 	GetByID(context.Context, int) (*model.Characters, error)
 	GetByName(context.Context, string) (*model.Characters, error)
 	GetTop10Kill(context.Context) ([]map[string]interface{}, error)
 	GetOnlineCount(context.Context) (int, error)
 	GetOnlineSlice(context.Context) ([]map[string]interface{}, error)
+	// Armory
+	GetArmoryCharactersSlice(ctx context.Context, limit, offset int) (*model.CharactersSlice, int, error)
 }
 
 type Web interface {

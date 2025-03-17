@@ -15,7 +15,7 @@ func (svc *WebService) GetSession(ctx context.Context, entry *model.Session) (*m
 	return session.ToWeb(), nil
 }
 
-func (svc WebService) DeleteSession(ctx context.Context, id string) (*fiber.Cookie, error) {
+func (svc *WebService) DeleteSession(ctx context.Context, id string) (*fiber.Cookie, error) {
 	err := svc.store.SaitRepo.DeleteSession(ctx, id)
 	if err != nil {
 		return nil, utils.ErrBadSession
@@ -25,7 +25,7 @@ func (svc WebService) DeleteSession(ctx context.Context, id string) (*fiber.Cook
 	return cookie, nil
 }
 
-func (svc WebService) ExistSession(ctx context.Context, entry *model.Session) (bool, error) {
+func (svc *WebService) ExistSession(ctx context.Context, entry *model.Session) (bool, error) {
 	exist, err := svc.store.SaitRepo.ExistSession(ctx, entry.ToDB())
 	if err != nil {
 		return !exist, utils.ErrDataBase
@@ -33,7 +33,7 @@ func (svc WebService) ExistSession(ctx context.Context, entry *model.Session) (b
 	return exist, nil
 }
 
-func (svc WebService) CreateSession(ctx context.Context, entry *model.Session) error {
+func (svc *WebService) CreateSession(ctx context.Context, entry *model.Session) error {
 	err := svc.store.SaitRepo.CreateSession(ctx, entry.ToDB())
 	if err != nil {
 		return utils.ErrDataBase
@@ -41,7 +41,7 @@ func (svc WebService) CreateSession(ctx context.Context, entry *model.Session) e
 	return nil
 }
 
-func (svc WebService) UpdateSession(ctx context.Context, entry *model.Session) error {
+func (svc *WebService) UpdateSession(ctx context.Context, entry *model.Session) error {
 	err := svc.store.SaitRepo.UpdateSession(ctx, entry.ToDB())
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (svc WebService) UpdateSession(ctx context.Context, entry *model.Session) e
 	return nil
 }
 
-func (svc WebService) UpdateOrCreateSession(ctx context.Context, entry *model.Session, newToken string) error {
+func (svc *WebService) UpdateOrCreateSession(ctx context.Context, entry *model.Session, newToken string) error {
 	_, err := svc.store.SaitRepo.UpdateOrCreateSession(ctx, entry.ToDB(), newToken)
 	if err != nil {
 		return utils.ErrDataBase

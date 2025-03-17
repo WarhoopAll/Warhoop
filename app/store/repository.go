@@ -26,6 +26,9 @@ type CharRepo interface {
 	GetTop10Kill(context.Context) (*model.DBCharactersSlice, error)
 	GetOnlineCount(context.Context) (int, error)
 	GetOnlineSlice(context.Context) (*model.DBCharactersSlice, error)
+	// Armory
+
+	GetArmoryCharactersSlice(context.Context, int, int) (*model.DBCharactersSlice, int, error)
 }
 
 type SaitRepo interface {
@@ -63,4 +66,6 @@ type SaitRepo interface {
 	UpdateReport(context.Context, *model.DBReport) (*model.DBReport, error)
 	GetReports(context.Context, int, int) (*model.DBReportSlice, error)
 	DeleteReportByID(context.Context, int) error
+	//Enchant DBC
+	GetEnchantDBCByIDs(context.Context, []int32) (map[int32]int32, error)
 }
