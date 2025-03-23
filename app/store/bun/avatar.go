@@ -3,26 +3,26 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-type SaitRepo struct {
+type NexusRepo struct {
 	db     *DB
 	logger *log.Logger
 }
 
 // NewSaitRepo ...
-func NewSaitRepo(db *DB, logger *log.Logger) *SaitRepo {
-	return &SaitRepo{
+func NewNexusRepo(db *DB, logger *log.Logger) *NexusRepo {
+	return &NexusRepo{
 		db:     db,
 		logger: logger,
 	}
 }
 
-func (r *SaitRepo) ExistAvatar(ctx context.Context, accountID int) (bool, error) {
+func (r *NexusRepo) ExistAvatar(ctx context.Context, accountID int) (bool, error) {
 	exists, err := r.db.
 		NewSelect().
-		Model((*model.DBProfile)(nil)).
+		Model((*nexus.DBProfile)(nil)).
 		Where("account_id = ?", accountID).
 		Exists(ctx)
 	if err != nil {
@@ -35,7 +35,7 @@ func (r *SaitRepo) ExistAvatar(ctx context.Context, accountID int) (bool, error)
 	return exists, nil
 }
 
-func (r *SaitRepo) UpdateAvatar(ctx context.Context, entry *model.DBProfile) error {
+func (r *NexusRepo) UpdateAvatar(ctx context.Context, entry *nexus.DBProfile) error {
 	exists, err := r.ExistAvatar(ctx, entry.AccountID)
 	if err != nil {
 		return err

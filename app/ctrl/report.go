@@ -3,7 +3,7 @@ package ctrl
 import (
 	"github.com/gofiber/fiber/v2"
 	"strconv"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
 func (h *Handler) CreateReport(ctx *fiber.Ctx) error {
@@ -12,7 +12,7 @@ func (h *Handler) CreateReport(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	entry := &model.Report{}
+	entry := &nexus.Report{}
 	err := ctx.BodyParser(&entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)

@@ -1,31 +1,34 @@
-package model
+package auth
 
-import "github.com/uptrace/bun"
+import (
+	"github.com/uptrace/bun"
+	"warhoop/app/model/nexus"
+)
 
 type Account struct {
-	ID       int      `json:"-"`
-	Username string   `json:"username,omitempty" validate:"required,min=4,max=20"`
-	Password string   `json:"password,omitempty" validate:"required,min=6,max=30"`
-	Salt     []byte   `json:"-"`
-	Verifier []byte   `json:"-"`
-	Access   *Access  `json:"access,omitempty"`
-	Profile  *Profile `json:"profile,omitempty" validate:"omitempty,eq=0"`
-	Email    string   `json:"email,omitempty" validate:"omitempty,email"`
-	LastIP   string   `json:"last_ip,omitempty" validate:"omitempty,eq=0"`
+	ID       int            `json:"-"`
+	Username string         `json:"username,omitempty" validate:"required,min=4,max=20"`
+	Password string         `json:"password,omitempty" validate:"required,min=6,max=30"`
+	Salt     []byte         `json:"-"`
+	Verifier []byte         `json:"-"`
+	Access   *Access        `json:"access,omitempty"`
+	Profile  *nexus.Profile `json:"profile,omitempty" validate:"omitempty,eq=0"`
+	Email    string         `json:"email,omitempty" validate:"omitempty,email"`
+	LastIP   string         `json:"last_ip,omitempty" validate:"omitempty,eq=0"`
 }
 
 type AccountSlice []Account
 
 type DBAccount struct {
 	bun.BaseModel `bun:"table:account,alias:account"`
-	ID            int        `bun:"id,notnull,unique,pk,autoincrement"`
-	Username      string     `bun:"username,notnull"`
-	Salt          []byte     `bun:"salt,notnull"`
-	Verifier      []byte     `bun:"verifier,notnull"`
-	Access        *DBAccess  `bun:"rel:belongs-to,join:id=AccountID"`
-	Profile       *DBProfile `bun:"-"`
-	Email         string     `bun:"email,notnull"`
-	LastIP        string     `bun:"last_ip"`
+	ID            int              `bun:"id,notnull,unique,pk,autoincrement"`
+	Username      string           `bun:"username,notnull"`
+	Salt          []byte           `bun:"salt,notnull"`
+	Verifier      []byte           `bun:"verifier,notnull"`
+	Access        *DBAccess        `bun:"rel:belongs-to,join:id=AccountID"`
+	Profile       *nexus.DBProfile `bun:"-"`
+	Email         string           `bun:"email,notnull"`
+	LastIP        string           `bun:"last_ip"`
 }
 
 type DBAccountSlice []DBAccount

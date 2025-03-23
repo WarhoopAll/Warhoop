@@ -47,7 +47,7 @@ func (ctr *Handler) GetCharByName(ctx *fiber.Ctx) error {
 		"status": "success",
 	}
 
-	err = ctr.cache.Set(ctx.Context(), cacheKey, response, time.Second)
+	err = ctr.cache.Set(ctx.Context(), cacheKey, response, time.Hour)
 	if err != nil {
 		log.Printf("Failed to save data to Redis: %v", err)
 	} else {

@@ -44,7 +44,7 @@ func SetupRoutes(app *fiber.App, h *ctrl.Handler) {
 	api.Use(ctxs.Shared)
 
 	app.Static("/favicon.ico", "templates/images/favicon.ico")
-	app.Static("/", config.Get().Service.TemplateStatic)
+	app.Static("/", config.Get().TemplateStatic)
 
 	char := api.Group("/character")
 	char.Get("/:param", func(ctx *fiber.Ctx) error {

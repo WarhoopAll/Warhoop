@@ -3,7 +3,8 @@ package ctrl
 import (
 	"github.com/gofiber/fiber/v2"
 	"strconv"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
+	"warhoop/app/model/nexus"
 )
 
 func (ctr *Handler) CreateComment(ctx *fiber.Ctx) error {
@@ -12,7 +13,7 @@ func (ctr *Handler) CreateComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	entry := &model.Comment{}
+	entry := &nexus.Comment{}
 	err := ParseAndValidate(ctx, entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
@@ -38,7 +39,7 @@ func (ctr *Handler) DeleteComment(ctx *fiber.Ctx) error {
 	}
 
 	if res.Access == nil {
-		res.Access = &model.Access{SecurityLevel: 0}
+		res.Access = &auth.Access{SecurityLevel: 0}
 	}
 
 	idParam := ctx.Params("id")
@@ -70,7 +71,7 @@ func (ctr *Handler) UpdateComment(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	entry := &model.Comment{}
+	entry := &nexus.Comment{}
 	err := ctx.BodyParser(&entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)

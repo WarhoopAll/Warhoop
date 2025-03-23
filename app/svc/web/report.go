@@ -2,29 +2,29 @@ package web
 
 import (
 	"context"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 	"warhoop/app/utils"
 )
 
-func (svc *WebService) CreateReport(ctx context.Context, id int, entry *model.Report) (*model.Report, error) {
+func (svc *WebService) CreateReport(ctx context.Context, id int, entry *nexus.Report) (*nexus.Report, error) {
 	entry.Reporter = id
-	result, err := svc.store.SaitRepo.CreateReport(ctx, entry.ToDB())
+	result, err := svc.store.NexusRepo.CreateReport(ctx, entry.ToDB())
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 	return result.ToWeb(), nil
 }
 
-func (svc *WebService) GetReportByID(ctx context.Context, id int) (*model.Report, error) {
-	result, err := svc.store.SaitRepo.GetReportByID(ctx, id)
+func (svc *WebService) GetReportByID(ctx context.Context, id int) (*nexus.Report, error) {
+	result, err := svc.store.NexusRepo.GetReportByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 	return result.ToWeb(), nil
 }
 
-func (svc *WebService) GetReports(ctx context.Context, limit, offset int) (*model.ReportSlice, error) {
-	result, err := svc.store.SaitRepo.GetReports(ctx, limit, offset)
+func (svc *WebService) GetReports(ctx context.Context, limit, offset int) (*nexus.ReportSlice, error) {
+	result, err := svc.store.NexusRepo.GetReports(ctx, limit, offset)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
@@ -33,7 +33,7 @@ func (svc *WebService) GetReports(ctx context.Context, limit, offset int) (*mode
 }
 
 func (svc *WebService) DeleteReportByID(ctx context.Context, id int) error {
-	err := svc.store.SaitRepo.DeleteReportByID(ctx, id)
+	err := svc.store.NexusRepo.DeleteReportByID(ctx, id)
 	if err != nil {
 		return utils.ErrDataBase
 	}

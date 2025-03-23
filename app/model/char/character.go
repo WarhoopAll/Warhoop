@@ -1,6 +1,9 @@
-package model
+package char
 
-import "github.com/uptrace/bun"
+import (
+	"github.com/uptrace/bun"
+	"warhoop/app/model/nexus"
+)
 
 type Characters struct {
 	Guid                 int                     `json:"guid,omitempty"`
@@ -16,12 +19,12 @@ type Characters struct {
 	HairStyle            int                     `json:"hairStyle"`
 	HairColor            int                     `json:"hairColor"`
 	FacialStyle          int                     `json:"facialStyle"`
-	Maps                 *Map                    `json:"maps,omitempty"`
+	Maps                 *nexus.Map              `json:"maps,omitempty"`
 	Online               int                     `json:"online,omitempty"`
 	Totaltime            int                     `json:"totaltime,omitempty"`
 	Leveltime            int                     `json:"leveltime,omitempty"`
 	LogoutTime           int                     `json:"logouttime,omitempty"`
-	Zones                *Zone                   `json:"zones,omitempty"`
+	Zones                *nexus.Zone             `json:"zones,omitempty"`
 	ArenaPoints          int                     `json:"arenapoints,omitempty"`
 	TotalHonorPoints     int                     `json:"totalhonorpoints,omitempty"`
 	TodayHonorPoints     int                     `json:"todayhonorpoints,omitempty"`
@@ -63,13 +66,13 @@ type DBCharacters struct {
 	HairColor            int                       `bun:"hairColor"`
 	FacialStyle          int                       `bun:"facialStyle"`
 	Map                  int                       `bun:"map,pk"`
-	Maps                 *DBMap                    `bun:"rel:belongs-to,join:map=ID"`
+	Maps                 *nexus.DBMap              `bun:"rel:belongs-to,join:map=ID"`
 	Online               int                       `bun:"online"`
 	Totaltime            int                       `bun:"totaltime"`
 	Leveltime            int                       `bun:"leveltime"`
 	LogoutTime           int                       `bun:"logout_time"`
 	Zone                 int                       `bun:"zone"`
-	Zones                *DBZone                   `bun:"rel:belongs-to,join:zone=ID"`
+	Zones                *nexus.DBZone             `bun:"rel:belongs-to,join:zone=ID"`
 	ArenaPoints          int                       `bun:"arenaPoints"`
 	TotalHonorPoints     int                       `bun:"totalHonorPoints"`
 	TodayHonorPoints     int                       `bun:"todayHonorPoints"`

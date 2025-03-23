@@ -3,8 +3,10 @@ package ctrl
 import (
 	"github.com/gofiber/fiber/v2"
 	"time"
+	"warhoop/app/config"
 	"warhoop/app/ctxs"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
+	"warhoop/app/model/nexus"
 	"warhoop/app/svc/web"
 )
 
@@ -14,7 +16,7 @@ func (ctr *Handler) SignIn(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	entry := &model.Account{}
+	entry := &auth.Account{}
 
 	err := ParseAndValidate(ctx, entry)
 	if err != nil {
@@ -28,12 +30,12 @@ func (ctr *Handler) SignIn(ctx *fiber.Ctx) error {
 
 	finger := FingerPrint(ctx, res.ID)
 
-	session := &model.Session{
+	session := &nexus.Session{
 		AccountID: res.ID,
 		IPs:       c.IPs,
 		Finger:    finger,
 		UpdatedAt: time.Now(),
-		ExpiredAt: time.Now().Add(cfg.Cookie.AccessDuration),
+		ExpiredAt: time.Now().Add(config.Get().CookieAccessDuration),
 	}
 
 	token, err := ctr.services.Web.GenerateAccessToken(res.ID)
@@ -60,7 +62,7 @@ func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	entry := &model.Account{}
+	entry := &auth.Account{}
 
 	err := ParseAndValidate(ctx, entry)
 	if err != nil {
@@ -79,13 +81,13 @@ func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	session := &model.Session{
+	session := &nexus.Session{
 		AccountID: res.ID,
 		Token:     token,
 		IPs:       c.IPs,
 		Finger:    finger,
 		UpdatedAt: time.Now(),
-		ExpiredAt: time.Now().Add(cfg.Cookie.AccessDuration),
+		ExpiredAt: time.Now().Add(config.Get().CookieAccessDuration),
 	}
 
 	err = ctr.services.Web.CreateSession(ctx.Context(), session)
@@ -99,7 +101,7 @@ func (ctr *Handler) SignUp(ctx *fiber.Ctx) error {
 }
 
 func (ctr *Handler) Logout(ctx *fiber.Ctx) error {
-	token := ctx.Cookies(cfg.Cookie.Name)
+	token := ctx.Cookies(config.Get().CookieName)
 
 	cookie, err := ctr.services.Web.DeleteSession(ctx.Context(), token)
 	if err != nil {

@@ -2,7 +2,7 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
 func (ctr *Handler) ToggleReaction(ctx *fiber.Ctx) error {
@@ -11,7 +11,7 @@ func (ctr *Handler) ToggleReaction(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	entry := &model.Reaction{}
+	entry := &nexus.Reaction{}
 	if err := ctx.BodyParser(&entry); err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}

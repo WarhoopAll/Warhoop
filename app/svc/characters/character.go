@@ -4,11 +4,11 @@ import (
 	"context"
 	"strconv"
 	"strings"
-	"warhoop/app/model"
+	"warhoop/app/model/char"
 	"warhoop/app/utils"
 )
 
-func (svc *CharService) GetByID(ctx context.Context, id int) (*model.Characters, error) {
+func (svc *CharService) GetByID(ctx context.Context, id int) (*char.Characters, error) {
 	result, err := svc.store.CharRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -17,7 +17,7 @@ func (svc *CharService) GetByID(ctx context.Context, id int) (*model.Characters,
 	return result.ToWeb(), nil
 }
 
-func (svc *CharService) GetByName(ctx context.Context, name string) (*model.Characters, error) {
+func (svc *CharService) GetByName(ctx context.Context, name string) (*char.Characters, error) {
 	result, err := svc.store.CharRepo.GetByName(ctx, name)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -81,7 +81,7 @@ func (svc *CharService) GetByName(ctx context.Context, name string) (*model.Char
 		}
 	}
 
-	gemMap, err := svc.store.SaitRepo.GetEnchantDBCByIDs(ctx, enchFullList)
+	gemMap, err := svc.store.NexusRepo.GetEnchantDBCByIDs(ctx, enchFullList)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}

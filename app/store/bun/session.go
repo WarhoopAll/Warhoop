@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 	"warhoop/app/utils"
 )
 
-func (r *SaitRepo) GetSession(ctx context.Context, entry *model.DBSession) (*model.DBSession, error) {
+func (r *NexusRepo) GetSession(ctx context.Context, entry *nexus.DBSession) (*nexus.DBSession, error) {
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -32,7 +32,7 @@ func (r *SaitRepo) GetSession(ctx context.Context, entry *model.DBSession) (*mod
 	return entry, nil
 }
 
-func (r *SaitRepo) CreateSession(ctx context.Context, entry *model.DBSession) error {
+func (r *NexusRepo) CreateSession(ctx context.Context, entry *nexus.DBSession) error {
 	_, err := r.db.
 		NewInsert().
 		Model(entry).
@@ -49,7 +49,7 @@ func (r *SaitRepo) CreateSession(ctx context.Context, entry *model.DBSession) er
 	return nil
 }
 
-func (r *SaitRepo) UpdateSession(ctx context.Context, entry *model.DBSession) error {
+func (r *NexusRepo) UpdateSession(ctx context.Context, entry *nexus.DBSession) error {
 	_, err := r.db.
 		NewUpdate().
 		Model(entry).
@@ -69,10 +69,10 @@ func (r *SaitRepo) UpdateSession(ctx context.Context, entry *model.DBSession) er
 	return nil
 }
 
-func (r *SaitRepo) DeleteSession(ctx context.Context, id string) error {
+func (r *NexusRepo) DeleteSession(ctx context.Context, id string) error {
 	_, err := r.db.
 		NewDelete().
-		Model((*model.DBSession)(nil)).
+		Model((*nexus.DBSession)(nil)).
 		Where("token = ?", id).
 		Exec(ctx)
 	if err != nil {
@@ -86,8 +86,8 @@ func (r *SaitRepo) DeleteSession(ctx context.Context, id string) error {
 	return nil
 }
 
-func (r *SaitRepo) ListSession(ctx context.Context, id uint) (*model.DBSessionSlice, error) {
-	entry := &model.DBSessionSlice{}
+func (r *NexusRepo) ListSession(ctx context.Context, id uint) (*nexus.DBSessionSlice, error) {
+	entry := &nexus.DBSessionSlice{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -104,7 +104,7 @@ func (r *SaitRepo) ListSession(ctx context.Context, id uint) (*model.DBSessionSl
 	return entry, nil
 }
 
-func (r *SaitRepo) ExistSession(ctx context.Context, entry *model.DBSession) (bool, error) {
+func (r *NexusRepo) ExistSession(ctx context.Context, entry *nexus.DBSession) (bool, error) {
 	exists, err := r.db.
 		NewSelect().
 		Model(entry).
@@ -120,7 +120,7 @@ func (r *SaitRepo) ExistSession(ctx context.Context, entry *model.DBSession) (bo
 	return exists, nil
 }
 
-func (r *SaitRepo) UpdateOrCreateSession(ctx context.Context, entry *model.DBSession, newToken string) (*model.DBSession, error) {
+func (r *NexusRepo) UpdateOrCreateSession(ctx context.Context, entry *nexus.DBSession, newToken string) (*nexus.DBSession, error) {
 	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {
 		r.logger.Error("store.SaitRepo.UpdateOrCreateSession",

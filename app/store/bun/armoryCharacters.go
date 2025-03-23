@@ -3,15 +3,15 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/char"
 )
 
-func (r *CharRepo) GetArmoryCharactersSlice(ctx context.Context, limit, offset int) (*model.DBCharactersSlice, int, error) {
+func (r *CharRepo) GetArmoryCharactersSlice(ctx context.Context, limit, offset int) (*char.DBCharactersSlice, int, error) {
 	var total int
-	entry := &model.DBCharactersSlice{}
+	entry := &char.DBCharactersSlice{}
 
 	countErr := r.db.NewSelect().
-		Model((*model.DBCharacters)(nil)).
+		Model((*char.DBCharacters)(nil)).
 		ColumnExpr("count(*)").
 		Scan(ctx, &total)
 	if countErr != nil {

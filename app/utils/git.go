@@ -6,7 +6,6 @@ import (
 	"warhoop/app/log"
 )
 
-var logger = log.Get()
 
 type GitInfo struct {
 	CommitHash string       `json:"commitHash"`
@@ -37,7 +36,7 @@ type Commit struct {
 func LoadGitInfo(path string) (*GitInfo, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		logger.Error("utils.LoadGitInfo",
+		log.Get().Error("utils.LoadGitInfo",
 			log.String("err", err.Error()),
 		)
 		return nil, err
@@ -48,7 +47,7 @@ func LoadGitInfo(path string) (*GitInfo, error) {
 	decoder := json.NewDecoder(file)
 	decodeErr := decoder.Decode(&gitInfo)
 	if decodeErr != nil {
-		logger.Error("utils.LoadGitInfo",
+		log.Get().Error("utils.LoadGitInfo",
 			log.String("err", err.Error()),
 		)
 		return nil, err

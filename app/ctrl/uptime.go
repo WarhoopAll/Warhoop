@@ -6,14 +6,16 @@ import (
 )
 
 func (h *Handler) GetUptime(ctx *fiber.Ctx) error {
+	cfg := config.Get()
+
 	status, err := h.services.Auth.GetUptime(ctx.Context())
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	status.Flag = config.Get().Realm.Flag
-	status.Rate = config.Get().Realm.Rate
-	status.Realmlis = config.Get().Realm.Realmlist
+	status.Flag = cfg.RealmFlag
+	status.Rate = cfg.RealmRate
+	status.Realmlis = cfg.RealmRealmlist
 
 	online, err := h.services.Char.GetOnlineCount(ctx.Context())
 	if err != nil {

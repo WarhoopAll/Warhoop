@@ -3,10 +3,12 @@ module warhoop
 go 1.23.3
 
 require (
+	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/go-playground/validator/v10 v10.25.0
 	github.com/go-sql-driver/mysql v1.9.0
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/golang-jwt/jwt/v4 v4.5.1
+	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.7.1
 	github.com/uptrace/bun v1.2.10
 	github.com/uptrace/bun/dialect/mysqldialect v1.2.10
@@ -15,7 +17,6 @@ require (
 	github.com/uptrace/uptrace-go v1.34.0
 	go.opentelemetry.io/otel v1.34.0
 	go.opentelemetry.io/otel/trace v1.34.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (

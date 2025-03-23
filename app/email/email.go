@@ -2,12 +2,9 @@ package email
 
 import (
 	"bytes"
-	"warhoop/app/config"
 	"html/template"
 	"net/smtp"
 )
-
-var cfg = config.Get()
 
 func GetSubject(notificationType, locale string) string {
 	subjects := map[string]map[string]string{

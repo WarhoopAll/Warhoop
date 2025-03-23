@@ -2,7 +2,7 @@ package ctrl
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
 func (ctr *Handler) UpdateAvatar(ctx *fiber.Ctx) error {
@@ -10,7 +10,7 @@ func (ctr *Handler) UpdateAvatar(ctx *fiber.Ctx) error {
 	if !ok {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
-	entry := &model.Profile{}
+	entry := &nexus.Profile{}
 	err := ParseAndValidate(ctx, entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)

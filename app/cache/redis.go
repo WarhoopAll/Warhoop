@@ -15,8 +15,8 @@ type RedisCache struct {
 func NewRedisCache() *RedisCache {
 	return &RedisCache{
 		client: redis.NewClient(&redis.Options{
-			Addr:     config.Get().Redis.DSN,
-			Password: config.Get().Redis.Password,
+			Addr:     config.Get().RedisDSN,
+			Password: config.Get().RedisPassword,
 			DB:       0,
 		}),
 	}
@@ -27,7 +27,6 @@ func (c *RedisCache) Get(ctx context.Context, key string, dest interface{}) erro
 	if err != nil {
 		return err
 	}
-
 	return json.Unmarshal([]byte(data), dest)
 }
 
@@ -36,7 +35,6 @@ func (c *RedisCache) Set(ctx context.Context, key string, value interface{}, ttl
 	if err != nil {
 		return err
 	}
-
 	return c.client.Set(ctx, key, jsonData, ttl).Err()
 }
 

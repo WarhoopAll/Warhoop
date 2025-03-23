@@ -3,11 +3,12 @@ package auth
 import (
 	"context"
 	"crypto/subtle"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
+	"warhoop/app/model/nexus"
 	"warhoop/app/utils"
 )
 
-func (svc *AuthService) GetByID(ctx context.Context, id int) (*model.Account, error) {
+func (svc *AuthService) GetByID(ctx context.Context, id int) (*auth.Account, error) {
 	result, err := svc.store.AuthRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase
@@ -16,7 +17,7 @@ func (svc *AuthService) GetByID(ctx context.Context, id int) (*model.Account, er
 	return result.ToWeb(), nil
 }
 
-func (svc *AuthService) SignIn(ctx context.Context, entry *model.Account) (*model.Account, error) {
+func (svc *AuthService) SignIn(ctx context.Context, entry *auth.Account) (*auth.Account, error) {
 	fnd, err := svc.store.AuthRepo.GetByUsername(ctx, entry.Username)
 	if err != nil {
 		return nil, utils.ErrIncorrectLogin
@@ -34,7 +35,7 @@ func (svc *AuthService) SignIn(ctx context.Context, entry *model.Account) (*mode
 	return fnd.ToWeb(), err
 }
 
-func (svc *AuthService) Exists(ctx context.Context, entry *model.Account) error {
+func (svc *AuthService) Exists(ctx context.Context, entry *auth.Account) error {
 	errChan := make(chan error, 2)
 
 	go func() {
@@ -72,7 +73,7 @@ func (svc *AuthService) Exists(ctx context.Context, entry *model.Account) error 
 	return nil
 }
 
-func (svc *AuthService) Create(ctx context.Context, entry *model.Account) (*model.Account, error) {
+func (svc *AuthService) Create(ctx context.Context, entry *auth.Account) (*auth.Account, error) {
 	salt, verifier, err := utils.CreateVerifier(entry.Username, entry.Password)
 	if err != nil {
 		return nil, utils.ErrInternal
@@ -89,7 +90,7 @@ func (svc *AuthService) Create(ctx context.Context, entry *model.Account) (*mode
 	return result.ToWeb(), nil
 }
 
-func (svc *AuthService) SignUp(ctx context.Context, entry *model.Account) (*model.Account, error) {
+func (svc *AuthService) SignUp(ctx context.Context, entry *auth.Account) (*auth.Account, error) {
 	err := svc.Exists(ctx, entry)
 	if err != nil {
 		return nil, err
@@ -100,7 +101,7 @@ func (svc *AuthService) SignUp(ctx context.Context, entry *model.Account) (*mode
 		return nil, err
 	}
 
-	profileEntry := &model.Profile{
+	profileEntry := &nexus.Profile{
 		AccountID: result.ID,
 		Name:      result.Username,
 	}

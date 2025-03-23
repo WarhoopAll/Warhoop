@@ -6,17 +6,17 @@ import (
 	"strconv"
 	"time"
 	"warhoop/app/config"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
 	"warhoop/app/utils"
 )
 
-func (s *AuthService) GetUptime(ctx context.Context) (*model.Uptime, error) {
-	entry, err := s.store.AuthRepo.GetUptimeByID(ctx, config.Get().Realm.ID)
+func (s *AuthService) GetUptime(ctx context.Context) (*auth.Uptime, error) {
+	entry, err := s.store.AuthRepo.GetUptimeByID(ctx, config.Get().RealmID)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 
-	if !s.CheckOnlineStatus(config.Get().Realm.Realmlist, entry.Realm.Port) {
+	if !s.CheckOnlineStatus(config.Get().RealmRealmlist, entry.Realm.Port) {
 		return nil, utils.ErrInternal
 	}
 

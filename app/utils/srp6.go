@@ -87,7 +87,7 @@ func (srp *SRP) GenerateSalt() error {
 	salt := make([]byte, byteSize)
 	_, err := rand.Read(salt)
 	if err != nil {
-		logger.Error("utils.GenerateSalt",
+		log.Get().Error("utils.GenerateSalt",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -115,7 +115,7 @@ func CreateVerifier(username, password string) (salt []byte, verifier []byte, er
 	// Generate salt
 	err = srp.GenerateSalt()
 	if err != nil {
-		logger.Error("utils.CreateVerifier",
+		log.Get().Error("utils.CreateVerifier",
 			log.String("err", err.Error()),
 		)
 		return nil, nil, err

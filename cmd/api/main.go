@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
+	"github.com/joho/godotenv"
 	"warhoop/app/cache"
 	"warhoop/app/config"
 	"warhoop/app/ctrl"
@@ -15,6 +16,10 @@ import (
 	"warhoop/app/svc"
 	"warhoop/app/utils"
 )
+
+func init() {
+	_ = godotenv.Load()
+}
 
 func main() {
 	logger := log.Get()
@@ -29,7 +34,7 @@ func run(logger *log.Logger) error {
 	ctx := context.Background()
 
 	// Init welcome page
-	err := utils.LoadAndGenerateHTML(config.Get().Service.GitInfo)
+	err := utils.LoadAndGenerateHTML(config.Get().GitInfo)
 	if err != nil {
 		logger.Error("error generate welcome page",
 			log.String("err", err.Error()))
@@ -44,7 +49,7 @@ func run(logger *log.Logger) error {
 		)
 		return err
 	}
-	redisCache := cache.NewRedisCache()
+	cacheManager := cache.NewCacheManager()
 
 	// Init service manager
 	serviceManager, err := svc.NewManager(ctx, store, logger)
@@ -55,7 +60,7 @@ func run(logger *log.Logger) error {
 		return err
 	}
 
-	hAccount := ctrl.NewHandler(ctx, serviceManager, redisCache)
+	hAccount := ctrl.NewHandler(ctx, serviceManager, cacheManager.Cache)
 
 	app := fiber.New()
 	app.Get("/metrics", monitor.New())
@@ -67,7 +72,7 @@ func run(logger *log.Logger) error {
 
 	// Starting api server
 	logger.Error("fatal error",
-		log.String("err", app.Listen(config.Get().Service.ApiAddrPort).Error()),
+		log.String("err", app.Listen(config.Get().ApiAddrPort).Error()),
 	)
 	return nil
 }

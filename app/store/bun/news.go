@@ -3,10 +3,10 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-func (r *SaitRepo) CreateNews(ctx context.Context, entry *model.DBNews) (*model.DBNews, error) {
+func (r *NexusRepo) CreateNews(ctx context.Context, entry *nexus.DBNews) (*nexus.DBNews, error) {
 	_, err := r.db.
 		NewInsert().
 		Model(entry).
@@ -26,8 +26,8 @@ func (r *SaitRepo) CreateNews(ctx context.Context, entry *model.DBNews) (*model.
 	return entry, nil
 }
 
-func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, error) {
-	entry := &model.DBNews{}
+func (r *NexusRepo) GetNewsByID(ctx context.Context, id int) (*nexus.DBNews, error) {
+	entry := &nexus.DBNews{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -45,12 +45,12 @@ func (r *SaitRepo) GetNewsByID(ctx context.Context, id int) (*model.DBNews, erro
 	return entry, nil
 }
 
-func (r *SaitRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*model.DBNewsSlice, int, error) {
+func (r *NexusRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*nexus.DBNewsSlice, int, error) {
 	var total int
-	entry := &model.DBNewsSlice{}
+	entry := &nexus.DBNewsSlice{}
 
 	countErr := r.db.NewSelect().
-		Model((*model.DBNews)(nil)).
+		Model((*nexus.DBNews)(nil)).
 		ColumnExpr("count(*)").
 		Scan(ctx, &total)
 	if countErr != nil {
@@ -77,7 +77,7 @@ func (r *SaitRepo) GetNewsSlice(ctx context.Context, limit, offset int) (*model.
 	return entry, total, nil
 }
 
-func (r *SaitRepo) UpdateNews(ctx context.Context, entry *model.DBNews) (*model.DBNews, error) {
+func (r *NexusRepo) UpdateNews(ctx context.Context, entry *nexus.DBNews) (*nexus.DBNews, error) {
 	q := r.db.NewUpdate().Model(entry).Where("id = ?", entry.ID)
 
 	if entry.Title != "" {
@@ -109,10 +109,10 @@ func (r *SaitRepo) UpdateNews(ctx context.Context, entry *model.DBNews) (*model.
 	return entry, nil
 }
 
-func (r *SaitRepo) DeleteNews(ctx context.Context, id int) error {
+func (r *NexusRepo) DeleteNews(ctx context.Context, id int) error {
 	_, err := r.db.
 		NewDelete().
-		Model((*model.DBNews)(nil)).
+		Model((*nexus.DBNews)(nil)).
 		Where("id = ?", id).
 		Exec(ctx)
 	if err != nil {

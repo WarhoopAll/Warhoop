@@ -7,24 +7,23 @@ import (
 	"warhoop/app/log"
 )
 
-var cfg = config.Get()
-var logger = log.Get()
-
 func CreateCookie(value string) *fiber.Cookie {
-	logger.Debug("utils.Cookie.config",
-		log.Object("name", cfg.Cookie),
-	)
+	cfg := config.Get()
+
+	//logger.Debug("utils.Cookie.config",
+	//	log.Object("name", cfg.Cookie),
+	//)
 
 	cookie := &fiber.Cookie{
-		Name:     cfg.Cookie.Name,
+		Name:     cfg.CookieName,
 		Value:    value,
-		Domain:   cfg.Cookie.Domain,
-		HTTPOnly: cfg.Cookie.HTTPOnly,
-		Secure:   cfg.Cookie.Secure,
-		SameSite: cfg.Cookie.SameSite,
-		Expires:  time.Now().Add(cfg.Cookie.AccessDuration),
+		Domain:   cfg.CookieDomain,
+		HTTPOnly: cfg.CookieHTTPOnly,
+		Secure:   cfg.CookieSecure,
+		SameSite: cfg.CookieSameSite,
+		Expires:  time.Now().Add(cfg.CookieAccessDuration),
 	}
-	logger.Debug("utils.Cookie.CreateCookie",
+	log.Get().Debug("utils.Cookie.CreateCookie",
 		log.Object("cookie", cookie),
 	)
 
@@ -32,17 +31,19 @@ func CreateCookie(value string) *fiber.Cookie {
 }
 
 func DeleteCookie() *fiber.Cookie {
+	cfg := config.Get()
+
 	cookie := &fiber.Cookie{
-		Name:     cfg.Cookie.Name,
+		Name:     cfg.CookieName,
 		Value:    "",
-		Domain:   cfg.Cookie.Domain,
-		HTTPOnly: cfg.Cookie.HTTPOnly,
-		Secure:   cfg.Cookie.Secure,
-		SameSite: cfg.Cookie.SameSite,
+		Domain:   cfg.CookieDomain,
+		HTTPOnly: cfg.CookieHTTPOnly,
+		Secure:   cfg.CookieSecure,
+		SameSite: cfg.CookieSameSite,
 		Expires:  time.Now().Add(-1 * time.Hour),
 	}
 
-	logger.Debug("utils.Cookie.DeleteCookie",
+	log.Get().Debug("utils.Cookie.DeleteCookie",
 		log.Object("cookie", cookie),
 	)
 	return cookie

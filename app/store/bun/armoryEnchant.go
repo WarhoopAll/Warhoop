@@ -3,14 +3,14 @@ package bun
 import (
 	"context"
 	"github.com/uptrace/bun"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-func (r *SaitRepo) GetEnchantDBCByIDs(ctx context.Context, ids []int32) (map[int32]int32, error) {
+func (r *NexusRepo) GetEnchantDBCByIDs(ctx context.Context, ids []int32) (map[int32]int32, error) {
 	if len(ids) == 0 {
 		return nil, nil
 	}
-	entry := &model.DBEnchantDBCSlice{}
+	entry := &nexus.DBEnchantDBCSlice{}
 
 	err := r.db.NewSelect().
 		Model(entry).

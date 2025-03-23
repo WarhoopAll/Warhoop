@@ -4,7 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"strconv"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
 func (ctr *Handler) NewsSlice(ctx *fiber.Ctx) error {
@@ -57,7 +57,7 @@ func (ctr *Handler) CreateNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgForbidden)
 	}
 
-	entry := &model.News{}
+	entry := &nexus.News{}
 
 	err = ctx.BodyParser(&entry)
 	if err != nil {
@@ -77,7 +77,7 @@ func (ctr *Handler) UpdateNews(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgUnauthorized)
 	}
 
-	entry := &model.News{}
+	entry := &nexus.News{}
 	err := ParseAndValidate(ctx, entry)
 	if err != nil {
 		return ErrResponse(ctx, MsgInternal)

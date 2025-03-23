@@ -3,10 +3,10 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
+func (r *NexusRepo) CreateComment(ctx context.Context, entry *nexus.DBComment) (*nexus.DBComment, error) {
 	_, err := r.db.
 		NewInsert().
 		Model(entry).
@@ -26,8 +26,8 @@ func (r *SaitRepo) CreateComment(ctx context.Context, entry *model.DBComment) (*
 	return entry, nil
 }
 
-func (r *SaitRepo) GetCommentsByNewsID(ctx context.Context, id int) (*model.DBCommentSlice, error) {
-	entry := &model.DBCommentSlice{}
+func (r *NexusRepo) GetCommentsByNewsID(ctx context.Context, id int) (*nexus.DBCommentSlice, error) {
+	entry := &nexus.DBCommentSlice{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -45,8 +45,8 @@ func (r *SaitRepo) GetCommentsByNewsID(ctx context.Context, id int) (*model.DBCo
 	return entry, nil
 }
 
-func (r *SaitRepo) GetCommentByID(ctx context.Context, id int) (*model.DBComment, error) {
-	entry := &model.DBComment{}
+func (r *NexusRepo) GetCommentByID(ctx context.Context, id int) (*nexus.DBComment, error) {
+	entry := &nexus.DBComment{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -63,10 +63,10 @@ func (r *SaitRepo) GetCommentByID(ctx context.Context, id int) (*model.DBComment
 	return entry, nil
 }
 
-func (r *SaitRepo) DeleteComment(ctx context.Context, id int) error {
+func (r *NexusRepo) DeleteComment(ctx context.Context, id int) error {
 	_, err := r.db.
 		NewDelete().
-		Model((*model.DBComment)(nil)).
+		Model((*nexus.DBComment)(nil)).
 		Where("id = ?", id).
 		Exec(ctx)
 	if err != nil {
@@ -79,7 +79,7 @@ func (r *SaitRepo) DeleteComment(ctx context.Context, id int) error {
 	return nil
 }
 
-func (r *SaitRepo) UpdateComment(ctx context.Context, entry *model.DBComment) (*model.DBComment, error) {
+func (r *NexusRepo) UpdateComment(ctx context.Context, entry *nexus.DBComment) (*nexus.DBComment, error) {
 	_, err := r.db.
 		NewUpdate().
 		Model(entry).

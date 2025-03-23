@@ -1,4 +1,4 @@
-package model
+package nexus
 
 import "github.com/uptrace/bun"
 

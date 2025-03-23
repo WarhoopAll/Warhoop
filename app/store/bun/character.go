@@ -2,9 +2,8 @@ package bun
 
 import (
 	"context"
-	"warhoop/app/config"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/char"
 )
 
 type CharRepo struct {
@@ -20,10 +19,8 @@ func NewCharRepo(db *DB, logger *log.Logger) *CharRepo {
 	}
 }
 
-var cfg = config.Get()
-
-func (r *CharRepo) GetByID(ctx context.Context, id int) (*model.DBCharacters, error) {
-	entry := &model.DBCharacters{}
+func (r *CharRepo) GetByID(ctx context.Context, id int) (*char.DBCharacters, error) {
+	entry := &char.DBCharacters{}
 	err := r.db.NewSelect().
 		Model(entry).
 		Where("guid = ?", id).
@@ -39,8 +36,8 @@ func (r *CharRepo) GetByID(ctx context.Context, id int) (*model.DBCharacters, er
 	return entry, nil
 }
 
-func (r *CharRepo) GetByName(ctx context.Context, name string) (*model.DBCharacters, error) {
-	entry := &model.DBCharacters{}
+func (r *CharRepo) GetByName(ctx context.Context, name string) (*char.DBCharacters, error) {
+	entry := &char.DBCharacters{}
 	err := r.db.NewSelect().
 		Model(entry).
 		Relation("Stats").
@@ -58,7 +55,7 @@ func (r *CharRepo) GetByName(ctx context.Context, name string) (*model.DBCharact
 }
 
 func (r *CharRepo) GetOnlineCount(ctx context.Context) (int, error) {
-	entry := &model.DBCharacters{}
+	entry := &char.DBCharacters{}
 	count, err := r.db.NewSelect().
 		Model(entry).
 		Where("online = ?", 1).
@@ -72,8 +69,8 @@ func (r *CharRepo) GetOnlineCount(ctx context.Context) (int, error) {
 	return count, nil
 }
 
-func (r *CharRepo) GetTop10Kill(ctx context.Context) (*model.DBCharactersSlice, error) {
-	entry := &model.DBCharactersSlice{}
+func (r *CharRepo) GetTop10Kill(ctx context.Context) (*char.DBCharactersSlice, error) {
+	entry := &char.DBCharactersSlice{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -90,8 +87,8 @@ func (r *CharRepo) GetTop10Kill(ctx context.Context) (*model.DBCharactersSlice, 
 	return entry, nil
 }
 
-func (r *CharRepo) GetOnlineSlice(ctx context.Context) (*model.DBCharactersSlice, error) {
-	entry := &model.DBCharactersSlice{}
+func (r *CharRepo) GetOnlineSlice(ctx context.Context) (*char.DBCharactersSlice, error) {
+	entry := &char.DBCharactersSlice{}
 	err := r.db.NewSelect().
 		Model(entry).
 		Relation("Maps").

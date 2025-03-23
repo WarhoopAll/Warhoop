@@ -3,13 +3,13 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
 )
 
 func (r *AuthRepo) ExistsAccess(ctx context.Context, id int) (bool, error) {
 	exist, err := r.db.
 		NewSelect().
-		Model((*model.DBAccess)(nil)).
+		Model((*auth.DBAccess)(nil)).
 		Where("AccountID = ?", id).
 		Exists(ctx)
 
@@ -23,8 +23,8 @@ func (r *AuthRepo) ExistsAccess(ctx context.Context, id int) (bool, error) {
 	return exist, nil
 }
 
-func (r *AuthRepo) GetAccessByID(ctx context.Context, id int) (*model.DBAccess, error) {
-	entry := &model.DBAccess{}
+func (r *AuthRepo) GetAccessByID(ctx context.Context, id int) (*auth.DBAccess, error) {
+	entry := &auth.DBAccess{}
 	err := r.db.
 		NewSelect().
 		Model(entry).

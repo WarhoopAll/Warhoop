@@ -3,11 +3,11 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
 )
 
-func (r *AuthRepo) GetUptimeByID(ctx context.Context, id int) (*model.DBUptime, error) {
-	entry := &model.DBUptime{}
+func (r *AuthRepo) GetUptimeByID(ctx context.Context, id int) (*auth.DBUptime, error) {
+	entry := &auth.DBUptime{}
 	err := r.db.NewSelect().
 		Model(entry).
 		Where("realmid = ?", id).

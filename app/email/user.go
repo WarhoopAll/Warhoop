@@ -4,28 +4,31 @@ import (
 	"fmt"
 	"path/filepath"
 	"time"
+	"warhoop/app/config"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
 )
 
-func SendFunction(acc *model.Account, token, subject, templateName, urlPath string, extraData map[string]string) error {
+func SendFunction(acc *auth.Account, token, subject, templateName, urlPath string, extraData map[string]string) error {
+	cfg := config.Get()
+
 	url := ""
 	if token != "" && urlPath != "" {
-		url = fmt.Sprintf("%v%v?token=%v", cfg.Service.AppUrl, urlPath, token)
+		url = fmt.Sprintf("%v%v?token=%v", config.Get().AppUrl, urlPath, token)
 	}
 
 	config := &Setup{
 		identity: "",
-		username: cfg.Mail.User,
-		password: cfg.Mail.Password,
-		host:     cfg.Mail.Server,
-		port:     cfg.Mail.Port,
+		username: config.Get().MailUser,
+		password: config.Get().MailPassword,
+		host:     config.Get().MailServer,
+		port:     config.Get().MailPort,
 	}
 
 	LoadConfig(config)
 
-	request := NewRequest(cfg.Mail.User, []string{acc.Email}, subject, "")
-	request.From = cfg.Mail.SanderName
+	request := NewRequest(cfg.MailUser, []string{acc.Email}, subject, "")
+	request.From = cfg.MailSanderName
 	request.BCC = acc.Email
 
 	data := map[string]interface{}{
@@ -38,7 +41,7 @@ func SendFunction(acc *model.Account, token, subject, templateName, urlPath stri
 		data[k] = v
 	}
 
-	template := filepath.Join(cfg.Mail.FolderTemplates, "ru", templateName)
+	template := filepath.Join(cfg.MailFolderTemplates, "ru", templateName)
 
 	err := request.ParseTemplate(template, data)
 	if err != nil {
@@ -74,12 +77,13 @@ func SendFunction(acc *model.Account, token, subject, templateName, urlPath stri
 	return nil
 }
 
-func NotifyLogin(acc *model.Account, ips []string, date time.Time) error {
-	subject := cfg.Mail.SanderName + " " + GetSubject("login", "ru")
+func NotifyLogin(acc *auth.Account, ips []string, date time.Time) error {
+	cfg := config.Get()
+	subject := cfg.MailSanderName + " " + GetSubject("login", "ru")
 	extraData := map[string]string{
 		"Name": acc.Username,
 		"IP":   fmt.Sprintf("%v", ips),
 		"Date": date.Format("2006-01-02 15:04:05"),
 	}
-	return SendFunction(acc, "", subject, cfg.Mail.TemplateLogin, "", extraData)
+	return SendFunction(acc, "", subject, cfg.MailTemplateLogin, "", extraData)
 }

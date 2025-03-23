@@ -1,4 +1,4 @@
-package model
+package nexus
 
 import (
 	"github.com/uptrace/bun"
@@ -21,15 +21,14 @@ type SessionSlice []Session
 
 type DBSession struct {
 	bun.BaseModel `bun:"table:sessions,alias:sessions"`
-	ID            uint       `bun:"id,pk,notnull,autoincrement"`
-	Token         string     `bun:"token,notnull"`
-	AccountID     int        `bun:"account_id,notnull"`
-	Account       *DBAccount `bun:"rel:belongs-to,join:account_id=id"`
-	IPs           []string   `bun:"ips,array"`
-	Finger        string     `bun:"fingerprint"`
-	ExpiredAt     time.Time  `bun:"expired_at"`
-	LoginedAt     time.Time  `bun:"logined_at,default:current_timestamp"`
-	UpdatedAt     time.Time  `bun:"updated_at"`
+	ID            uint      `bun:"id,pk,notnull,autoincrement"`
+	Token         string    `bun:"token,notnull"`
+	AccountID     int       `bun:"account_id,notnull"`
+	IPs           []string  `bun:"ips,array"`
+	Finger        string    `bun:"fingerprint"`
+	ExpiredAt     time.Time `bun:"expired_at"`
+	LoginedAt     time.Time `bun:"logined_at,default:current_timestamp"`
+	UpdatedAt     time.Time `bun:"updated_at"`
 }
 
 // DBSessionSlice

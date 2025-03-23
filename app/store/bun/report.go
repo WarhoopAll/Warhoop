@@ -3,10 +3,10 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-func (r *SaitRepo) CreateReport(ctx context.Context, entry *model.DBReport) (*model.DBReport, error) {
+func (r *NexusRepo) CreateReport(ctx context.Context, entry *nexus.DBReport) (*nexus.DBReport, error) {
 	_, err := r.db.NewInsert().
 		Model(entry).
 		Exec(ctx)
@@ -20,8 +20,8 @@ func (r *SaitRepo) CreateReport(ctx context.Context, entry *model.DBReport) (*mo
 	return entry, nil
 }
 
-func (r *SaitRepo) GetReportByID(ctx context.Context, id int) (*model.DBReport, error) {
-	entry := &model.DBReport{}
+func (r *NexusRepo) GetReportByID(ctx context.Context, id int) (*nexus.DBReport, error) {
+	entry := &nexus.DBReport{}
 	err := r.db.NewSelect().
 		Model(entry).
 		Relation("ReporterProfile").
@@ -38,7 +38,7 @@ func (r *SaitRepo) GetReportByID(ctx context.Context, id int) (*model.DBReport, 
 	return entry, nil
 }
 
-func (r *SaitRepo) UpdateReport(ctx context.Context, entry *model.DBReport) (*model.DBReport, error) {
+func (r *NexusRepo) UpdateReport(ctx context.Context, entry *nexus.DBReport) (*nexus.DBReport, error) {
 	_, err := r.db.NewUpdate().
 		Model(entry).
 		Where("id = ?", entry.ID).
@@ -53,8 +53,8 @@ func (r *SaitRepo) UpdateReport(ctx context.Context, entry *model.DBReport) (*mo
 	return entry, nil
 }
 
-func (r *SaitRepo) GetReports(ctx context.Context, limit, offset int) (*model.DBReportSlice, error) {
-	entry := &model.DBReportSlice{}
+func (r *NexusRepo) GetReports(ctx context.Context, limit, offset int) (*nexus.DBReportSlice, error) {
+	entry := &nexus.DBReportSlice{}
 	err := r.db.NewSelect().
 		Model(entry).
 		Relation("ReporterProfile").
@@ -71,9 +71,9 @@ func (r *SaitRepo) GetReports(ctx context.Context, limit, offset int) (*model.DB
 	return entry, nil
 }
 
-func (r *SaitRepo) DeleteReportByID(ctx context.Context, id int) error {
+func (r *NexusRepo) DeleteReportByID(ctx context.Context, id int) error {
 	_, err := r.db.NewDelete().
-		Model((*model.DBReport)(nil)).
+		Model((*nexus.DBReport)(nil)).
 		Where("id = ?", id).
 		Exec(ctx)
 	if err != nil {

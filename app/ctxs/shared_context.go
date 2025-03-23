@@ -2,8 +2,8 @@ package ctxs
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"warhoop/app/config"
 	"strings"
+	"warhoop/app/config"
 )
 
 type Ctx struct {
@@ -25,7 +25,7 @@ func Shared(c *fiber.Ctx) error {
 
 func parseLang(header string) string {
 	if header == "" {
-		return config.Get().Service.DefaultLocale
+		return config.Get().DefaultLocale
 	}
 
 	locales := strings.Split(header, ",")
@@ -37,7 +37,7 @@ func parseLang(header string) string {
 	case loc == "en" || strings.HasPrefix(loc, "en-"):
 		return "en"
 	default:
-		return config.Get().Service.DefaultLocale
+		return config.Get().DefaultLocale
 	}
 }
 

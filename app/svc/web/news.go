@@ -2,30 +2,30 @@ package web
 
 import (
 	"context"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 	"warhoop/app/utils"
 )
 
-func (svc *WebService) CreateNews(ctx context.Context, id int, entry *model.News) (*model.News, error) {
+func (svc *WebService) CreateNews(ctx context.Context, id int, entry *nexus.News) (*nexus.News, error) {
 	entry.ProfileID = id
-	res, err := svc.store.SaitRepo.CreateNews(ctx, entry.ToDB())
+	res, err := svc.store.NexusRepo.CreateNews(ctx, entry.ToDB())
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 	return res.ToWeb(), nil
 }
 
-func (svc *WebService) GetNewsByID(ctx context.Context, id int) (*model.News, error) {
-	res, err := svc.store.SaitRepo.GetNewsByID(ctx, id)
+func (svc *WebService) GetNewsByID(ctx context.Context, id int) (*nexus.News, error) {
+	res, err := svc.store.NexusRepo.GetNewsByID(ctx, id)
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
 	return res.ToWeb(), nil
 }
 
-func (svc *WebService) GetNewsSlice(ctx context.Context, limit, offset int) (*model.NewsSlice, int, error) {
+func (svc *WebService) GetNewsSlice(ctx context.Context, limit, offset int) (*nexus.NewsSlice, int, error) {
 
-	entry, total, err := svc.store.SaitRepo.GetNewsSlice(ctx, limit, offset)
+	entry, total, err := svc.store.NexusRepo.GetNewsSlice(ctx, limit, offset)
 	if err != nil {
 		return nil, 0, utils.ErrDataBase
 	}
@@ -35,8 +35,8 @@ func (svc *WebService) GetNewsSlice(ctx context.Context, limit, offset int) (*mo
 	return news, total, nil
 }
 
-func (svc *WebService) UpdateNews(ctx context.Context, entry *model.News) (*model.News, error) {
-	res, err := svc.store.SaitRepo.UpdateNews(ctx, entry.ToDB())
+func (svc *WebService) UpdateNews(ctx context.Context, entry *nexus.News) (*nexus.News, error) {
+	res, err := svc.store.NexusRepo.UpdateNews(ctx, entry.ToDB())
 	if err != nil {
 		return nil, utils.ErrDataBase
 	}
@@ -44,7 +44,7 @@ func (svc *WebService) UpdateNews(ctx context.Context, entry *model.News) (*mode
 }
 
 func (svc *WebService) DeleteNews(ctx context.Context, id int) error {
-	err := svc.store.SaitRepo.DeleteNews(ctx, id)
+	err := svc.store.NexusRepo.DeleteNews(ctx, id)
 	if err != nil {
 		return utils.ErrDataBase
 	}

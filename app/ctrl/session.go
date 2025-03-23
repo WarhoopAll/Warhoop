@@ -3,8 +3,9 @@ package ctrl
 import (
 	"github.com/gofiber/fiber/v2"
 	"time"
+	"warhoop/app/config"
 	"warhoop/app/ctxs"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 	"warhoop/app/svc/web"
 	"warhoop/app/utils"
 )
@@ -20,14 +21,14 @@ func (ctr *Handler) Session(ctx *fiber.Ctx) error {
 		return ErrResponse(ctx, MsgInternal)
 	}
 
-	oldToken := ctx.Cookies(cfg.Cookie.Name)
+	oldToken := ctx.Cookies(config.Get().CookieName)
 
-	session := &model.Session{
+	session := &nexus.Session{
 		Token:     oldToken,
 		AccountID: id,
 		IPs:       c.IPs,
 		UpdatedAt: time.Now(),
-		ExpiredAt: time.Now().Add(cfg.Cookie.AccessDuration),
+		ExpiredAt: time.Now().Add(config.Get().CookieAccessDuration),
 	}
 
 	newToken, err := web.GenerateTokenAccess(id)

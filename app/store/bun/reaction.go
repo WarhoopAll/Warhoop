@@ -3,10 +3,10 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-func (r *SaitRepo) ExistReaction(ctx context.Context, entry *model.DBReaction) (bool, error) {
+func (r *NexusRepo) ExistReaction(ctx context.Context, entry *nexus.DBReaction) (bool, error) {
 	exists, err := r.db.NewSelect().
 		Model(entry).
 		Where("user_id = ? AND object_type = ? AND object_id = ? AND reaction_type = ?", entry.UserID, entry.ObjectType, entry.ObjectID, entry.ReactionType).
@@ -21,7 +21,7 @@ func (r *SaitRepo) ExistReaction(ctx context.Context, entry *model.DBReaction) (
 	return exists, nil
 }
 
-func (r *SaitRepo) CreateReaction(ctx context.Context, entry *model.DBReaction) error {
+func (r *NexusRepo) CreateReaction(ctx context.Context, entry *nexus.DBReaction) error {
 	_, err := r.db.NewInsert().
 		Model(entry).
 		Exec(ctx)
@@ -36,9 +36,9 @@ func (r *SaitRepo) CreateReaction(ctx context.Context, entry *model.DBReaction) 
 	return nil
 }
 
-func (r *SaitRepo) DeleteReaction(ctx context.Context, entry *model.DBReaction) error {
+func (r *NexusRepo) DeleteReaction(ctx context.Context, entry *nexus.DBReaction) error {
 	_, err := r.db.NewDelete().
-		Model((*model.DBReaction)(nil)).
+		Model((*nexus.DBReaction)(nil)).
 		Where("user_id = ? AND object_type = ? AND object_id = ? AND reaction_type = ?", entry.UserID, entry.ObjectType, entry.ObjectID, entry.ReactionType).
 		Exec(ctx)
 	if err != nil {
@@ -51,7 +51,7 @@ func (r *SaitRepo) DeleteReaction(ctx context.Context, entry *model.DBReaction) 
 	return nil
 }
 
-func (r *SaitRepo) ToggleReaction(ctx context.Context, entry *model.DBReaction) (*model.DBReaction, error) {
+func (r *NexusRepo) ToggleReaction(ctx context.Context, entry *nexus.DBReaction) (*nexus.DBReaction, error) {
 	exists, err := r.ExistReaction(ctx, entry)
 	if err != nil {
 		return nil, err

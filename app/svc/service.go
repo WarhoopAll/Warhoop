@@ -3,66 +3,68 @@ package svc
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
+	"warhoop/app/model/char"
+	"warhoop/app/model/nexus"
 )
 
 type Auth interface {
 	// Account
-	GetByID(context.Context, int) (*model.Account, error)
+	GetByID(context.Context, int) (*auth.Account, error)
 	// Auth
-	SignIn(context.Context, *model.Account) (*model.Account, error)
-	SignUp(context.Context, *model.Account) (*model.Account, error)
+	SignIn(context.Context, *auth.Account) (*auth.Account, error)
+	SignUp(context.Context, *auth.Account) (*auth.Account, error)
 	// Access
 	ExistsAccess(context.Context, int) (bool, error)
-	AccessByID(context.Context, int) (*model.Access, error)
+	AccessByID(context.Context, int) (*auth.Access, error)
 	// Uptime
-	GetUptime(context.Context) (*model.Uptime, error)
+	GetUptime(context.Context) (*auth.Uptime, error)
 	CheckOnlineStatus(string, int16) bool
 }
 
 type Characters interface {
 	// Characters
-	GetByID(context.Context, int) (*model.Characters, error)
-	GetByName(context.Context, string) (*model.Characters, error)
+	GetByID(context.Context, int) (*char.Characters, error)
+	GetByName(context.Context, string) (*char.Characters, error)
 	GetTop10Kill(context.Context) ([]map[string]interface{}, error)
 	GetOnlineCount(context.Context) (int, error)
 	GetOnlineSlice(context.Context) ([]map[string]interface{}, error)
 	// Armory
-	GetArmoryCharactersSlice(ctx context.Context, limit, offset int) (*model.CharactersSlice, int, error)
+	GetArmoryCharactersSlice(ctx context.Context, limit, offset int) (*char.CharactersSlice, int, error)
 }
 
 type Web interface {
 	// Profile
-	CreateProfile(context.Context, *model.Profile) (*model.Profile, error)
-	UpdateAvatar(context.Context, *model.Profile) (*model.Profile, error)
+	CreateProfile(context.Context, *nexus.Profile) (*nexus.Profile, error)
+	UpdateAvatar(context.Context, *nexus.Profile) (*nexus.Profile, error)
 	// Session
 	CreateCookie(string) *fiber.Cookie
 	GenerateAccessToken(int) (string, error)
-	GetSession(context.Context, *model.Session) (*model.Session, error)
+	GetSession(context.Context, *nexus.Session) (*nexus.Session, error)
 	DeleteSession(context.Context, string) (*fiber.Cookie, error)
-	ExistSession(context.Context, *model.Session) (bool, error)
-	CreateSession(context.Context, *model.Session) error
-	UpdateSession(context.Context, *model.Session) error
-	UpdateOrCreateSession(context.Context, *model.Session, string) error
-	HandleSession(context.Context, *model.Session) (string, error)
+	ExistSession(context.Context, *nexus.Session) (bool, error)
+	CreateSession(context.Context, *nexus.Session) error
+	UpdateSession(context.Context, *nexus.Session) error
+	UpdateOrCreateSession(context.Context, *nexus.Session, string) error
+	HandleSession(context.Context, *nexus.Session) (string, error)
 	// News
-	CreateNews(context.Context, int, *model.News) (*model.News, error)
-	GetNewsSlice(context.Context, int, int) (*model.NewsSlice, int, error)
-	GetNewsByID(context.Context, int) (*model.News, error)
-	UpdateNews(context.Context, *model.News) (*model.News, error)
+	CreateNews(context.Context, int, *nexus.News) (*nexus.News, error)
+	GetNewsSlice(context.Context, int, int) (*nexus.NewsSlice, int, error)
+	GetNewsByID(context.Context, int) (*nexus.News, error)
+	UpdateNews(context.Context, *nexus.News) (*nexus.News, error)
 	DeleteNews(context.Context, int) error
 	// Comments
-	CreateComment(context.Context, int, *model.Comment) (*model.Comment, error)
+	CreateComment(context.Context, int, *nexus.Comment) (*nexus.Comment, error)
 	DeleteComment(context.Context, int) error
-	UpdateComment(context.Context, int, *model.Comment) (*model.Comment, error)
-	GetCommentByID(context.Context, int) (*model.Comment, error)
-	GetCommentByNewsID(context.Context, int) (*model.CommentSlice, error)
+	UpdateComment(context.Context, int, *nexus.Comment) (*nexus.Comment, error)
+	GetCommentByID(context.Context, int) (*nexus.Comment, error)
+	GetCommentByNewsID(context.Context, int) (*nexus.CommentSlice, error)
 	// Like
-	ToggleReaction(context.Context, *model.Reaction) (*model.Reaction, error)
+	ToggleReaction(context.Context, *nexus.Reaction) (*nexus.Reaction, error)
 	// Report
-	CreateReport(context.Context, int, *model.Report) (*model.Report, error)
-	GetReportByID(context.Context, int) (*model.Report, error)
-	GetReports(context.Context, int, int) (*model.ReportSlice, error)
+	CreateReport(context.Context, int, *nexus.Report) (*nexus.Report, error)
+	GetReportByID(context.Context, int) (*nexus.Report, error)
+	GetReports(context.Context, int, int) (*nexus.ReportSlice, error)
 	DeleteReportByID(context.Context, int) error
 }
 

@@ -2,8 +2,9 @@ package web
 
 import (
 	"github.com/golang-jwt/jwt/v4"
-	"warhoop/app/utils"
 	"time"
+	"warhoop/app/config"
+	"warhoop/app/utils"
 )
 
 type TokenInfo struct {
@@ -12,26 +13,29 @@ type TokenInfo struct {
 }
 
 func GenerateTokenAccess(id int) (string, error) {
+	cfg := config.Get()
+
 	if cfg == nil {
 		return "", utils.ErrBadConfig
 	}
-	expirationTime := time.Now().Add(cfg.Cookie.AccessDuration).Unix()
+	expirationTime := time.Now().Add(cfg.CookieAccessDuration).Unix()
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"exp": expirationTime,
 		"id":  id,
 	})
-	return claims.SignedString([]byte(cfg.Cookie.JwtKey))
+	return claims.SignedString([]byte(cfg.CookieJwtKey))
 }
 
 func parse(token string) (*jwt.Token, error) {
+	cfg := config.Get()
 
 	return jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		_, ok := t.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
 			return nil, utils.ErrBadToken
 		}
-		return []byte(cfg.Cookie.JwtKey), nil
+		return []byte(cfg.CookieJwtKey), nil
 	})
 }
 

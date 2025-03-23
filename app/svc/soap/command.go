@@ -27,12 +27,12 @@ type ExecuteCommand struct {
 	Command string `xml:"command"`
 }
 
-var cfg = config.Get()
-
 func (svc *SoapService) ExecuteCommand(command string) (string, error) {
-	if !cfg.Soap.Enable {
+	cfg := config.Get()
+
+	if !cfg.SoapEnable {
 		svc.logger.Warn("service.SoapService.ExecuteCommand",
-			log.Bool("cfg.Soap.enable", cfg.Soap.Enable),
+			log.Bool("cfg.Soap.enable", cfg.SoapEnable),
 		)
 		return "", utils.ErrDisable
 	}
@@ -64,9 +64,9 @@ func (svc *SoapService) ExecuteCommand(command string) (string, error) {
 		log.String("soapRequest", soapRequest),
 	)
 
-	authHeader := "Basic " + base64.StdEncoding.EncodeToString([]byte(cfg.Soap.Login+":"+cfg.Soap.Password))
+	authHeader := "Basic " + base64.StdEncoding.EncodeToString([]byte(cfg.SoapLogin+":"+cfg.SoapPassword))
 
-	req, err := http.NewRequest("POST", cfg.Soap.Host, bytes.NewBufferString(soapRequest))
+	req, err := http.NewRequest("POST", cfg.SoapHost, bytes.NewBufferString(soapRequest))
 	if err != nil {
 		svc.logger.Error("service.SoapService.ExecuteCommand",
 			log.String("err", err.Error()),

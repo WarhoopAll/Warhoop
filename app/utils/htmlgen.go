@@ -8,8 +8,6 @@ import (
 	"warhoop/app/log"
 )
 
-var cfg = config.Get()
-
 func LoadAndGenerateHTML(gitInfoPath string) error {
 	gitInfo, err := LoadGitInfo(gitInfoPath)
 	if err != nil {
@@ -34,9 +32,9 @@ func LoadAndGenerateHTML(gitInfoPath string) error {
 }
 
 func GenerateHTML(data GitInfo) error {
-	tmplContent, err := os.ReadFile(cfg.Service.TemplateWelcome)
+	tmplContent, err := os.ReadFile(config.Get().TemplateWelcome)
 	if err != nil {
-		logger.Error("utils.GenerateHTML",
+		log.Get().Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -44,7 +42,7 @@ func GenerateHTML(data GitInfo) error {
 
 	tmplParsed, err := template.New("welcome").Parse(string(tmplContent))
 	if err != nil {
-		logger.Error("utils.GenerateHTML",
+		log.Get().Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -80,16 +78,16 @@ func GenerateHTML(data GitInfo) error {
 
 	err = os.MkdirAll("./static", os.ModePerm)
 	if err != nil {
-		logger.Error("utils.GenerateHTML",
+		log.Get().Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
 	}
 
-	outputFile := cfg.Service.TemplateStatic
+	outputFile := config.Get().TemplateStatic
 	file, err := os.Create(outputFile)
 	if err != nil {
-		logger.Error("utils.GenerateHTML",
+		log.Get().Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
@@ -98,12 +96,12 @@ func GenerateHTML(data GitInfo) error {
 
 	err = tmplParsed.Execute(file, templateData)
 	if err != nil {
-		logger.Error("utils.GenerateHTML",
+		log.Get().Error("utils.GenerateHTML",
 			log.String("err", err.Error()),
 		)
 		return err
 	}
-	logger.Debug("utils.GenerateHTML",
+	log.Get().Debug("utils.GenerateHTML",
 		log.String("directory", outputFile),
 	)
 	return nil

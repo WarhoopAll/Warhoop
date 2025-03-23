@@ -1,4 +1,4 @@
-package model
+package char
 
 import "github.com/uptrace/bun"
 

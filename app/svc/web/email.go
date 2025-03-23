@@ -3,7 +3,8 @@ package web
 import (
 	"context"
 	"warhoop/app/email"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
+	"warhoop/app/model/nexus"
 	"warhoop/app/utils"
 )
 
@@ -33,8 +34,8 @@ import (
 //	return nil
 //}
 
-func (svc *WebService) SendLoginByEmail(ctx context.Context, acc *model.Account, session *model.Session) error {
-	err := email.NotifyLogin(acc, session.IPs, session.LoginedAt)
+func (svc *WebService) SendLoginByEmail(ctx context.Context, entry *auth.Account, session *nexus.Session) error {
+	err := email.NotifyLogin(entry, session.IPs, session.LoginedAt)
 	if err != nil {
 		return utils.ErrSendEmail
 	}

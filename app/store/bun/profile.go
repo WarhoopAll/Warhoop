@@ -3,10 +3,10 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/nexus"
 )
 
-func (r *SaitRepo) CreateProfile(ctx context.Context, entry *model.DBProfile) (*model.DBProfile, error) {
+func (r *NexusRepo) CreateProfile(ctx context.Context, entry *nexus.DBProfile) (*nexus.DBProfile, error) {
 	_, err := r.db.
 		NewInsert().
 		Model(entry).
@@ -23,8 +23,8 @@ func (r *SaitRepo) CreateProfile(ctx context.Context, entry *model.DBProfile) (*
 	return nil, nil
 }
 
-func (r *SaitRepo) GetProfile(ctx context.Context, id int) (*model.DBProfile, error) {
-	avatar := &model.DBProfile{}
+func (r *NexusRepo) GetProfile(ctx context.Context, id int) (*nexus.DBProfile, error) {
+	avatar := &nexus.DBProfile{}
 	err := r.db.
 		NewSelect().
 		Model(avatar).

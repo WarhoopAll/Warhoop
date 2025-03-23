@@ -2,12 +2,13 @@ package mw
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"warhoop/app/config"
 	"warhoop/app/ctrl"
 	"warhoop/app/svc/web"
 )
 
 func Auth(ctx *fiber.Ctx) error {
-	token := ctx.Cookies(cfg.Cookie.Name)
+	token := ctx.Cookies(config.Get().CookieName)
 	if token == "" {
 		return ctrl.ErrResponse(ctx, ctrl.MsgUnauthorized)
 	}

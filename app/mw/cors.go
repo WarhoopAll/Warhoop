@@ -6,13 +6,14 @@ import (
 	"warhoop/app/config"
 )
 
-var cfg = config.Get()
+//var cfg = config.Get()
 
 func SetupCors() fiber.Handler {
+	cfg := config.Get()
 	return cors.New(cors.Config{
-		AllowOrigins:     cfg.Cors.AllowOrigins,
-		AllowMethods:     cfg.Cors.AllowMethods,
-		AllowHeaders:     cfg.Cors.AllowHeaders,
-		AllowCredentials: cfg.Cors.AllowCredentials,
+		AllowOrigins:     cfg.CorsAllowOrigins,
+		AllowMethods:     cfg.CorsAllowMethods,
+		AllowHeaders:     cfg.CorsAllowHeaders,
+		AllowCredentials: cfg.CorsAllowCredentials,
 	})
 }

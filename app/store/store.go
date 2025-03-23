@@ -11,19 +11,19 @@ import (
 
 // Store ...
 type Store struct {
-	AuthRepo *bun.AuthRepo
-	SaitRepo *bun.SaitRepo
-	CharRepo *bun.CharRepo
+	AuthRepo  *bun.AuthRepo
+	NexusRepo *bun.NexusRepo
+	CharRepo  *bun.CharRepo
 }
 
-var cfg = config.Get()
-
 func NewBun(logger *log.Logger) (*Store, error) {
+	cfg := config.Get()
+
 	if cfg == nil {
 		panic("configuration is nil")
 	}
 
-	auth, err := connect(cfg.DB.Auth, "auth")
+	auth, err := connect(cfg.DBAuth, "auth")
 	if err != nil {
 		logger.Error("store.NewBun.auth",
 			log.String("err", err.Error()),
@@ -31,7 +31,7 @@ func NewBun(logger *log.Logger) (*Store, error) {
 		return nil, err
 	}
 
-	char, err := connect(cfg.DB.Characters, "characters")
+	char, err := connect(cfg.DBCharacters, "characters")
 	if err != nil {
 		logger.Error("store.NewBun.characters",
 			log.String("err", err.Error()),
@@ -39,23 +39,23 @@ func NewBun(logger *log.Logger) (*Store, error) {
 		return nil, err
 	}
 
-	sait, err := connect(cfg.DB.Sait, "sait")
+	nexus, err := connect(cfg.DBNexus, "nexus")
 	if err != nil {
-		logger.Error("store.NewBun.sait",
+		logger.Error("store.NewBun.nexus",
 			log.String("error", err.Error()),
 		)
 		return nil, err
 	}
 
-	saitRepo := bun.NewSaitRepo(sait, logger)
-	if saitRepo == nil {
-		logger.Error("store.NewBun.SaitRepo",
+	nexusRepo := bun.NewNexusRepo(nexus, logger)
+	if nexusRepo == nil {
+		logger.Error("store.NewBun.NexusRepo",
 			log.String("err", err.Error()),
 		)
 		return nil, err
 	}
 
-	authRepo := bun.NewAuthRepo(auth, logger, saitRepo)
+	authRepo := bun.NewAuthRepo(auth, logger, nexusRepo)
 	if authRepo == nil {
 		if err != nil {
 			logger.Error("tore.NewBun.AuthRepo",
@@ -75,9 +75,9 @@ func NewBun(logger *log.Logger) (*Store, error) {
 		}
 	}
 	return &Store{
-		AuthRepo: authRepo,
-		CharRepo: charRepo,
-		SaitRepo: saitRepo,
+		AuthRepo:  authRepo,
+		CharRepo:  charRepo,
+		NexusRepo: nexusRepo,
 	}, nil
 }
 
@@ -87,7 +87,7 @@ func connect(dsn, name string) (*bun.DB, error) {
 		return nil, err
 	}
 
-	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(cfg.DB.Verbose)))
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(config.Get().DBVerbose)))
 	db.AddQueryHook(bunotel.NewQueryHook(
 		bunotel.WithDBName(name),
 		bunotel.WithFormattedQueries(true),

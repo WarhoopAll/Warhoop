@@ -3,26 +3,26 @@ package bun
 import (
 	"context"
 	"warhoop/app/log"
-	"warhoop/app/model"
+	"warhoop/app/model/auth"
 )
 
 type AuthRepo struct {
 	db     *DB
 	logger *log.Logger
-	saitr  *SaitRepo
+	nexusr *NexusRepo
 }
 
 // NewAuthr ...
-func NewAuthRepo(db *DB, logger *log.Logger, saitr *SaitRepo) *AuthRepo {
+func NewAuthRepo(db *DB, logger *log.Logger, nexusr *NexusRepo) *AuthRepo {
 	return &AuthRepo{
 		db:     db,
 		logger: logger,
-		saitr:  saitr,
+		nexusr: nexusr,
 	}
 }
 
-func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error) {
-	entry := &model.DBAccount{}
+func (r *AuthRepo) GetByID(ctx context.Context, id int) (*auth.DBAccount, error) {
+	entry := &auth.DBAccount{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -38,7 +38,7 @@ func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error
 		return nil, err
 	}
 
-	avatar, err := r.saitr.GetProfile(ctx, entry.ID)
+	avatar, err := r.nexusr.GetProfile(ctx, entry.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -47,8 +47,8 @@ func (r *AuthRepo) GetByID(ctx context.Context, id int) (*model.DBAccount, error
 	return entry, nil
 }
 
-func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*model.DBAccount, error) {
-	entry := &model.DBAccount{}
+func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*auth.DBAccount, error) {
+	entry := &auth.DBAccount{}
 	err := r.db.
 		NewSelect().
 		Model(entry).
@@ -63,7 +63,7 @@ func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*model.D
 		return nil, err
 	}
 
-	avatar, err := r.saitr.GetProfile(ctx, entry.ID)
+	avatar, err := r.nexusr.GetProfile(ctx, entry.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (r *AuthRepo) GetByUsername(ctx context.Context, username string) (*model.D
 func (r *AuthRepo) ExistsEmail(ctx context.Context, email string) (bool, error) {
 	exist, err := r.db.
 		NewSelect().
-		Model((*model.DBAccount)(nil)).
+		Model((*auth.DBAccount)(nil)).
 		Where("email = ?", email).
 		Exists(ctx)
 
@@ -92,7 +92,7 @@ func (r *AuthRepo) ExistsEmail(ctx context.Context, email string) (bool, error) 
 func (r *AuthRepo) ExistsUsername(ctx context.Context, username string) (bool, error) {
 	exist, err := r.db.
 		NewSelect().
-		Model((*model.DBAccount)(nil)).
+		Model((*auth.DBAccount)(nil)).
 		Where("username = ?", username).
 		Exists(ctx)
 
@@ -106,7 +106,7 @@ func (r *AuthRepo) ExistsUsername(ctx context.Context, username string) (bool, e
 	return exist, nil
 }
 
-func (r *AuthRepo) Create(ctx context.Context, entry *model.DBAccount) (*model.DBAccount, error) {
+func (r *AuthRepo) Create(ctx context.Context, entry *auth.DBAccount) (*auth.DBAccount, error) {
 	_, err := r.db.
 		NewInsert().
 		Model(entry).
